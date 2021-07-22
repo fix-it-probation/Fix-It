@@ -4,6 +4,9 @@ const styles = StyleSheet.create({
   textHeader: {
     color: 'green',
     fontSize: 32,
+    fontWeight: 'bold',
+    paddingVertical: 280,
+    textAlign: 'center',
   },
 });
 
