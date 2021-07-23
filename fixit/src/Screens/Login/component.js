@@ -2,6 +2,7 @@ import React from 'react';
 import {View, Text} from 'react-native';
 import styles from './styles';
 import BassicTitle from '../../Components/BassicTitle';
+import Button from '../../Components/Button';
 
 const Login = () => {
   return (
@@ -13,6 +14,7 @@ const Login = () => {
         secureTextEntry={true}
         customContainer={styles.inputPass}
       />
+      <Button customContainer={styles.button} title="Login" />
     </View>
   );
 };

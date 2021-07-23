@@ -6,9 +6,9 @@ import Home from '../Screens/Home';
 
 const Router = createStackNavigator(
   {
-    Login: {
-      screen: Login,
-    },
+    // Login: {
+    //   screen: Login,
+    // },
     Register: {
       screen: Register,
     },

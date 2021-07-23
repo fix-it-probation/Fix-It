@@ -1,9 +1,8 @@
 import React from 'react';
 import {View, Text} from 'react-native';
 import styles from './styles';
-import BassicTitle from '../../Components/BassicTitle';
 
-const Login = () => {
+const Home = () => {
   return (
     <View>
       <Text style={styles.textHeader}>Home</Text>
@@ -11,4 +10,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Home;

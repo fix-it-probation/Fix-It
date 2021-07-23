@@ -1,6 +1,10 @@
 import {StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
+  button: {
+    alignSelf: 'center',
+    marginTop: 40,
+  },
   inputName: {
     alignSelf: 'center',
     marginTop: 100,

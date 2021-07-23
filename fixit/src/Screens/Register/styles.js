@@ -1,6 +1,11 @@
 import {StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
+  button: {
+    alignSelf: 'center',
+    marginTop: 40,
+    marginBottom: 20,
+  },
   inputEmail: {
     alignSelf: 'center',
     marginTop: 40,
