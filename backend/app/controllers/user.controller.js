@@ -1,33 +1,87 @@
 const User = require("../models/user.model.js");
+const bcrypt = require('bcrypt')
+const { createToken } = require("../../JWT/JWT")
 
 // Create and Save a new User
-exports.create = (req, res) => {
+exports.register = (req, res) => {
     // Validate request
     if (!req.body) {
       res.status(400).send({
         message: "Content can not be empty!"
       });
     }
-  
-    // Create a User
-    const user = new User({
-        name : req.body.name,
-        telephone : req.body.telephone,
-        email : req.body.email,
-        password : req.body.password,
-        role_id : req.body.role_id
+
+    bcrypt.hash(req.body.password,10).then((hash) => {
+      // Create a User
+      const user = new User({
+          name : req.body.name,
+          telephone : req.body.telephone,
+          email : req.body.email,
+          password : hash,
+          role_id : req.body.role_id
+      });
+
+      // Save User in the database
+      User.create(user, (err, data) => {
+        if (err)
+          res.status(500).send({
+            message:
+              err.message || "Some error occurred while creating the User."
+          });
+        else res.send(data);
+      });
+    })
+};
+
+// Create and Save a new User
+exports.login = (req, res) => {
+  // Validate request
+  if (!req.body) {
+    res.status(400).send({
+      message: "Content can not be empty!"
     });
+  }
+
+  // Create a User
+  const userLogin = new User({
+    email : req.body.email,
+    password : req.body.password
+  });
   
-    // Save User in the database
-    User.create(user, (err, data) => {
-      if (err)
-        res.status(500).send({
-          message:
-            err.message || "Some error occurred while creating the User."
+  User.findByEmail(userLogin.email, (err, data) => {
+      if (err) {
+        if (err.kind === "not_found") {
+          res.status(404).send({
+            message: `Not found User with email ${userLogin.email}.`
+          });
+        } else {
+          res.status(500).send({
+            message: "Error retrieving User with email " + userLogin.email
+          });
+        }
+      } else {
+        const dbPassword = data.password;
+        bcrypt.compare(userLogin.password,dbPassword).then((match) => {
+          if (!match) {
+            res.status(400).send({
+              message: "password wrong"
+            })
+          } else {
+            const accessToken = createToken(data);
+            res.cookie("access-token",accessToken,{
+              maxAge: 60*60*1000,
+            });
+            res.json("Logged In")
+          };
         });
-      else res.send(data);
+      };
     });
-  };
+};
+
+//profile
+exports.findProfile =(req, res) => {
+  res.json("profile");
+};
 
 // Retrieve all User from the database.
 exports.findAll = (req, res) => {
