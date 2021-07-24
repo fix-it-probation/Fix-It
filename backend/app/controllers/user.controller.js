@@ -1,6 +1,6 @@
 const User = require("../models/user.model.js");
-const bcrypt = require('bcrypt')
-const { createToken } = require("../../JWT/JWT")
+const bcrypt = require('bcrypt');
+const { createToken } = require("../../JWT/JWT");
 
 // Create and Save a new User
 exports.register = (req, res) => {
@@ -70,6 +70,7 @@ exports.login = (req, res) => {
             const accessToken = createToken(data);
             res.cookie("access-token",accessToken,{
               maxAge: 60*60*1000,
+              httpOnly: true
             });
             res.json("Logged In")
           };
@@ -78,7 +79,13 @@ exports.login = (req, res) => {
     });
 };
 
-//profile
+// Logout a User
+exports.logout = (req, res) => {
+    res.clearCookie("access-token")
+    res.redirect("/")
+};
+
+// Profile
 exports.findProfile =(req, res) => {
   res.json("profile");
 };

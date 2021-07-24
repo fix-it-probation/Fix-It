@@ -1,5 +1,6 @@
 const { validateToken } = require("../../JWT/JWT.js");
 
+
 module.exports = app => {
     const users = require("../controllers/user.controller.js");
     
@@ -8,6 +9,9 @@ module.exports = app => {
 
     // Login
     app.post("/users/login", users.login)
+
+    // Logout
+    app.get("/users/logout", users.logout)
 
     // Profile
     app.get("/users/profile", validateToken, users.findProfile)
