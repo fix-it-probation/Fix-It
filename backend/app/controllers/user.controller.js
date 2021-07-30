@@ -1,6 +1,9 @@
 const User = require("../models/user.model.js");
 const bcrypt = require('bcrypt');
-const { createToken } = require("../../JWT/JWT");
+const { createToken, authorize } = require("../../JWT/JWT");
+// const { create } = require("../models/user.model.js");
+// const { response } = require("express");
+// const tokenList = {}
 
 // Create and Save a new User
 exports.register = (req, res) => {
@@ -68,16 +71,52 @@ exports.login = (req, res) => {
             })
           } else {
             const accessToken = createToken(data);
+            // const refreshToken = createToken(data);
+            // const response = {
+            //   "status": "Logged in",
+            //   "token": accessToken,
+            //   "refreshToken": refreshToken
+            // }
+            // tokenList[refreshToken] = response
             res.cookie("access-token",accessToken,{
               maxAge: 60*60*1000,
               httpOnly: true
             });
+            // res.status(200).json(response)
             res.json("Logged In")
+            // res.json(data.role_id)
           };
         });
       };
     });
 };
+
+// Refresh Token
+// exports.tokenRefresher = (req, res) => {
+//   const postData = req.body
+//   if ((postData.refreshToken) && (postData.refreshToken in tokenList)) {
+//     // Create a User
+//     const userLogin = new User({
+//     email : postData.email,
+//     password : postData.password
+//   });
+//     const accessToken = createToken(userLogin);
+//     res.cookie("access-token",accessToken,{
+//               maxAge: 60*60*1000,
+//               httpOnly: true
+//     });
+//     const response = {
+//       "token": accessToken,
+//     }  
+
+//     tokenList[postData.refreshToken].accessToken = accessToken
+//     res.status(200).json(response);
+//   } else {
+//     // res.status(404).send("Invalid Request").then
+//     res.send(postData)
+//   }
+
+// }
 
 // Logout a User
 exports.logout = (req, res) => {
@@ -86,9 +125,10 @@ exports.logout = (req, res) => {
 };
 
 // Profile
-exports.findProfile =(req, res) => {
+exports.findProfile = (req, res) => {
   res.json("profile");
 };
+
 
 // Retrieve all User from the database.
 exports.findAll = (req, res) => {

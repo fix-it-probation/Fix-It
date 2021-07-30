@@ -1,4 +1,5 @@
-const { validateToken } = require("../../JWT/JWT.js");
+const { validateToken, authorize } = require("../../JWT/JWT.js");
+const { data } = require("../controllers/user.controller.js")
 
 
 module.exports = app => {
@@ -10,14 +11,17 @@ module.exports = app => {
     // Login
     app.post("/users/login", users.login)
 
+    // Refresh Token
+    // app.post("/users/token", users.tokenRefresher);
+
     // Logout
     app.get("/users/logout", users.logout)
 
     // Profile
-    app.get("/users/profile", validateToken, users.findProfile)
+    app.get("/users/profile", validateToken, authorize(), users.findProfile)
   
     // Retrieve all Users
-    app.get("/users", users.findAll);
+    app.get("/users", validateToken, authorize(1), users.findAll);
   
     // Retrieve a single User with UserId
     app.get("/users/:userId", users.findOne);
