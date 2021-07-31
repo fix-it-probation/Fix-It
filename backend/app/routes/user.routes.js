@@ -22,6 +22,9 @@ module.exports = app => {
   
     // Retrieve all Users
     app.get("/users", validateToken, authorize(1), users.findAll);
+
+    // Update akun
+    app.put("/users/update", validateToken, users.updateAccount);
   
     // Retrieve a single User with UserId
     app.get("/users/:userId", users.findOne);
@@ -34,4 +37,4 @@ module.exports = app => {
   
     // Create a new User
     app.delete("/users", users.deleteAll);
-  };
+    };

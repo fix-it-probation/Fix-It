@@ -42,13 +42,14 @@ const authorize = (roles = []) => {
         // if (roles[0] == 1 || roles[0] == 2 || roles[0] == 3) {
             // role_idExist = true;
             // console.log(isExist)
-        }
+    }
         
         
-        return (req, res, next) => {
-            if (roles.length && !roles.includes(req.user.role_id)) return res.status(401).json({ error: "User not Authorized!" }); 
-            next();
-        };
+    return (req, res, next) => {
+        if (roles.length && !roles.includes(req.user.role_id)) return res.status(401).json({ error: "User not Authorized!" }); 
+        next();
     };
+};
     
-    module.exports = {createToken, validateToken, authorize}
+
+module.exports = {createToken, validateToken, authorize}

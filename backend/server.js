@@ -16,7 +16,7 @@ app.use(cookieParser());
 
 // simple route
 app.get("/", (req, res) => {
-  res.json({ message: "Welcome." });
+    res.json({ message: "Welcome." });
 });
 
 // routes
@@ -25,5 +25,5 @@ routeFunction(app);
 
 // set port, listen for requests
 app.listen(process.env.PORT || 3000, () => {
-  console.log("Server is running on port 3000.");
+    console.log("Server is running on port 3000.");
 });
