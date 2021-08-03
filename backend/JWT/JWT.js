@@ -35,6 +35,22 @@ const validateToken = (req, res, next) => {
     } 
 };
 
+const validateAccountPasswordToken = (req, res, next) => {
+    const accessToken = req.cookies["valid-password-access-token"]
+    if (!accessToken) return res.status(400).json({ error: "User not Authenticated!" });
+    try {
+        const validToken = verify(accessToken, jwtConfig.SECRET_KEY)
+        if (validToken) {
+            req.user = validToken
+            req.authenticated = true
+            return next()
+        }
+        
+    } catch(err)  {
+        return res.status(400).json({ error: err });
+    } 
+};
+
 const authorize = (roles = []) => {
     // let role_idExist = false; 
     if (typeof roles === 'number') {
@@ -52,4 +68,4 @@ const authorize = (roles = []) => {
 };
     
 
-module.exports = {createToken, validateToken, authorize}
+module.exports = {createToken, validateToken, authorize, validateAccountPasswordToken}
