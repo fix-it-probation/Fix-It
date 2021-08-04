@@ -1,12 +1,16 @@
 const nodemailer = require('nodemailer');
-// const config = require("../config/config.js")
+const mailConfig = require("../config/config.js")
+require("dotenv").config()
 
 exports.sendMail = (email, uniqueString) => {
     var Transport = nodemailer.createTransport({
+        host: 'smtp.gmail.com',
+        port: 465,
+        secure: true, // use SSL
         service: "Gmail",
         auth: {
-            user: "drunkwhales1@gmail.com",
-            pass: "demolishedyouregopls"
+            user: mailConfig.EMAIL,
+            pass: mailConfig.EMAIL_PASSWORD
         } 
     });
 
@@ -29,7 +33,7 @@ exports.sendMail = (email, uniqueString) => {
 };
 
 exports.randString = () => {
-    const len = 8
+    const len = 10
     let randStr = ""
     for (let i=0; i<len; i++) {
         const ch = Math.floor((Math.random() * 10) + 1)
@@ -38,4 +42,3 @@ exports.randString = () => {
     return randStr
 }
 
-// module.exports = randString;

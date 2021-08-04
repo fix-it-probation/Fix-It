@@ -1,21 +1,11 @@
 const{sign, verify} = require('jsonwebtoken');
-const jwtConfig = require('../app/config/config.js')
-// const User = require("../app/models/user.model.js");
-// const sql = require("mysql2");
-// const { findById } = require('../app/models/user.model.js');
+const jwtConfig = require("../config/config.js")
 
 const createToken = (user) => {
     const accessToken = sign(
         {name: user.name, id: user.id, role_id: user.role_id},
         jwtConfig.SECRET_KEY
     );
-
-    // const refreshToken = sign(
-    //     { name: user.name, id: user.id },
-    //     jwtConfig.REFRESH_TOKEN_SECRET_KEY
-    // );
-
-    // return accessToken, refreshToken;
     return accessToken;
 }; 
 
@@ -50,28 +40,6 @@ const validateAccountPasswordToken = (req, res, next) => {
         return res.status(400).json({ error: err });
     } 
 };
-
-const authorize = (roles = []) => {
-    // let role_idExist = false; 
-    if (typeof roles === "string") {
-        if (roles === "admin") {
-            roles = [1]
-        } else if (roles === "mitra") {
-            roles = [2]
-        } else if (roles === "user") {
-            roles = [3]
-        }
-        // if (roles[0] == 1 || roles[0] == 2 || roles[0] == 3) {
-            // role_idExist = true;
-            // console.log(isExist)
-    }
-        
-        
-    return (req, res, next) => {
-        if (roles.length && !roles.includes(req.user.role_id)) return res.status(401).json({ error: "User not Authorized!" }); 
-        next();
-    };
-};
     
 
-module.exports = {createToken, validateToken, authorize, validateAccountPasswordToken}
+module.exports = {createToken, validateToken, validateAccountPasswordToken}

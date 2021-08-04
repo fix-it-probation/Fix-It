@@ -4,10 +4,12 @@ require("dotenv").config();
 module.exports = {
     HOST: process.env.HOST,
     USER: process.env.USER,
-    PASSWORD: process.env.PASSWORD,
+    DB_PASSWORD: process.env.DB_PASSWORD,
     DB: process.env.DB,
     SECRET_KEY: process.env.SECRET_KEY,
-    REFRESH_TOKEN_SECRET_KEY: process.env.REFRESH_TOKEN_SECRET_KEY
+    SERVICE: process.env.EMAIL_SERVICE,
+    EMAIL: process.env.EMAIL,
+    EMAIL_PASSWORD: process.env.EMAIL_PASSWORD
 };
 
 

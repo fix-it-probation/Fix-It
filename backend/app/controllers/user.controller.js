@@ -1,15 +1,8 @@
 const User = require("../models/user.model.js");
 const bcrypt = require('bcrypt');
-// const randString = require("../models/send-email.js")
-const { createToken, authorize } = require("../../JWT/JWT");
-const { findByEmail } = require("../models/user.model.js");
-const mail = require("../models/send-email.js");
-const sql = require("../models/db.js")
-// const randString = require("../models/send-email.js");
-
-// const { create } = require("../models/user.model.js");
-// const { response } = require("express");
-// const tokenList = {}
+const { createToken } = require("../middleware/JWT");
+const mail = require("../helpers/send-email.js");
+const sql = require("../helpers/db.js")
 
 // Create and Save a new User
 exports.register = (req, res) => {
@@ -29,7 +22,7 @@ exports.register = (req, res) => {
             password : hash,
             role_id : req.body.role_id,
             uniqueString : mail.randString(),
-            isValid : false
+            isValid : 0
         });
 
         // Save User in the database
@@ -81,56 +74,20 @@ exports.login = (req, res) => {
                     })
                 } else {
                     if (data.isValid !== 1) {
-                        console.log(data.isValid)
                         res.send({message: "Please Verify Your Email First."})
                     } else {
                         const accessToken = createToken(data);
-                        // const refreshToken = createToken(data);
-                        // const response = {
-                        //   "status": "Logged in",
-                        //   "token": accessToken,
-                        //   "refreshToken": refreshToken
-                        // }
-                        // tokenList[refreshToken] = response
                         res.cookie("access-token",accessToken,{
                             maxAge: 60*60*1000*24*30,
                             httpOnly: true
                         });
-                        // res.status(200).json(response)
                         res.json("Logged In")
-                        // res.json(data.role_id)
                     }
                 };
             });
         };
     });
 };
-
-//Refresh Token
-// exports.tokenRefresher = (req, res) => {
-//     const postData = req.body
-//     if ((postData.refreshToken) && (postData.refreshToken in tokenList)) {
-//         // Create a User
-//         const userLogin = new User({
-//         email : postData.email,
-//         password : postData.password
-//     });
-//         const accessToken = createToken(userLogin);
-//         res.cookie("access-token",accessToken,{
-//                   maxAge: 60*60*1000,
-//                   httpOnly: true
-//         });
-//         const response = {
-//             "token": accessToken,
-//         }  
-
-//         tokenList[postData.refreshToken].accessToken = accessToken
-//         res.status(200).json(response);
-//     } else {
-//         // res.status(404).send("Invalid Request").then
-//         res.send(postData)
-//     }
-// }
 
 // Logout User
 exports.logout = (req, res) => {
@@ -187,20 +144,11 @@ exports.validateUserPassword = (req, res) => {
                     })
                 } else {
                     const accessToken = createToken(data);
-                    // const refreshToken = createToken(data);
-                    // const response = {
-                    //   "status": "Logged in",
-                    //   "token": accessToken,
-                    //   "refreshToken": refreshToken
-                    // }
-                    // tokenList[refreshToken] = response
                     res.cookie("valid-password-access-token",accessToken,{
                         maxAge: 60*1000,
                         httpOnly: true
                     });
-                    // res.status(200).json(response)
                     res.json("Password Valid")
-                    // res.json(data.role_id)
                 };
             });
         };
@@ -307,7 +255,7 @@ exports.update = (req, res) => {
 
 // Delete a User with the specified userId in the request
 exports.delete = (req, res) => {
-    User.remove(req.params.userId, (err, data) => {
+    User.remove(req.params.userId, err => {
         if (err) {
             if (err.kind === "not_found") {
                 res.status(404).send({
@@ -324,7 +272,7 @@ exports.delete = (req, res) => {
   
 // Delete all Users from the database.
 exports.deleteAll = (req, res) => {
-    User.removeAll((err, data) => {
+    User.removeAll(err => {
         if (err)
             res.status(500).send({
                 message:
@@ -335,7 +283,7 @@ exports.deleteAll = (req, res) => {
 };
 
 exports.verifyEmail = async (req, res) => {
-     User.findByUniqueString(req.params.uniqueString, (err, data) => {
+     User.findByUniqueString(req.params.uniqueString, err  => {
         if (err) {
             if (err.kind === "not_found") {
                 res.status(404).send({
@@ -343,40 +291,13 @@ exports.verifyEmail = async (req, res) => {
             });
         }; 
         } else {
-            sql.query(`UPDATE useraccounts set isValid = "1" WHERE uniqueString = "${req.params.uniqueString}"`, (err, res) => {
+            sql.query(`UPDATE useraccounts set isValid = "1" WHERE uniqueString = "${req.params.uniqueString}"`,(err, data) => {
                 if (err) {
                     console.log(err)
                 } 
+                res.send(data)
             })
-            res.send(data);
-            // data.isValid = 1; 
+            // res.redirect("users/login");
         }
     });
-    // // Getting the string
-    // const { uniqueString } = req.params;
-    // // Check is any user with same string exists
-    // const user = await User.findOne({ uniqueString: uniqueString })
-    // if (user) {
-    //     // If any, mark verified
-    //     user.isValid = true
-    //     await user.save()
-    //     // Redirect 
-    //     res.redirect('/')
-    // } else {
-    //     // Throw an error message
-    //     res.json('User not Found')
-    // }
-    // User.findOne(req.params.uniqueString, (err, data) => {
-    //     if (err) {
-    //         if (err.kind === "not_found") {
-    //             res.status(404).send({
-    //                 message: `Not found User with id ${req.params.uniqueString}.`
-    //         });
-    //     } else {
-    //         res.status(500).send({
-    //             message: "Error retrieving User with id " + req.params.uniqueString
-    //         });
-    //     }
-    //     } else res.send(data);
-    // });
 };
