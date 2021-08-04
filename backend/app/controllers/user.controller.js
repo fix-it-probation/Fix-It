@@ -3,8 +3,9 @@ const bcrypt = require('bcrypt');
 // const randString = require("../models/send-email.js")
 const { createToken, authorize } = require("../../JWT/JWT");
 const { findByEmail } = require("../models/user.model.js");
-const sendMail = require("../models/send-email.js");
-const randString = require("../models/send-email.js");
+const mail = require("../models/send-email.js");
+const sql = require("../models/db.js")
+// const randString = require("../models/send-email.js");
 
 // const { create } = require("../models/user.model.js");
 // const { response } = require("express");
@@ -27,7 +28,7 @@ exports.register = (req, res) => {
             email : req.body.email,
             password : hash,
             role_id : req.body.role_id,
-            uniqueString : randString(),
+            uniqueString : mail.randString(),
             isValid : false
         });
 
@@ -39,7 +40,7 @@ exports.register = (req, res) => {
                         err.message || "Some error occurred while creating the User."
             });
             else {
-                sendMail(data.email, data.uniqueString)
+                mail.sendMail(data.email, data.uniqueString)
                 res.send(data);
             }
             });
@@ -57,7 +58,7 @@ exports.login = (req, res) => {
     // Validate data
     const user = new User({
         email : req.body.email,
-        password : req.body.password
+        password : req.body.password,
     });
     // Find User Data by Email
     User.findByEmail(user.email, (err, data) => {
@@ -79,21 +80,26 @@ exports.login = (req, res) => {
                         message: "password wrong"
                     })
                 } else {
-                    const accessToken = createToken(data);
-                    // const refreshToken = createToken(data);
-                    // const response = {
-                    //   "status": "Logged in",
-                    //   "token": accessToken,
-                    //   "refreshToken": refreshToken
-                    // }
-                    // tokenList[refreshToken] = response
-                    res.cookie("access-token",accessToken,{
-                        maxAge: 60*60*1000*24*30,
-                        httpOnly: true
-                    });
-                    // res.status(200).json(response)
-                    res.json("Logged In")
-                    // res.json(data.role_id)
+                    if (data.isValid !== 1) {
+                        console.log(data.isValid)
+                        res.send({message: "Please Verify Your Email First."})
+                    } else {
+                        const accessToken = createToken(data);
+                        // const refreshToken = createToken(data);
+                        // const response = {
+                        //   "status": "Logged in",
+                        //   "token": accessToken,
+                        //   "refreshToken": refreshToken
+                        // }
+                        // tokenList[refreshToken] = response
+                        res.cookie("access-token",accessToken,{
+                            maxAge: 60*60*1000*24*30,
+                            httpOnly: true
+                        });
+                        // res.status(200).json(response)
+                        res.json("Logged In")
+                        // res.json(data.role_id)
+                    }
                 };
             });
         };
@@ -335,14 +341,15 @@ exports.verifyEmail = async (req, res) => {
                 res.status(404).send({
                     message: `Not found User with id ${req.params.uniqueString}.`
             });
+        }; 
         } else {
-            res.status(500).send({
-                message: "Error retrieving User with id " + req.params.uniqueString
-            });
-        }
-        } else {
-            data.isValid = 1; 
-            res.redirect('/');
+            sql.query(`UPDATE useraccounts set isValid = "1" WHERE uniqueString = "${req.params.uniqueString}"`, (err, res) => {
+                if (err) {
+                    console.log(err)
+                } 
+            })
+            res.send(data);
+            // data.isValid = 1; 
         }
     });
     // // Getting the string

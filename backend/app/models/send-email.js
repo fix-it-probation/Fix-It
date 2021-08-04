@@ -11,12 +11,12 @@ exports.sendMail = (email, uniqueString) => {
     });
 
     var mailOptions;
-    let sender = "Admin";
+    let sender = Transport;
     mailOptions = {
         from: sender,
         to: email,
         subject: "Email Confirmation",
-        html:  `Press <a href=http://localhost:3000/verify/${uniqueString}> Here </a> to Verify Email. Thank You.`
+        html:  `Press <a href=http://localhost:3000/users/verify/${uniqueString}> Here </a> to Verify Email. Thank You.`
     };
 
     Transport.sendMail(mailOptions, (error, res) => {
@@ -28,15 +28,14 @@ exports.sendMail = (email, uniqueString) => {
     })
 };
 
-const randString = () => {
+exports.randString = () => {
     const len = 8
     let randStr = ""
     for (let i=0; i<len; i++) {
         const ch = Math.floor((Math.random() * 10) + 1)
         randStr += ch
     }
-    console.log(randString)
     return randStr
 }
 
-module.exports = randString;
+// module.exports = randString;
