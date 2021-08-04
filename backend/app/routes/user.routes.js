@@ -1,5 +1,5 @@
-const { validateToken, authorize } = require("../../JWT/JWT.js");
-const { data } = require("../controllers/user.controller.js")
+const { validateToken, authorize, validateAccountPasswordToken} = require("../../JWT/JWT.js");
+const { data } = require("../controllers/user.controller.js");
 
 
 module.exports = app => {
@@ -9,7 +9,7 @@ module.exports = app => {
     app.post("/users/register", users.register);
 
     // Login
-    app.post("/users/login", users.login)
+    app.post("/users/login", users.login);
 
     // Refresh Token
     // app.post("/users/token", users.tokenRefresher);
@@ -24,20 +24,22 @@ module.exports = app => {
     app.get("/users/profile", validateToken, authorize("admin", "user"), users.findProfile)
   
     // Retrieve all Users
-    app.get("/users", validateToken, authorize(1), users.findAll);
+    app.get("/users", validateToken, authorize("admin"), users.findAll);
+
+    app.post("/users/passwordValidation",validateToken, users.validateUserPassword);
 
     // Update akun
-    app.put("/users/update", validateToken, users.updateAccount);
+    app.put("/users/update", validateAccountPasswordToken, users.updateAccount);
   
     // Retrieve a single User with UserId
-    app.get("/users/:userId", users.findOne);
+    app.get("/users/:userId", authorize("admin"), users.findOne);
   
     // Update a User with usererId
-    app.put("/users/:userId", users.update);
+    app.put("/users/:userId", authorize("admin"), users.update);
   
     // Delete a User with userId
-    app.delete("/users/:userId",users.delete);
+    app.delete("/users/:userId",authorize("admin"), users.delete);
   
-    // Create a new User
-    app.delete("/users", users.deleteAll);
+    // Delete all Users
+    app.delete("/users", authorize("admin"), users.deleteAll);
     };
