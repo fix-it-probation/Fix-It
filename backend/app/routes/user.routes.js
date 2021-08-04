@@ -32,14 +32,14 @@ module.exports = app => {
     app.put("/users/update", validateAccountPasswordToken, users.updateAccount);
   
     // Retrieve a single User with UserId
-    app.get("/users/:userId", authorize("admin"), users.findOne);
+    app.get("/users/:userId", validateToken, authorize("admin"), users.findOne);
   
     // Update a User with usererId
-    app.put("/users/:userId", authorize("admin"), users.update);
+    app.put("/users/:userId", validateToken ,authorize("admin"), users.update);
   
     // Delete a User with userId
-    app.delete("/users/:userId",authorize("admin"), users.delete);
+    app.delete("/users/:userId", validateToken, authorize("admin"), users.delete);
   
     // Delete all Users
-    app.delete("/users", authorize("admin"), users.deleteAll);
+    app.delete("/users", validateToken, authorize("admin"), users.deleteAll);
     };
