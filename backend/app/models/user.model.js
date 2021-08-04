@@ -7,6 +7,8 @@ const User = function(user) {
     this.email = user.email;
     this.password = user.password;
     this.role_id = user.role_id;
+    this.uniqueString = user.uniqueString;
+    this.isValid = user.isValid;
 };
 
 
@@ -43,6 +45,24 @@ User.findById = (userId, result) => {
     });
 };
 
+User.findByUniqueString = (uniqueString, result) => {
+    sql.query(`SELECT * FROM useraccounts WHERE uniqueString = ${uniqueString}`, (err, res) => {
+        if (err) {
+            console.log("error: ", err);
+            result(err, null);
+            return;
+        }
+
+        if (res.length) {
+            console.log("found user: ", res[0]);
+            result(null, res[0]);
+            return;
+        }
+
+        // not found Customer with the id
+        result({ kind: "not_found" }, null);
+    });
+};
 
 User.findByEmail = async (userEmail, result) => {
     sql.query(`SELECT * FROM useraccounts WHERE email = "${userEmail}"`, (err, res) => {

@@ -1,7 +1,11 @@
 const User = require("../models/user.model.js");
 const bcrypt = require('bcrypt');
+// const randString = require("../models/send-email.js")
 const { createToken, authorize } = require("../../JWT/JWT");
 const { findByEmail } = require("../models/user.model.js");
+const sendMail = require("../models/send-email.js");
+const randString = require("../models/send-email.js");
+
 // const { create } = require("../models/user.model.js");
 // const { response } = require("express");
 // const tokenList = {}
@@ -22,7 +26,9 @@ exports.register = (req, res) => {
             telephone : req.body.telephone,
             email : req.body.email,
             password : hash,
-            role_id : req.body.role_id
+            role_id : req.body.role_id,
+            uniqueString : randString(),
+            isValid : false
         });
 
         // Save User in the database
@@ -32,12 +38,15 @@ exports.register = (req, res) => {
                     message:
                         err.message || "Some error occurred while creating the User."
             });
-            else res.send(data);
+            else {
+                sendMail(data.email, data.uniqueString)
+                res.send(data);
+            }
             });
       });
 };
 
-// Login
+// Logins
 exports.login = (req, res) => {
     // Validate request
     if (!req.body) {
@@ -252,4 +261,50 @@ exports.deleteAll = (req, res) => {
             });
         else res.send({ message: `All Users were deleted successfully!` });
     });
+};
+
+exports.verifyEmail = async (req, res) => {
+     User.findByUniqueString(req.params.uniqueString, (err, data) => {
+        if (err) {
+            if (err.kind === "not_found") {
+                res.status(404).send({
+                    message: `Not found User with id ${req.params.uniqueString}.`
+            });
+        } else {
+            res.status(500).send({
+                message: "Error retrieving User with id " + req.params.uniqueString
+            });
+        }
+        } else {
+            data.isValid = 1; 
+            res.redirect('/');
+        }
+    });
+    // // Getting the string
+    // const { uniqueString } = req.params;
+    // // Check is any user with same string exists
+    // const user = await User.findOne({ uniqueString: uniqueString })
+    // if (user) {
+    //     // If any, mark verified
+    //     user.isValid = true
+    //     await user.save()
+    //     // Redirect 
+    //     res.redirect('/')
+    // } else {
+    //     // Throw an error message
+    //     res.json('User not Found')
+    // }
+    // User.findOne(req.params.uniqueString, (err, data) => {
+    //     if (err) {
+    //         if (err.kind === "not_found") {
+    //             res.status(404).send({
+    //                 message: `Not found User with id ${req.params.uniqueString}.`
+    //         });
+    //     } else {
+    //         res.status(500).send({
+    //             message: "Error retrieving User with id " + req.params.uniqueString
+    //         });
+    //     }
+    //     } else res.send(data);
+    // });
 };

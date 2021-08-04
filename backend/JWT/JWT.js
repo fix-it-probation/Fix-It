@@ -37,8 +37,14 @@ const validateToken = (req, res, next) => {
 
 const authorize = (roles = []) => {
     // let role_idExist = false; 
-    if (typeof roles === 'number') {
-        roles = [roles]
+    if (typeof roles === "string") {
+        if (roles === "admin") {
+            roles = [1]
+        } else if (roles === "mitra") {
+            roles = [2]
+        } else if (roles === "user") {
+            roles = [3]
+        }
         // if (roles[0] == 1 || roles[0] == 2 || roles[0] == 3) {
             // role_idExist = true;
             // console.log(isExist)

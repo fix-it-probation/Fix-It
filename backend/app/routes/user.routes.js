@@ -14,11 +14,14 @@ module.exports = app => {
     // Refresh Token
     // app.post("/users/token", users.tokenRefresher);
 
+    // Verify
+    app.get("/users/verify/:uniqueString", users.verifyEmail)
+    
     // Logout
-    app.get("/users/logout", users.logout)
+    app.get("/users/logout",validateToken, users.logout)
 
     // Profile
-    app.get("/users/profile", validateToken, authorize(), users.findProfile)
+    app.get("/users/profile", validateToken, authorize("admin", "user"), users.findProfile)
   
     // Retrieve all Users
     app.get("/users", validateToken, authorize(1), users.findAll);
