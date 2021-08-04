@@ -1,5 +1,4 @@
 const nodemailer = require('nodemailer');
-const mailConfig = require("../config/config.js")
 require("dotenv").config()
 
 exports.sendMail = (email, uniqueString) => {
@@ -9,8 +8,8 @@ exports.sendMail = (email, uniqueString) => {
         secure: true, // use SSL
         service: "Gmail",
         auth: {
-            user: mailConfig.EMAIL,
-            pass: mailConfig.EMAIL_PASSWORD
+            user: process.env.EMAIL,
+            pass: process.env.EMAIL_PASSWORD
         } 
     });
 
@@ -33,7 +32,7 @@ exports.sendMail = (email, uniqueString) => {
 };
 
 exports.randString = () => {
-    const len = 10
+    const len = 20
     let randStr = ""
     for (let i=0; i<len; i++) {
         const ch = Math.floor((Math.random() * 10) + 1)
