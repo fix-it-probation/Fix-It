@@ -1,23 +1,23 @@
-import {createAppContainer} from 'react-navigation';
-import {createStackNavigator} from 'react-navigation-stack';
-import Login from '../Screens/Login';
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import Login from '../Screens/Login'
 import Register from '../Screens/Register';
 import Home from '../Screens/Home';
+import Tab from './tabNavigator';
 
-const Router = createStackNavigator(
-  {
-    // Login: {
-    //   screen: Login,
-    // },
-    Register: {
-      screen: Register,
-    },
-    Home: {
-      screen: Home,
-    }
-  },
-  {
-    headerMode: 'none',
-  },
-);
-export default createAppContainer(Router);
+const AuthStack = createStackNavigator();
+
+const Router = () => {
+  return(
+      <NavigationContainer>
+        <AuthStack.Navigator initialRouteName="Login">
+          <AuthStack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+          <AuthStack.Screen name="Register" component={Register} options={{ headerShown: false }}  />
+          <AuthStack.Screen name="Home" component={Tab} options={{ headerShown: false }} />
+        </AuthStack.Navigator>
+      </NavigationContainer>
+  )
+}
+
+export default Router;
