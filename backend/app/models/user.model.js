@@ -157,4 +157,26 @@ User.removeAll = result => {
 };
 
 
+User.validateUser = (uniqueString, res) => {
+    sql.query(`UPDATE useraccounts set isValid = "1" WHERE uniqueString = "${uniqueString}"`)
+    res.json({ message: "Email is Verified" })
+        // if (err) {
+        //     console.log(err)
+        //     } 
+        // res.send(data)
+}
+
+
+User.resetPassword = (uniqueString, newPass, res) => {
+    sql.query(`UPDATE useraccounts set password = ? WHERE uniqueString = ?`,
+    [newPass, uniqueString],
+    (err, data) => {
+    if (err) {
+        console.log(err)
+        } 
+    })
+    // res.send(data)
+}
+
+
 module.exports = User;

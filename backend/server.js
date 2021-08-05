@@ -24,6 +24,7 @@ const routeFunction = require("./app/routes/user.routes.js");
 routeFunction(app);
 
 // set port, listen for requests
-app.listen(process.env.PORT || 3000, () => {
-    console.log(`Server is running on port "${process.env.PORT}".`);
+const port = process.env.PORT || 3000
+app.listen(port, () => {
+    console.log(`Server is running on port "${port}".`);
 });

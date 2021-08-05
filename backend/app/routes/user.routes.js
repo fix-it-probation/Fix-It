@@ -6,12 +6,12 @@ module.exports = app => {
     
     // Create a new User
     app.post("/users/register", users.register);
+    
+    // Verify User Email
+    app.get("/users/verify/:uniqueString", users.verifyEmail)
 
     // Login
     app.post("/users/login", users.login);
-
-    // Verify User Email
-    app.get("/users/verify/:uniqueString", users.verifyEmail)
     
     // Logout
     app.get("/users/logout", validateToken, users.logout)
@@ -23,7 +23,13 @@ module.exports = app => {
     app.get("/users", validateToken, authorize("admin"), users.findAll);
 
     // Validate User Password
-    app.post("/users/passwordValidation",validateToken, users.validateUserPassword);
+    app.post("/users/passwordValidation", validateToken, users.validateUserPassword);
+
+    // Request Reset Password
+    app.post("/users/reset-password/", users.requestResetPassword)
+
+    // Reset Password
+    app.post("/users/reset-password/:uniqueString", users.verifyResetPassword)
 
     // Update an Account
     app.put("/users/update", validateAccountPasswordToken, users.updateAccount);

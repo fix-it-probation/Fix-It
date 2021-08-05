@@ -1,7 +1,7 @@
 const nodemailer = require('nodemailer');
 require("dotenv").config()
 
-exports.sendMail = (email, uniqueString) => {
+exports.sendMail = (email, subject, html) => {
     var Transport = nodemailer.createTransport({
         host: 'smtp.gmail.com',
         port: 465,
@@ -18,8 +18,9 @@ exports.sendMail = (email, uniqueString) => {
     mailOptions = {
         from: sender,
         to: email,
-        subject: "Email Confirmation",
-        html:  `Press <a href=http://localhost:3000/users/verify/${uniqueString}> Here </a> to Verify Email. Thank You.`
+        subject: subject,
+        html:  html
+        // html:  `Press <a href=http://localhost:3000/users/verify/${uniqueString}> Here </a> to Verify Email. Thank You.`
     };
 
     Transport.sendMail(mailOptions, (error, res) => {

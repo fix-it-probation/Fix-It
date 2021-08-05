@@ -33,7 +33,8 @@ exports.register = (req, res) => {
                         err.message || "Some error occurred while creating the User."
             });
             else {
-                mail.sendMail(data.email, data.uniqueString)
+                const html = `Press <a href=http://localhost:3000/users/verify/${data.uniqueString}> Here </a> to Verify Your Email. Thank You.`
+                mail.sendMail(data.email, "Email Verification", html)
                 res.send(data);
             }
             });
@@ -81,7 +82,7 @@ exports.login = (req, res) => {
                             maxAge: 60*60*1000*24*30,
                             httpOnly: true
                         });
-                        res.json("Logged In")
+                        res.json({ message: "Logged In"})
                     }
                 };
             });
@@ -174,7 +175,7 @@ exports.updateAccount = (req, res) => {
             role_id : req.body.role_id
         });
 
-        User.updateById(req.user.id,user,(err, data) => {
+        User.updateById(req.user.id, user,(err, data) => {
             if (err) {
                 if (err.kind === "not_found") {
                     res.status(404).send({
@@ -182,7 +183,7 @@ exports.updateAccount = (req, res) => {
                     });
                 } else {
                     res.status(500).send({
-                        message: "Error updating User with id " + req.user.id
+                        message: `Error updating User with id ${req.user.id}.`
                     });
                 }
             } else res.send(data);
@@ -271,7 +272,7 @@ exports.delete = (req, res) => {
 };
   
 // Delete all Users from the database.
-exports.deleteAll = (req, res) => {
+exports.deleteAll = (req,res) => {
     User.removeAll(err => {
         if (err)
             res.status(500).send({
@@ -287,17 +288,76 @@ exports.verifyEmail = async (req, res) => {
         if (err) {
             if (err.kind === "not_found") {
                 res.status(404).send({
-                    message: `Not found User with id ${req.params.uniqueString}.`
-            });
-        }; 
+                    message: `Not found User with Unique String ${req.params.uniqueString}.`
+                }); 
+            } else if (err) {
+                console.log(err)
+            };
         } else {
-            sql.query(`UPDATE useraccounts set isValid = "1" WHERE uniqueString = "${req.params.uniqueString}"`,(err, data) => {
-                if (err) {
-                    console.log(err)
-                } 
-                res.send(data)
-            })
-            // res.redirect("users/login");
+            User.validateUser(req.params.uniqueString, res);
         }
     });
 };
+
+exports.requestResetPassword = async (req, res) => {
+    // Validate request
+    if (!req.body) {
+        res.status(400).send({
+            message: "Content can not be empty!"
+        });
+    }
+    // Validate data
+    const user = new User({
+        email : req.body.email,
+    });
+    // Find User Data by Email
+    User.findByEmail(user.email, (err, data) => {
+        if (err) {
+            if (err.kind === "not_found") {
+                res.status(404).send({
+                    message: `Not found User with email ${user.email}.`
+                });
+                } else {
+                    res.status(500).send({
+                        message: "Error retrieving User with email " + user.email
+                    });
+                }
+        } else {
+            const html = `Press <a href=http://localhost:3000/users/reset-password/${data.uniqueString}> Here </a> to Reset Your Password. Thank You.`
+            mail.sendMail(user.email, "Password Reset", html)
+            res.send(data)
+        }
+    });
+}
+
+
+exports.verifyResetPassword = async (req, res) => {
+    // Validate request
+    if (!req.body) {
+        res.status(400).send({
+            message: "Content can not be empty!"
+        });
+    }
+     bcrypt.hash(req.body.password,10).then((hash) => {
+        // Create a User
+        const user = new User({
+            password : hash,
+        });
+
+        User.findByUniqueString(req.params.uniqueString, (err, data)  => {
+            if (err) {
+                if (err.kind === "not_found") {
+                    res.status(404).send({
+                        message: `Not found User with Unique String ${req.params.uniqueString}.`
+                    }); 
+                } else if (err) {
+                    console.log(err)
+                };
+            } else {
+                User.resetPassword(data.uniqueString, user.password, res);
+                res.json({ message: "Password Changed. "})
+                // res.redirect("/users/login");
+            }
+        });
+    });
+}
