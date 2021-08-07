@@ -283,6 +283,7 @@ exports.deleteAll = (req,res) => {
     });
 };
 
+// Email Verification
 exports.verifyEmail = async (req, res) => {
      User.findByUniqueString(req.params.uniqueString, err  => {
         if (err) {
@@ -299,6 +300,7 @@ exports.verifyEmail = async (req, res) => {
     });
 };
 
+// Reset Password Request
 exports.requestResetPassword = async (req, res) => {
     // Validate request
     if (!req.body) {
@@ -330,7 +332,7 @@ exports.requestResetPassword = async (req, res) => {
     });
 }
 
-
+// Reset Password Verification
 exports.verifyResetPassword = async (req, res) => {
     // Validate request
     if (!req.body) {
@@ -339,11 +341,11 @@ exports.verifyResetPassword = async (req, res) => {
         });
     }
      bcrypt.hash(req.body.password,10).then((hash) => {
-        // Create a User
+        // Create new password
         const user = new User({
             password : hash,
         });
-
+        // Find User Data by Unique Password
         User.findByUniqueString(req.params.uniqueString, (err, data)  => {
             if (err) {
                 if (err.kind === "not_found") {

@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
+const multer = require('multer');
 require("dotenv").config();
 
 const app = express();
@@ -20,8 +21,11 @@ app.get("/", (req, res) => {
 });
 
 // routes
-const routeFunction = require("./app/routes/user.routes.js");
-routeFunction(app);
+const userRouteFunction = require("./app/routes/user.routes.js");
+userRouteFunction(app);
+
+const serviceRouteFunction = require("./app/routes/service.routes.js");
+serviceRouteFunction(app);
 
 // set port, listen for requests
 const port = process.env.PORT || 3000
