@@ -8,7 +8,7 @@ const User = function(user) {
     this.password = user.password;
     this.role_id = user.role_id;
     this.uniqueString = user.uniqueString;
-    this.isValid = user.isValid;
+    // this.isValid = user.isValid;
 };
 
 
@@ -157,16 +157,6 @@ User.removeAll = result => {
 };
 
 
-User.validateUser = (uniqueString, res) => {
-    sql.query(`UPDATE useraccounts set isValid = "1" WHERE uniqueString = "${uniqueString}"`)
-    res.json({ message: "Email is Verified" })
-        // if (err) {
-        //     console.log(err)
-        //     } 
-        // res.send(data)
-}
-
-
 User.resetPassword = (uniqueString, newPass, res) => {
     sql.query(`UPDATE useraccounts set password = ? WHERE uniqueString = ?`,
     [newPass, uniqueString],
@@ -175,7 +165,6 @@ User.resetPassword = (uniqueString, newPass, res) => {
         console.log(err)
         } 
     })
-    // res.send(data)
 }
 
 

@@ -1,4 +1,4 @@
-const { validateToken, validateAccountPasswordToken} = require("../middleware/JWT.js");
+const { validateToken, validateAccountPasswordToken, validateEmailToken} = require("../middleware/JWT.js");
 const { authorize } = require("../middleware/authorize.js")
 
 module.exports = app => {
@@ -8,7 +8,7 @@ module.exports = app => {
     app.post("/users/register", users.register);
     
     // Verify User Email
-    app.get("/users/verify/:uniqueString", users.verifyEmail)
+    app.get("/users/register/verify/:token", validateEmailToken, users.verifyEmail)
 
     // Login
     app.post("/users/login", users.login);

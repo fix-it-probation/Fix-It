@@ -1,8 +1,7 @@
 const User = require("../models/user.model.js");
 const bcrypt = require('bcrypt');
-const { createToken } = require("../middleware/JWT");
+const { createToken, createRegistrationToken } = require("../middleware/JWT");
 const mail = require("../helpers/send-email.js");
-const sql = require("../helpers/db.js")
 
 // Create and Save a new User
 exports.register = (req, res) => {
@@ -22,22 +21,23 @@ exports.register = (req, res) => {
             password : hash,
             role_id : req.body.role_id,
             uniqueString : mail.randString(),
-            isValid : 0
         });
 
-        // Save User in the database
-        User.create(user, (err, data) => {
-            if (err)
-                res.status(500).send({
-                    message:
-                        err.message || "Some error occurred while creating the User."
-            });
-            else {
-                const html = `Press <a href=http://localhost:3000/users/verify/${data.uniqueString}> Here </a> to Verify Your Email. Thank You.`
-                mail.sendMail(data.email, "Email Verification", html)
-                res.send(data);
-            }
-            });
+        console.log(user.uniqueString)
+
+        const accessToken = createRegistrationToken(user);
+        res.cookie("valid-email-access-token",accessToken, {
+            maxAge: 60*1000,
+            httpOnly: true                
+        });
+        
+        if (accessToken) {
+            const html = `Press <a href=http://localhost:3000/users/register/verify/${accessToken}> Here </a> to Verify Your Email. Thank You.`
+            mail.sendMail(user.email, "Email Verification", html)
+        } else {
+            res.json({ message: "Token is Empty." })
+        }
+        res.json({ message: "Success." })
       });
 };
 
@@ -48,7 +48,7 @@ exports.login = (req, res) => {
         res.status(400).send({
             message: "Content can not be empty!"
         });
-    }
+    }   
     // Validate data
     const user = new User({
         email : req.body.email,
@@ -74,16 +74,12 @@ exports.login = (req, res) => {
                         message: "password wrong"
                     })
                 } else {
-                    if (data.isValid !== 1) {
-                        res.send({message: "Please Verify Your Email First."})
-                    } else {
-                        const accessToken = createToken(data);
-                        res.cookie("access-token",accessToken,{
-                            maxAge: 60*60*1000*24*30,
-                            httpOnly: true
-                        });
-                        res.json({ message: "Logged In"})
-                    }
+                    const accessToken = createToken(data);
+                    res.cookie("access-token",accessToken,{
+                        maxAge: 60*60*1000*24*30,
+                        httpOnly: true
+                    });
+                    res.json({ message: "Logged In"})
                 };
             });
         };
@@ -93,6 +89,8 @@ exports.login = (req, res) => {
 // Logout User
 exports.logout = (req, res) => {
     res.clearCookie("access-token")
+    res.clearCookie("valid-password-access-token")
+    res.clearCookie("verify-email-access-token")
     res.redirect("/")
 };
 
@@ -285,19 +283,28 @@ exports.deleteAll = (req,res) => {
 
 // Email Verification
 exports.verifyEmail = async (req, res) => {
-     User.findByUniqueString(req.params.uniqueString, err  => {
-        if (err) {
-            if (err.kind === "not_found") {
-                res.status(404).send({
-                    message: `Not found User with Unique String ${req.params.uniqueString}.`
-                }); 
-            } else if (err) {
-                console.log(err)
-            };
+    if (!req.user) {
+        res.status(400).send({
+            message: "Content can not be empty!"
+        });
+    } else {
+        if (req.authenticated) {
+            User.create(req.user, (err, data) => {
+                if (err)
+                    res.status(500).send({
+                        message:
+                            err.message || "Some error occurred while creating the User."
+                    });
+                else {
+                    res.json({ message: "Email is Verified." });
+                    }
+                });
         } else {
-            User.validateUser(req.params.uniqueString, res);
+            res.status(401).send({
+                message: `Token is Not Authenticated`
+            }); 
         }
-    });
+    }
 };
 
 // Reset Password Request
@@ -327,7 +334,7 @@ exports.requestResetPassword = async (req, res) => {
         } else {
             const html = `Press <a href=http://localhost:3000/users/reset-password/${data.uniqueString}> Here </a> to Reset Your Password. Thank You.`
             mail.sendMail(user.email, "Password Reset", html)
-            res.send(data)
+            res.json({ message: "Success."})
         }
     });
 }
@@ -357,7 +364,7 @@ exports.verifyResetPassword = async (req, res) => {
                 };
             } else {
                 User.resetPassword(data.uniqueString, user.password, res);
-                res.json({ message: "Password Changed. "})
+                res.json({ message: "Password Changed."})
                 // res.redirect("/users/login");
             }
         });
