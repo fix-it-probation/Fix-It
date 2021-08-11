@@ -23,8 +23,6 @@ exports.register = (req, res) => {
             uniqueString : mail.randString(),
         });
 
-        console.log(user.uniqueString)
-
         const accessToken = createRegistrationToken(user);
         res.cookie("valid-email-access-token",accessToken, {
             maxAge: 60*1000,
