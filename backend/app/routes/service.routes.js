@@ -11,7 +11,10 @@ module.exports = app => {
   
     // Retrieve all Services
     app.get("/services", services.findAll);
-  
+    
+    // Retrieve all owned Services
+    app.get("/services/owned",validateToken,services.findAllUserService);
+    
     // Retrieve a single Service with serviceId
     app.get("/services/:serviceId", services.findOne);
   
@@ -23,4 +26,8 @@ module.exports = app => {
   
     // Delete all Services
     app.delete("/services", validateToken, authorize("admin"), services.deleteAll);
-  };
+
+    app.get("/services/:serviceId/verify",validateToken, authorize("admin"),services.verifyService);
+
+
+};

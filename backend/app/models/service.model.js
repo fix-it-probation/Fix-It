@@ -10,6 +10,7 @@ const Service = function(service) {
     this.totalDay = service.totalDay;
     this.totalPrice = service.totalPrice;
     this.user_id = service.user_id;
+    this.isVerified = service.isVerified;
 };
 
 Service.create = (newService, result) => {
@@ -69,7 +70,7 @@ Service.updateById = (id, service, result) => {
             }
 
             if (res.affectedRows == 0) {
-                // not found Customer with the id
+                // not found Service with the id
                 result({ kind: "not_found" }, null);
                 return;
             }
@@ -89,7 +90,7 @@ Service.remove = (id, result) => {
         }
 
         if (res.affectedRows == 0) {
-            // not found Customer with the id
+            // not found Service with the id
             result({ kind: "not_found" }, null);
             return;
         }
@@ -111,5 +112,30 @@ Service.removeAll = result => {
         result(null, res);
     });
 };
+
+Service.verifyById = (id) => {
+    sql.query("UPDATE services set isVerified = ? WHERE id = ?",[true,id],(err, res) => {
+        if (err) {
+            console.log("error: ", err);
+        return;
+        }
+        console.log("verivied service with id: ", id);
+        res.json({ message: "Service is Verified" })
+    });
+};
+
+Service.findByUserId = (userId, result) => {
+    sql.query("SELECT * FROM services where user_id = ?",userId, (err, res) => {
+        if (err) {
+            console.log("error: ", err);
+            result(null, err);
+            return;
+        }
+
+        console.log("services: ", res);
+        result(null, res);
+    });
+};
+
 
 module.exports = Service;

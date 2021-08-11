@@ -1,3 +1,4 @@
+const { verify } = require("jsonwebtoken");
 const Service = require("../models/service.model.js");
 
 // Create and Save a new Customer
@@ -18,7 +19,8 @@ exports.create = (req, res) => {
         address: req.body.address,
         totalDay: req.body.totalDay,
         totalPrice: req.body.totalPrice,
-        user_id: req.user.id
+        user_id: req.user.id,
+        isVerified : false
     });
   
     // Save Customer in the database
@@ -114,3 +116,52 @@ exports.deleteAll = (req, res) => {
         else res.send({ message: `All services were deleted successfully!` });
     });
 };
+
+
+exports.findAllUserService = (req, res) => {
+    Service.findByUserId(req.user.id,(err, data) => {
+        if (err)
+            res.status(500).send({
+                message:
+                    err.message || "Some error occurred while retrieving services."
+            });
+        else res.send(data);
+    });
+};
+
+// exports.findProfile = (req, res) => {
+//     User.findById(req.user.id, (err, data) => {
+//         if (err) {
+//             if (err.kind === "not_found") {
+//                 res.status(404).send({
+//                     message: `Not found User with id ${req.user.id}.`
+//             });
+//         } else {
+//             res.status(500).send({
+//                 message: "Error retrieving User with id " + req.user.id
+//             });
+//         }
+//         } else res.send(data);
+//     });
+// };
+
+exports.verifyService = (req, res) => {
+    if (!req.body) {
+        res.status(400).send({
+            message: "Content can not be empty!"
+        });
+    }
+    Service.findById(req.params.serviceId, err  => {
+        if (err) {
+            if (err.kind === "not_found") {
+                res.status(404).send({
+                    message: `Not found User with Unique String ${req.params.serviceId}.`
+                }); 
+            } else if (err) {
+                console.log(err)
+            };
+        } else {
+            Service.verifyById(req.params.serviceId, res);
+        }
+    });
+}

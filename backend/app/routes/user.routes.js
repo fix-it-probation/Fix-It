@@ -17,7 +17,7 @@ module.exports = app => {
     app.get("/users/logout", validateToken, users.logout)
 
     // Profile
-    app.get("/users/profile", validateToken, authorize("admin", "user"), users.findProfile)
+    app.get("/users/profile", validateToken, users.findProfile)
   
     // Retrieve all Users
     app.get("/users", validateToken, authorize("admin"), users.findAll);
