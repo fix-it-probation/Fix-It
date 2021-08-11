@@ -8,7 +8,7 @@ module.exports = app => {
     app.post("/users/register", users.register);
     
     // Verify User Email
-    app.get("/users/register/verify/:token", validateEmailToken, users.verifyEmail)
+    app.get("/users/register/verify/:uniqueString", validateEmailToken, users.verifyEmail)
 
     // Login
     app.post("/users/login", users.login);

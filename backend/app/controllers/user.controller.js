@@ -25,15 +25,15 @@ exports.register = (req, res) => {
 
         const accessToken = createRegistrationToken(user);
         res.cookie("valid-email-access-token",accessToken, {
-            maxAge: 60*1000,
+            maxAge: 5*60*1000,
             httpOnly: true                
         });
         
         if (accessToken) {
-            const html = `Press <a href=http://localhost:3000/users/register/verify/${accessToken}> Here </a> to Verify Your Email. Thank You.`
+            const html = `Press <a href=http://localhost:3000/users/register/verify/${user.uniqueString}> Here </a> to Verify Your Email. Thank You.`
             mail.sendMail(user.email, "Email Verification", html)
         } else {
-            res.json({ message: "Token is Empty." })
+            res.json({ message: "uniqueString is Empty." })
         }
         res.json({ message: "Success." })
       });
@@ -280,28 +280,38 @@ exports.deleteAll = (req,res) => {
 };
 
 // Email Verification
-exports.verifyEmail = async (req, res) => {
+exports.verifyEmail = (req, res) => {
     if (!req.user) {
         res.status(400).send({
             message: "Content can not be empty!"
         });
-    } else {
-        if (req.authenticated) {
-            User.create(req.user, (err, data) => {
-                if (err)
-                    res.status(500).send({
-                        message:
-                            err.message || "Some error occurred while creating the User."
-                    });
-                else {
-                    res.json({ message: "Email is Verified." });
-                    }
+    } 
+    const user = new User({
+
+        name : req.user.name,
+        telephone : req.user.telephone,
+        email : req.user.email,
+        password : req.user.password,
+        role_id : req.user.role_id,
+        uniqueString : req.user.uniqueString,
+    });
+
+    if (user.uniqueString == req.params.uniqueString) {
+        User.create(user, (err, data) => {
+            if (err)
+                res.status(500).send({
+                    message:
+                        err.message || "Some error occurred while creating the User."
                 });
-        } else {
-            res.status(401).send({
-                message: `Token is Not Authenticated`
-            }); 
-        }
+            else {
+                res.clearCookie("valid-email-access-token")
+                res.json({ message: "Email is Verified." });
+                }
+            });
+    } else {
+        res.status(401).send({
+            message: `Incorrect Unique String`,
+        }); 
     }
 };
 
