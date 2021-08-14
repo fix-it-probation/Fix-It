@@ -27,6 +27,12 @@ userRouteFunction(app);
 const serviceRouteFunction = require("./app/routes/service.routes.js");
 serviceRouteFunction(app);
 
+const bannerRouteFunction = require("./app/routes/banner.routes.js");
+bannerRouteFunction(app);
+
+const feedRouteFunction = require("./app/routes/feed.routes.js");
+feedRouteFunction(app);
+
 // set port, listen for requests
 const port = process.env.PORT || 3000
 app.listen(port, () => {
