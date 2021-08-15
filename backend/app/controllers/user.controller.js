@@ -12,6 +12,12 @@ exports.register = (req, res) => {
         });
     }
 
+    if (req.body.password != req.body.confirmationPassword){
+        res.status(401).send({
+            message: "Password and Password Confirmation does not match."
+        });
+    }
+    
     bcrypt.hash(req.body.password,10).then((hash) => {
         // Create a User
         const user = new User({
@@ -22,7 +28,7 @@ exports.register = (req, res) => {
             role_id : req.body.role_id,
             uniqueString : mail.randString(),
         });
-
+        
         const accessToken = createRegistrationToken(user);
         res.cookie("valid-email-access-token",accessToken, {
             maxAge: 5*60*1000,

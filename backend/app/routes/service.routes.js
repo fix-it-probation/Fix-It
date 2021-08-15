@@ -27,6 +27,8 @@ module.exports = app => {
     // Delete all Services
     app.delete("/services", validateToken, authorize("admin"), services.deleteAll);
 
+
+    // still error
     app.get("/services/:serviceId/verify",validateToken, authorize("admin"),services.verifyService);
 
 

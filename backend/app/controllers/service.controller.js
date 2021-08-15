@@ -1,4 +1,3 @@
-const { verify } = require("jsonwebtoken");
 const Service = require("../models/service.model.js");
 
 // Create and Save a new Customer
@@ -17,8 +16,8 @@ exports.create = (req, res) => {
         province: req.body.province,
         city: req.body.city,
         address: req.body.address,
-        totalDay: req.body.totalDay,
-        totalPrice: req.body.totalPrice,
+        totalDay: req.body.totalDay*7,
+        totalPrice: (req.body.totalDay)* 10000,
         user_id: req.user.id,
         isVerified : false
     });
@@ -155,13 +154,14 @@ exports.verifyService = (req, res) => {
         if (err) {
             if (err.kind === "not_found") {
                 res.status(404).send({
-                    message: `Not found User with Unique String ${req.params.serviceId}.`
+                    message: `Not found User with id ${req.params.serviceId}.`
                 }); 
             } else if (err) {
                 console.log(err)
             };
         } else {
             Service.verifyById(req.params.serviceId, res);
+            res.status(200).send({message: "verified"});
         }
     });
 }

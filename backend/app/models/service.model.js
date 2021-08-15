@@ -1,4 +1,8 @@
 const sql = require("../helpers/db.js");
+const {today, tomorrow} = require ("../middleware/time.js")
+
+today.toISOString().slice(0, 19).replace('T', ' ');
+tomorrow.toISOString().slice(0, 19).replace('T', ' ');
 
 // constructor
 const Service = function(service) {
@@ -11,6 +15,7 @@ const Service = function(service) {
     this.totalPrice = service.totalPrice;
     this.user_id = service.user_id;
     this.isVerified = service.isVerified;
+    this.timestamp = tomorrow;
 };
 
 Service.create = (newService, result) => {
@@ -77,8 +82,8 @@ Service.updateById = (id, service, result) => {
 
             console.log("updated service: ", { id: id, ...service });
             result(null, { id: id, ...service });
-          }
-      );
+        }
+    );
 };
 
 Service.remove = (id, result) => {
@@ -113,16 +118,41 @@ Service.removeAll = result => {
     });
 };
 
-Service.verifyById = (id) => {
-    sql.query("UPDATE services set isVerified = ? WHERE id = ?",[true,id],(err, res) => {
+// Service.verifyById = (serviceId, result) => {
+//     sql.query(`UPDATE services set isVerified = ${true}, timestamp = DATE_ADD( ${today} , INTERVAL totalDay day) WHERE id = ${serviceId}`,
+//     (err, res) => {
+//         if (err) {
+//             console.log("error: ", err);
+//             result(err);
+//         return;
+//         }
+
+//         console.log(`deleted ${res.affectedRows} services`);
+//         result(res);
+//     });
+// };
+
+
+Service.verifyById = (id, result) => {
+    sql.query(`UPDATE services set isVerified = ?, timestamp = DATE_ADD( ? , INTERVAL totalDay day) WHERE id = ?`, [true,today,id], (err, res) => {
         if (err) {
             console.log("error: ", err);
-        return;
+            result(null, err);
+            return;
         }
-        console.log("verivied service with id: ", id);
-        res.json({ message: "Service is Verified" })
+
+        if (res.affectedRows == 0) {
+            // not found Service with the id
+            result({ kind: "not_found" }, null);
+            return;
+        }
+
+        console.log("verified service with id: ", id);
+        result(null, res);
+        return;
     });
 };
+
 
 Service.findByUserId = (userId, result) => {
     sql.query("SELECT * FROM services where user_id = ?",userId, (err, res) => {
