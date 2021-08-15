@@ -18,7 +18,6 @@ const Button = ({title, customContainer, onPress, customText}) => {
 Component.propTypes = {
   title: PropTypes.string,
   labelText: PropTypes.object,
-  customLabel: PropTypes.object,
   customText: PropTypes.object,
   customContainer: PropTypes.object,
   onPress: PropTypes.func,
@@ -27,7 +26,6 @@ Component.propTypes = {
 Component.defaultProps = {
   title: 'Field Input',
   labelText: null,
-  customLabel: null,
   customText: null,
   customContainer: null,
   onPress: noop,

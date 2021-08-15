@@ -1,48 +1,39 @@
 import {StyleSheet} from 'react-native';
-import { COLOR_BASE_PRIMARY_MAIN, COLOR_BLACK, FONT_PRIMARY_BODY, FONT_PRIMARY_COLOR, FONT_PRIMARY_HEADER, FONT_PRIMARY_HEADLINE2 } from '../../styles';
+import { FONT_LIGHT, COLOR_BLACK, FONT_PRIMARY_BODY, FONT_PRIMARY_HEADER } from '../../styles';
 
 const styles = StyleSheet.create({
   button: {
     alignSelf: 'center',
-    marginTop: 40,
-  },
-  forgotPass: {
-    ...FONT_PRIMARY_HEADLINE2,
-    color: COLOR_BASE_PRIMARY_MAIN,
-    marginLeft: 44,
+    marginTop: 50,
   },
   backButton: {
     marginTop: 40,
     marginLeft: 40,
   },
-  inputEmail: {
+  inputName: {
     alignSelf: 'center',
-    marginTop: 16,
     width: 328,
   },
-  inputPass: {
+  inputEmail: {
     alignSelf: 'center',
     marginTop: 20,
     width: 328,
   },
   fieldInput: {
-    ...FONT_PRIMARY_BODY,
+    ...FONT_LIGHT,
     color: COLOR_BLACK,
-  },
-  textFooter: {
-    flexDirection: 'row', 
-    alignSelf: 'center'
   },
   textHeader: {
     ...FONT_PRIMARY_HEADER,
     color: COLOR_BLACK,
     marginBottom: 24,
     marginLeft: 40,
-    marginTop: 28,
+    marginTop: 30,
   },
-  textWarning: {
+  textIndicator: {
     ...FONT_PRIMARY_BODY,
-    marginLeft: 40
+    marginLeft: 260,
+    top: 34,
   },
 });
 

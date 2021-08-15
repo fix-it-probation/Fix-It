@@ -3,29 +3,29 @@ import {View, Text, TextInput} from 'react-native';
 import PropTypes from 'prop-types';
 import styles from './styles';
 
-const BassicTitle = ({customInput, label, customLabel, customContainer}) => {
+const BassicTitle = ({label, customContainer, title, customTextInput, customTitle}) => {
   return (
     <View style={[styles.container, customContainer]}>
-      <Text style={[styles.labelText, customLabel]}>{label}</Text>
-      <TextInput style={[styles.input, customInput]} />
+      <Text style={[styles.titleText, customTitle]}>{title}</Text>
+      <TextInput style={[styles.input, customTextInput]} placeholder={label} />
     </View>
   );
 };
 
 Component.propTypes = {
   label: PropTypes.string,
-  labelText: PropTypes.object,
-  customLabel: PropTypes.object,
-  customInput: PropTypes.object,
+  title: PropTypes.string,
+  customTextInput: PropTypes.object,
   customContainer: PropTypes.object,
+  customTitle: PropTypes.object,
 };
 
 Component.defaultProps = {
-  label: 'Field Input',
-  labelText: null,
-  customLabel: null,
-  customInput: null,
+  label: 'Field Text',
+  title: 'Title Text',
   customContainer: null,
+  customTextInput: null,
+  customTitle: null,
 };
 
 export default BassicTitle;
