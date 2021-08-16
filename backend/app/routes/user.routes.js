@@ -20,7 +20,7 @@ module.exports = app => {
     app.get("/users/profile", validateToken, users.findProfile)
   
     // Retrieve all Users
-    app.get("/users", validateToken, authorize("admin"), users.findAll);
+    app.get("/users", validateToken, authorize(["admin"]), users.findAll);
 
     // Validate User Password
     app.post("/users/passwordValidation", validateToken, users.validateUserPassword);
@@ -35,14 +35,14 @@ module.exports = app => {
     app.put("/users/update", validateAccountPasswordToken, users.updateAccount);
   
     // Retrieve a User by UserId
-    app.get("/users/:userId", validateToken, authorize("admin"), users.findOne);
+    app.get("/users/:userId", validateToken, authorize(["admin"]), users.findOne);
   
     // Update a User by userId
-    app.put("/users/:userId", validateToken ,authorize("admin"), users.update);
+    app.put("/users/:userId", validateToken ,authorize(["admin"]), users.update);
   
     // Delete a User by userId
-    app.delete("/users/:userId", validateToken, authorize("admin"), users.delete);
+    app.delete("/users/:userId", validateToken, authorize(["admin"]), users.delete);
   
     // Delete all Users
-    app.delete("/users", validateToken, authorize("admin"), users.deleteAll);
+    app.delete("/users", validateToken, authorize(["admin"]), users.deleteAll);
     };

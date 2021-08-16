@@ -7,7 +7,7 @@ module.exports = app => {
     const banners = require("../controllers/banner.controller.js");
   
     // Create a new Banner
-    app.post("/banners",validateToken, authorize(), banners.create);
+    app.post("/banners",validateToken, authorize([]), banners.create);
   
     // Retrieve all banners
     app.get("/banners", banners.findAll);
@@ -22,6 +22,6 @@ module.exports = app => {
     app.delete("/banners/:bannerId", banners.delete);
     
     // Delete all banners
-    app.delete("/banners", validateToken, authorize("admin"), banners.deleteAll);
+    app.delete("/banners", validateToken, authorize(["admin"]), banners.deleteAll);
     
 };
