@@ -59,7 +59,6 @@ Service.getAll = result => {
         }
 
         console.log("services: ", res);
-        // console.log(result)
         result(null, res);
     });
 };
@@ -88,7 +87,6 @@ Service.updateById = (id, service, result) => {
 };
 
 Service.remove = (id, result) => {
-    console.log(result)
     sql.query("DELETE FROM services WHERE id = ?", id, (err, res) => {
         if (err) {
             console.log("error: ", err);
@@ -103,7 +101,7 @@ Service.remove = (id, result) => {
         }
 
         console.log("deleted service with id: ", id);
-        console.log(result(null, res));
+        result(null, res);
     });
 };
 
@@ -135,9 +133,22 @@ Service.removeAll = result => {
 // };
 
 
-Service.verifyById = (id) => {
+Service.verifyById = (id, result) => {
     sql.query(`UPDATE services set isVerified = ?, timestamp = DATE_ADD( ? , INTERVAL totalDay day) WHERE id = ?`, [true,today,id], (err, res) => {
+        if (err) {
+            console.log("error: ", err);
+            result(null, err);
+            return;
+        }
+
+        if (res.affectedRows == 0) {
+            // not found Service with the id
+            result({ kind: "not_found" }, null);
+            return;
+        }
+
         console.log("verified service with id: ", id);
+        result(null, res);
         return;
     });
 };

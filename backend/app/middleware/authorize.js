@@ -14,11 +14,8 @@ const authorize = (roles = []) => {
         
     return (req, res, next) => {
         if (roles.length && !roles.includes(req.user.role_id)) {
-            roles = [];
             return res.status(401).json({ error: "User not Authorized!" }); 
         } else {
-            console.log(roles, "hisss")
-            roles = [];
             next();
         }
     };
