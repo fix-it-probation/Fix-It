@@ -7,7 +7,7 @@ module.exports = app => {
     const services = require("../controllers/service.controller.js");
   
     // Create a new Service
-    app.post("/services",validateToken,authorize([["mitra"]]), services.create);
+    app.post("/services",validateToken,authorize(["mitra"]), services.create);
   
     // Retrieve all Services
     app.get("/services", services.findAll);
@@ -26,7 +26,6 @@ module.exports = app => {
   
     // Delete all Services
     app.delete("/services", validateToken, authorize(["admin"]), services.deleteAll);
-
 
     // still error
     app.get("/services/:serviceId/verify",validateToken, authorize(["admin"]),services.verifyService);

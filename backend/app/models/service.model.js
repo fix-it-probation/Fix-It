@@ -59,6 +59,7 @@ Service.getAll = result => {
         }
 
         console.log("services: ", res);
+        // console.log(result)
         result(null, res);
     });
 };
@@ -87,6 +88,7 @@ Service.updateById = (id, service, result) => {
 };
 
 Service.remove = (id, result) => {
+    console.log(result)
     sql.query("DELETE FROM services WHERE id = ?", id, (err, res) => {
         if (err) {
             console.log("error: ", err);
@@ -101,7 +103,7 @@ Service.remove = (id, result) => {
         }
 
         console.log("deleted service with id: ", id);
-        result(null, res);
+        console.log(result(null, res));
     });
 };
 
