@@ -133,22 +133,9 @@ Service.removeAll = result => {
 // };
 
 
-Service.verifyById = (id, result) => {
+Service.verifyById = (id) => {
     sql.query(`UPDATE services set isVerified = ?, timestamp = DATE_ADD( ? , INTERVAL totalDay day) WHERE id = ?`, [true,today,id], (err, res) => {
-        if (err) {
-            console.log("error: ", err);
-            result(null, err);
-            return;
-        }
-
-        if (res.affectedRows == 0) {
-            // not found Service with the id
-            result({ kind: "not_found" }, null);
-            return;
-        }
-
         console.log("verified service with id: ", id);
-        result(null, res);
         return;
     });
 };

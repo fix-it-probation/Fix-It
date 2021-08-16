@@ -7,7 +7,7 @@ module.exports = app => {
     const feeds = require("../controllers/feed.controller.js");
   
     // Create a new Banner
-    app.post("/feeds",validateToken, authorize(), feeds.create);
+    app.post("/feeds",validateToken, authorize([]), feeds.create);
   
     // Retrieve all feeds
     app.get("/feeds", feeds.findAll);
@@ -22,6 +22,6 @@ module.exports = app => {
     app.delete("/feeds/:feedId", feeds.delete);
     
     // Delete all feeds
-    app.delete("/feeds", validateToken, authorize("admin"), feeds.deleteAll);
+    app.delete("/feeds", validateToken, authorize(["admin"]), feeds.deleteAll);
     
 };
