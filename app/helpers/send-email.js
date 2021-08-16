@@ -3,10 +3,10 @@ require("dotenv").config()
 
 exports.sendMail = (email, subject, html) => {
     var Transport = nodemailer.createTransport({
-        host: 'smtp.mail.yahoo.com',
-        port: 465,
-        secure: true, // use SSL
-        service: "Yahoo",
+        // host: 'smtp.mail.yahoo.com',
+        // port: 465,
+        // secure: true, // use SSL
+        // service: "Yahoo",
         auth: {
             user: process.env.EMAIL,
             pass: process.env.EMAIL_PASSWORD
