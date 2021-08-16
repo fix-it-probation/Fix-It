@@ -36,7 +36,7 @@ exports.register = (req, res) => {
         });
         
         if (accessToken) {
-            const html = `Press <a href=http://localhost:3000/users/register/verify/${user.uniqueString}> Here </a> to Verify Your Email. Thank You.`
+            const html = `Press <a href=http://api-fixit.herokuapp.com/users/register/verify/${user.uniqueString}> Here </a> to Verify Your Email. Thank You.`
             mail.sendMail(user.email, "Email Verification", html)
         } else {
             res.json({ message: "uniqueString is Empty." })

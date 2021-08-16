@@ -1,15 +1,30 @@
 const nodemailer = require('nodemailer');
+const { google } = require("googleapis");
+const OAuth2 = google.auth.OAuth2;
 require("dotenv").config()
+
+const oauth2Client = new OAuth2(
+    process.env.CLIENT_ID, // ClientID
+    process.env.CLIENT_SECRET, // Client Secret
+    "https://developers.google.com/oauthplayground" // Redirect URL
+);
+
+oauth2Client.setCredentials({
+     refresh_token: process.env.REFRESH_TOKEN
+});
+const accessToken = oauth2Client.getAccessToken()
 
 exports.sendMail = (email, subject, html) => {
     var Transport = nodemailer.createTransport({
-        // host: 'smtp.mail.yahoo.com',
-        // port: 465,
-        // secure: true, // use SSL
-        // service: "Yahoo",
+        service: "Gmail",
         auth: {
+            type: "OAuth2",
             user: process.env.EMAIL,
-            pass: process.env.EMAIL_PASSWORD
+            clientId: process.env.CLIENT_ID,
+            clientSecret: process.env.CLIENT_SECRET,
+            refreshToken: process.env.REFRESH_TOKEN,
+            accessToken: accessToken,
+            // pass: process.env.EMAIL_PASSWORD
         } 
     });
 
@@ -27,7 +42,8 @@ exports.sendMail = (email, subject, html) => {
         if (error) {
             console.log(error);
         } else {
-            console.log("Message Sent");
+            // console.log("Message Sent");
+            console.log(res);
         }
     })
 };
