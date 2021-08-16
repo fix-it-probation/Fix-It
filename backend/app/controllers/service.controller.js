@@ -150,7 +150,7 @@ exports.verifyService = (req, res) => {
             message: "Content can not be empty!"
         });
     }
-    Service.findById(req.params.serviceId, err  => {
+    Service.findById(req.params.serviceId, (err, data)  => {
         if (err) {
             if (err.kind === "not_found") {
                 res.status(404).send({
