@@ -345,7 +345,10 @@ exports.requestResetPassword = async (req, res) => {
                     });
                 }
         } else {
-            const html = `Press <a href=http://api-fixit.herokuapp.com/users/reset-password/${data.uniqueString}> Here </a> to Reset Your Password. Thank You.`
+            // const html = `Press <a href=http://api-fixit.herokuapp.com/users/reset-password/${data.uniqueString}> Here </a> to Reset Your Password. Thank You.`
+            const html =    `<form action="http://api-fixit.herokuapp.com/users/reset-password/${data.uniqueString}" method="post">
+                            <button type="submit" name="verify" value="verify" class="btn-link">Verify</button>
+                            </form>`
             mail.sendMail(user.email, "Password Reset", html)
             res.json({ message: "Success."})
         }
