@@ -12,9 +12,22 @@ const connection = mysql.createConnection({
     queueLimit: 0
 });
 
+if (connection) {
+    console.log('[mysql]','connection destroy');
+    connection.connection.destroy();
+    connection.connection = null;
+}
+
 // open the MySQL connection
 connection.connect(error => {
-    if (error) throw error;
+    if (error) {
+        if (error.code == 'PROTOCOL_CONNECTION_LOST') {
+            console.log('[mysql]', 'PROTOCOL_CONNECTION_LOST')
+            connection.connect(callback);
+        } else {
+            throw error;
+        }
+    } 
     console.log("Successfully connected to the database.");
 });
 
