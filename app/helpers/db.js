@@ -14,8 +14,8 @@ const connection = mysql.createConnection({
 
 if (connection) {
     console.log('[mysql]','connection destroy');
-    connection.connection.destroy();
-    connection.connection = null;
+    connection.destroy();
+    connection = null;
 }
 
 // open the MySQL connection
