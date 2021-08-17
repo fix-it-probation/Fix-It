@@ -12,11 +12,11 @@ const connection = mysql.createConnection({
     queueLimit: 0
 });
 
-if (connection) {
-    console.log('[mysql]','connection destroy');
-    connection.destroy();
-    // connection = null;
-}
+// if (connection) {
+//     console.log('[mysql]','connection destroy');
+//     connection.destroy();
+//     // connection = null;
+// }
 
 // open the MySQL connection
 connection.connect(error => {
