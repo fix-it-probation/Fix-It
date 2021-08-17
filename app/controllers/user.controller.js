@@ -143,7 +143,7 @@ exports.validateUserPassword = (req, res) => {
             bcrypt.compare(user.password,dbPassword).then((match) => {
                 if (!match) {
                     res.status(400).send({
-                        message: "password wrong"
+                        message: "Wrong Password"
                     })
                 } else {
                     const accessToken = createToken(data);
@@ -293,7 +293,6 @@ exports.verifyEmail = (req, res) => {
         });
     } 
     const user = new User({
-
         name : req.user.name,
         telephone : req.user.telephone,
         email : req.user.email,
@@ -346,7 +345,7 @@ exports.requestResetPassword = async (req, res) => {
                     });
                 }
         } else {
-            const html = `Press <a href=http://localhost:3000/users/reset-password/${data.uniqueString}> Here </a> to Reset Your Password. Thank You.`
+            const html = `Press <a href=http://api-fixit.herokuapp.com/users/reset-password/${data.uniqueString}> Here </a> to Reset Your Password. Thank You.`
             mail.sendMail(user.email, "Password Reset", html)
             res.json({ message: "Success."})
         }

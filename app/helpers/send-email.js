@@ -35,14 +35,12 @@ exports.sendMail = (email, subject, html) => {
         to: email,
         subject: subject,
         html:  html
-        // html:  `Press <a href=http://localhost:3000/users/verify/${uniqueString}> Here </a> to Verify Email. Thank You.`
     };
 
     Transport.sendMail(mailOptions, (error, res) => {
         if (error) {
             console.log(error);
         } else {
-            // console.log("Message Sent");
             console.log(res);
         }
     })
