@@ -21,7 +21,7 @@ const connection = mysql.createConnection({
 // open the MySQL connection
 connection.connect(error => {
     if (error) {
-        if (error.code == 'PROTOCOL_CONNECTION_LOST') {
+        if (error.code == 'This socket has been ended by the other party') {
             console.log('[mysql]', 'PROTOCOL_CONNECTION_LOST')
             connection.connect(callback);
         } else {
