@@ -4,7 +4,7 @@
   "description": "Restful API with Node.js, Express, and MySQL.",
   "main": "server.js",
   "scripts": {
-    "develop": "node server.js",
+    "start": "nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -21,6 +21,7 @@
     "cookie-parser": "^1.4.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
+    "googleapis": "^84.0.0",
     "help": "^3.0.2",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.29.1",
