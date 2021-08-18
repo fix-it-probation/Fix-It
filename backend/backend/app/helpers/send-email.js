@@ -24,6 +24,7 @@ exports.sendMail = (email, subject, html) => {
             clientSecret: process.env.CLIENT_SECRET,
             refreshToken: process.env.REFRESH_TOKEN,
             accessToken: accessToken,
+            // pass: process.env.EMAIL_PASSWORD
         } 
     });
 
