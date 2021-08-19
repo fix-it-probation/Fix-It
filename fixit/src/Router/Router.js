@@ -1,11 +1,11 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import Login from '../screens/Login'
-import RegisterCustomer from '../screens/RegisterCustomer';
-import CreatePassCustomer from '../screens/CreatePassCustomer';
-import AddNumberCustomer from '../screens/AddNumberCustomer';
-import AddAddressCustomer from '../screens/AddAddressCustomer';
+import Login from '../Screens/Login'
+import RegisterCustomer from '../Screens/RegisterCustomer';
+import CreatePassCustomer from '../Screens/CreatePassCustomer';
+import AddNumberCustomer from '../Screens/AddNumberCustomer';
+import AddAddressCustomer from '../Screens/AddAddressCustomer';
 import Tab from './tabNavigator';
 
 const AuthStack = createStackNavigator();
