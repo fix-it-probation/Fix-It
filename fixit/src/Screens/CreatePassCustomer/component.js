@@ -20,7 +20,7 @@ const CreatePassCustomer = ({ navigation }) => {
       <BassicTitle 
         label="Password" 
         customContainer={styles.inputName} 
-        customLabel={styles.labelName} 
+        customLabel={styles.labelName}
         customTextInput={styles.fieldInput} 
       />
       <BassicTitle

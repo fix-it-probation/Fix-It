@@ -12,8 +12,9 @@ const FONT_PRIMARY_LIGHT = 'Roboto-Light';
 const FONT_PRIMARY_SEMIBOLD = 'Roboto-SemiBold';
 
 const FONT_SIZE_HEADER = 24;
-const FONT_SIZE_HEADLINE = 16;
-const FONT_SIZE_BODY = 14;
+const FONT_SIZE_HEADLINE = 20;
+const FONT_SIZE_BODY = 12;
+const FONT_SIZE_ICON = 10;
 
 export const FONT_PRIMARY_BODY = {
     fontFamily : FONT_PRIMARY_REGULAR,
@@ -26,8 +27,8 @@ export const FONT_PRIMARY_HEADER = {
 }
 
 export const FONT_PRIMARY_HEADLINE = {
-    fontFamily : FONT_PRIMARY_REGULAR,
-    fontSize : FONT_SIZE_HEADLINE,
+    fontFamily : FONT_PRIMARY_MEDIUM,
+    fontSize : FONT_SIZE_HEADLINE
 }
 
 export const FONT_PRIMARY_BUTTON = {
@@ -40,9 +41,9 @@ export const FONT_LIGHT = {
     fontSize : FONT_SIZE_BODY,
 }
 
-export const FONT_PRIMARY_HEADLINE2 = {
-    fontFamily : FONT_PRIMARY_SEMIBOLD,
-    fontSize : FONT_SIZE_HEADLINE,
+export const FONT_PRIMARY_ICON = {
+    fontFamily : FONT_PRIMARY_REGULAR,
+    fontSize : FONT_SIZE_ICON,
 }
 
 export const FONT_CUSTOM_BOLD = {

@@ -6,7 +6,7 @@ import Button from '../../components/Button';
 import IMAGES from '../../configs';
 import { COLOR_WHITE } from '../../styles';
 
-const Register = ({ navigation }) => {
+const RegisterCustomer = ({ navigation }) => {
   return (
     <View style={{backgroundColor: COLOR_WHITE, flex: 1}}>
       <TouchableOpacity onPress={() => navigation.push('Home')}>
@@ -33,4 +33,4 @@ const Register = ({ navigation }) => {
   );
 };
 
-export default Register;
+export default RegisterCustomer;
