@@ -1,11 +1,11 @@
 import React from 'react';
 import {View, Text} from 'react-native';
 import styles from './styles';
-import Search from '../../components/SearchBar';
-import Icon from '../../components/Icon';
+import Search from '../../Components/SearchBar';
+import Icon from '../../Components/Icon';
 import { COLOR_WHITE } from '../../styles';
 import IMAGES from '../../configs';
-import Card from '../../components/Card';
+import Card from '../../Components/Card';
 
 const Home = ({user}) => {
   user = "Tomplo"

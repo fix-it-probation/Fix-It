@@ -7,6 +7,7 @@ import IMAGES from '../../configs';
 import {COLOR_WHITE} from '../../styles';
 import {useState} from 'react';
 import baseURL from '../../baseURL';
+
 const AddAddressCustomer = ({route, navigation}) => {
   const [user, setUser] = useState({
     name: route.params.name,
@@ -15,7 +16,23 @@ const AddAddressCustomer = ({route, navigation}) => {
     password: route.params.password,
     confirmationPassword: route.params.confirmationPassword,
     role_id: route.params.role_id,
+    address: '',
+    province: '',
+    city: '',
   });
+
+  const onChangeAddress = value => {
+    setUser({...user, address: value});
+  };
+
+  const onChangeProvince = value => {
+    setUser({...user, province: value});
+  };
+
+  const onChangeCity = value => {
+    setUser({...user, city: value});
+  };
+
   console.log(user);
 
   const postRegister = async () => {
@@ -27,17 +44,15 @@ const AddAddressCustomer = ({route, navigation}) => {
         password: user.password,
         confirmationPassword: user.confirmationPassword,
         role_id: user.role_id,
+        address: user.address,
+        province: user.province,
+        city: user.city,
       });
       console.log(res);
-      alert("Verifikasi Emailmu")
+      alert('Verifikasi Emailmu');
     } catch (error) {
       alert(error.message);
     }
-  };
-  const navigateLogin = () => navigation.navigate('Login');
-  const postThenLogin = () => {
-    postRegister();
-    navigateLogin();
   };
   return (
     <View style={{backgroundColor: COLOR_WHITE, flex: 1}}>
@@ -54,6 +69,7 @@ const AddAddressCustomer = ({route, navigation}) => {
         customContainer={styles.inputAddress}
         customLabel={styles.labelName}
         customTextInput={styles.fieldInput}
+        changeText={value => onChangeAddress(value)}
       />
       <BassicTitle
         title="Provinsi"
@@ -61,6 +77,7 @@ const AddAddressCustomer = ({route, navigation}) => {
         customContainer={styles.inputBody}
         customLabel={styles.labelPass}
         customTextInput={styles.fieldInput}
+        changeText={value => onChangeProvince(value)}
       />
       <BassicTitle
         title="Kota / Kabupaten"
@@ -68,11 +85,15 @@ const AddAddressCustomer = ({route, navigation}) => {
         customContainer={styles.inputBody}
         customLabel={styles.labelPass}
         customTextInput={styles.fieldInput}
+        changeText={value => onChangeCity(value)}
       />
       <Button
         customContainer={styles.button}
         title="Daftar Sekarang"
-        onPress={postThenLogin}
+        onPress={async () => {
+          await postRegister();
+          navigation.navigate('Login');
+        }}
       />
       <Text style={styles.headWarning}>By signing up, you agree to our</Text>
       <Text style={styles.footerWarning}>
