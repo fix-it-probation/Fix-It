@@ -1,12 +1,12 @@
 const sql = require("../helpers/db.js");
 // const {today, tomorrow} = require ("../middleware/time.js")
-const { updateClock, updateDate }= require ("../helpers/time.js")
+const { today, tomorrow }= require ("../helpers/time.js")
 
-updateClock().toISOString().slice(0, 19)
-updateDate().toISOString().slice(0, 19)
-// console.log(updateDate().toISOString().slice(0, 19).replace('T', ' '))
-// console.log(updateClock())
-// console.log(updateDate())
+today().toISOString().slice(0, 19)
+tomorrow().toISOString().slice(0, 19)
+// console.log(tomorrow().toISOString().slice(0, 19).replace('T', ' '))
+// console.log(today())
+// console.log(tomorrow())
 
 // constructor
 const Service = function(service) {
@@ -19,7 +19,7 @@ const Service = function(service) {
     this.totalPrice = service.totalPrice;
     this.user_id = service.user_id;
     this.isVerified = service.isVerified;
-    this.timestamp = updateDate();
+    this.timestamp = tomorrow();
 };
 
 Service.create = (newService, result) => {

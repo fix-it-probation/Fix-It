@@ -2,13 +2,13 @@
 const sql = require("../helpers/db.js");
 const schedule = require('node-schedule');
 // const time = require("../middleware/time")
-const { updateDate, updateClock }= require ("./time");
+const { tomorrow, today }= require ("./time");
 
 const rule = new schedule.RecurrenceRule();
 rule.second = 1;
 
 const job = schedule.scheduleJob(rule, removexpiredAll => {
-    sql.query(`DELETE FROM services where timestamp < STR_TO_DATE('${updateClock().toISOString().slice(0, 19)}','%Y-%m-%dT%H:%i:%s')`, (err, res) => {
+    sql.query(`DELETE FROM services where timestamp < STR_TO_DATE('${today().toISOString().slice(0, 19)}','%Y-%m-%dT%H:%i:%s')`, (err, res) => {
         if (err) {
             console.log("error: ", err);
             // result(null, err);
@@ -19,7 +19,7 @@ const job = schedule.scheduleJob(rule, removexpiredAll => {
         // result(null, res);
     });
     
-    sql.query(`SELECT timestamp , STR_TO_DATE('${updateClock().toISOString().slice(0, 19)}','%Y-%m-%dT%H:%i:%s') FROM services`, (err, res) => {
+    sql.query(`SELECT timestamp , STR_TO_DATE('${today().toISOString().slice(0, 19)}','%Y-%m-%dT%H:%i:%s') FROM services`, (err, res) => {
         if (err) {
             console.log("error: ", err);
             // result(null, err);
@@ -28,12 +28,12 @@ const job = schedule.scheduleJob(rule, removexpiredAll => {
     
         // console.log(`deleted ${res.affectedRows} services`);
         console.log(res)
-        console.log(updateClock())
+        console.log(today())
         // result(null, res);
     });
-    // console.log(updateClock().toISOString().slice(0, 19))
+    // console.log(today().toISOString().slice(0, 19))
 
-    sql.query(`DELETE FROM banners where timestamp < STR_TO_DATE('${updateClock().toISOString().slice(0, 19)}','%Y-%m-%dT%H:%i:%s')`, (err, res) => {
+    sql.query(`DELETE FROM banners where timestamp < STR_TO_DATE('${today().toISOString().slice(0, 19)}','%Y-%m-%dT%H:%i:%s')`, (err, res) => {
         if (err) {
             console.log("error: ", err);
             // result(null, err);
@@ -44,7 +44,7 @@ const job = schedule.scheduleJob(rule, removexpiredAll => {
         // result(null, res);
     });
 
-    sql.query(`DELETE FROM feeds where timestamp < STR_TO_DATE('${updateClock().toISOString().slice(0, 19)}','%Y-%m-%dT%H:%i:%s')`, (err, res) => {
+    sql.query(`DELETE FROM feeds where timestamp < STR_TO_DATE('${today().toISOString().slice(0, 19)}','%Y-%m-%dT%H:%i:%s')`, (err, res) => {
         if (err) {
             console.log("error: ", err);
             // result(null, err);

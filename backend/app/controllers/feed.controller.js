@@ -1,6 +1,7 @@
 const { verify } = require("jsonwebtoken");
 const Feed = require("../models/feed.model.js");
 
+
 // Create and Save a new Feed ad
 exports.create = (req, res) => {
     // Validate request
@@ -15,6 +16,9 @@ exports.create = (req, res) => {
         title: req.body.title,
         description: req.body.description,
         link: req.body.link,
+        user_id: req.user.id,
+        totalDay: req.body.totalDay*7,
+        totalPrice: (req.body.totalDay)* 10000 
     });
   
     // Save Feed in the database
@@ -124,7 +128,7 @@ exports.findAllUserFeed = (req, res) => {
 };
 
 
-exports.verifyService = (req, res) => {
+exports.verifyFeed = (req, res) => {
     if (!req.body) {
         res.status(400).send({
             message: "Content can not be empty!"
@@ -144,4 +148,27 @@ exports.verifyService = (req, res) => {
             res.status(200).send({message: "verified"});
         }
     });
+
+exports.findVerifiedAll = (req, res) => {
+    Feed.getVerifiedAll((err, data) => {
+        if (err)
+            res.status(500).send({
+                message:
+                    err.message || "Some error occurred while retrieving feeds."
+            });
+        else res.send(data);
+    });
+};
+
+
+exports.findAllUserService = (req, res) => {
+    Feed.findByUserId(req.user.id,(err, data) => {
+        if (err)
+            res.status(500).send({
+                message:
+                    err.message || "Some error occurred while retrieving services."
+            });
+        else res.send(data);
+    });
+};
 }

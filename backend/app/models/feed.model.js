@@ -1,13 +1,15 @@
 const sql = require("../helpers/db.js");
-const {updateClock,updateDate} = require("../helpers/time")
+const {today,tomorrow} = require("../helpers/time")
 
 // constructor
 const Feed = function(feed) {
     this.title = feed.title;
     this.description = feed.description;
     this.link = feed.link;
+    this.totalDay = feed.totalDay;
+    this.totalPrice = feed.totalPrice;
     this.isVerified = false;
-    this.timestamp = updateDate();
+    this.timestamp = tomorrow();
 };
 
 Feed.create = (newFeed, result) => {
@@ -130,6 +132,18 @@ Feed.verifyById = (id, result) => {
 };
 
 
+Feed.getVerifiedAll = result => {
+    sql.query("SELECT * FROM feeds where isVerified = true", (err, res) => {
+        if (err) {
+            console.log("error: ", err);
+            result(null, err);
+            return;
+        }
+
+        console.log("feeds: ", res);
+        result(null, res);
+    });
+};
 
 
 module.exports = Feed;
