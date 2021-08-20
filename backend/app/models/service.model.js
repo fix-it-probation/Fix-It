@@ -1,8 +1,12 @@
 const sql = require("../helpers/db.js");
-const {today, tomorrow} = require ("../middleware/time.js")
+// const {today, tomorrow} = require ("../middleware/time.js")
+const { updateClock, updateDate }= require ("../middleware/time.js")
 
-today.toISOString().slice(0, 19).replace('T', ' ');
-tomorrow.toISOString().slice(0, 19).replace('T', ' ');
+updateClock().toISOString().slice(0, 19).replace('T', ' ');
+updateDate().toISOString().slice(0, 19).replace('T', ' ');
+// console.log(updateDate().toISOString().slice(0, 19).replace('T', ' '))
+console.log(updateClock())
+console.log(updateDate())
 
 // constructor
 const Service = function(service) {
@@ -15,7 +19,7 @@ const Service = function(service) {
     this.totalPrice = service.totalPrice;
     this.user_id = service.user_id;
     this.isVerified = service.isVerified;
-    this.timestamp = tomorrow;
+    this.timestamp = updateDate();
 };
 
 Service.create = (newService, result) => {
@@ -135,21 +139,6 @@ Service.removeAll = result => {
 
 Service.verifyById = (id, result) => {
     sql.query(`UPDATE services set isVerified = ?, timestamp = DATE_ADD( ? , INTERVAL totalDay day) WHERE id = ?`, [true,today,id], (err, res) => {
-        if (err) {
-            console.log("error: ", err);
-            result(null, err);
-            return;
-        }
-
-        if (res.affectedRows == 0) {
-            // not found Service with the id
-            result({ kind: "not_found" }, null);
-            return;
-        }
-
-        console.log("verified service with id: ", id);
-        result(null, res);
-        return;
     });
 };
 
@@ -163,6 +152,71 @@ Service.findByUserId = (userId, result) => {
         }
 
         console.log("services: ", res);
+        result(null, res);
+    });
+};
+
+
+Service.findByKeyword = (keyword, result) => {
+    sql.query(`select * from services where name like "% ${keyword} %" or name like "% ${keyword}" or name like "${keyword} %"`, (err, res) => {
+        if (err) {
+            console.log("error: ", err);
+            result(null, err);
+            return;
+        }
+        
+        if (res.length) {
+            console.log("found user: ", res);
+            result(null, res);
+            return;
+        }
+
+        // not found Customer with the id
+        result({ kind: "not_found" }, null);
+    });
+};
+
+Service.findVerifiedByKeyword = (keyword, result) => {
+    sql.query(`select * from services where (name like "% ${keyword} %" or name like "% ${keyword}" or name like "${keyword} %") and isVerified = true`, (err, res) => {
+        if (err) {
+            console.log("error: ", err);
+            result(null, err);
+            return;
+        }
+        
+        if (res.length) {
+            console.log("found user: ", res);
+            result(null, res);
+            return;
+        }
+
+        // not found Customer with the id
+        result({ kind: "not_found" }, null);
+    });
+};
+
+Service.getVerifiedAll = result => {
+    sql.query("SELECT * FROM services where isVerified = true", (err, res) => {
+        if (err) {
+            console.log("error: ", err);
+            result(null, err);
+            return;
+        }
+
+        console.log("services: ", res);
+        result(null, res);
+    });
+};
+
+Service.removeExpiredAll = result => {
+    sql.query("DELETE FROM services WHERE timestamp < CURRENT_TIMESTAMP + interval 7 hour - interval 1 minute", (err, res) => {
+        if (err) {
+            console.log("error: ", err);
+            result(null, err);
+        return;
+        }
+
+        console.log(`deleted ${res.affectedRows} services`);
         result(null, res);
     });
 };

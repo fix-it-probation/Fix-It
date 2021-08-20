@@ -1,8 +1,18 @@
-const today = new Date();
-today.setHours(today.getHours()+7);
+function updateClock() {
+    const today = new Date();
+    today.setHours(today.getHours()+7);
 
-const tomorrow = new Date(today);
-tomorrow.setDate(tomorrow.getDate()+1);
+    return today;
+}
+setInterval(updateClock, 1000);
 
-module.exports= {today, tomorrow}
+function updateDate() {
+    const tomorrow = new Date(updateClock());
+    tomorrow.setDate(tomorrow.getDate()+1);
+    
+    return tomorrow;
+}
+setInterval(updateDate, 1000);
+
+module.exports= {updateClock, updateDate}
 

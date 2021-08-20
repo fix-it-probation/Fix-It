@@ -1,6 +1,25 @@
 const Service = require("../models/service.model.js");
+const schedule = require('node-schedule');
+// const time = require("../middleware/time")
+const { updateDate, updateClock }= require ("../middleware/time.js")
 
-// Create and Save a new Customer
+const rule = new schedule.RecurrenceRule();
+rule.second = 1;
+
+const job = schedule.scheduleJob(rule, deleteAll = (req, res) => {
+    Service.removeExpiredAll((err, data) => {
+        if (err)
+            console.log( "Some error occurred while removing all expired services.");
+        else 
+        console.log("All expired services were deleted successfully!");
+        // console.log(time.today)
+        // console.log(time.tomorrow)
+        console.log(updateClock())
+        console.log(updateDate())
+    });
+});
+
+// Create and Save a new Service
 exports.create = (req, res) => {
     // Validate request
     if (!req.body) {
@@ -9,7 +28,7 @@ exports.create = (req, res) => {
         });
     }
   
-    // Create a Customer
+    // Create a Service
     const service = new Service({
         name: req.body.name,
         description: req.body.description,
@@ -22,7 +41,7 @@ exports.create = (req, res) => {
         isVerified : false
     });
   
-    // Save Customer in the database
+    // Save Service in the database
     Service.create(service, (err, data) => {
         if (err)
             res.status(500).send({
@@ -34,7 +53,7 @@ exports.create = (req, res) => {
 };
 
 
-// Retrieve all Customers from the database.
+// Retrieve all Services from the database.
 exports.findAll = (req, res) => {
     Service.getAll((err, data) => {
         if (err)
@@ -46,7 +65,19 @@ exports.findAll = (req, res) => {
     });
 };
 
-// Find a single Customer with a customerId
+// Retrieve all Verified Services from the database.
+exports.findVerifiedAll = (req, res) => {
+    Service.getVerifiedAll((err, data) => {
+        if (err)
+            res.status(500).send({
+                message:
+                    err.message || "Some error occurred while retrieving services."
+            });
+        else res.send(data);
+    });
+};
+
+// Find a single Service with a serviceId
 exports.findOne = (req, res) => {
     Service.findById(req.params.serviceId, (err, data) => {
         if (err) {
@@ -63,7 +94,7 @@ exports.findOne = (req, res) => {
     });
 };
 
-// Update a Customer identified by the customerId in the request
+// Update a Service identified by the serviceId in the request
 exports.update = (req, res) => {
     // Validate Request
     if (!req.body) {
@@ -87,7 +118,7 @@ exports.update = (req, res) => {
     });
 };
 
-// Delete a Service with the specified customerId in the request
+// Delete a Service with the specified serviceId in the request
 exports.delete = (req, res) => {
     Service.remove(req.params.serviceId, (err, data) => {
         if (err) {
@@ -104,7 +135,7 @@ exports.delete = (req, res) => {
     });
 };
 
-// Delete all Customers from the database.
+// Delete all Services from the database.
 exports.deleteAll = (req, res) => {
     Service.removeAll((err, data) => {
         if (err)
@@ -165,3 +196,36 @@ exports.verifyService = (req, res) => {
         }
     });
 }
+
+exports.searchService = (req, res) => {
+    Service.findByKeyword(req.body.keyword,(err, data) => {
+        if (err) {
+            if (err.kind === "not_found") {
+                res.status(404).send({
+                    message: `Not found User with keyword ${req.body.keyWord}.`
+                }); 
+            } else if (err) {
+                console.log(err)
+            };
+        } else {
+            res.status(200).send(data)
+        }
+    });
+};
+
+
+exports.searchVerifiedService = (req, res) => {
+    Service.findVerifiedByKeyword(req.body.keyword,(err, data) => {
+        if (err) {
+            if (err.kind === "not_found") {
+                res.status(404).send({
+                    message: `Not found User with keyword ${req.body.keyWord}.`
+                }); 
+            } else if (err) {
+                console.log(err)
+            };
+        } else {
+            res.status(200).send(data)
+        }
+    });
+};

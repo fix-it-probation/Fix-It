@@ -10,7 +10,9 @@ module.exports = app => {
     app.post("/services",validateToken,authorize(["mitra"]), services.create);
   
     // Retrieve all Services
-    app.get("/services", services.findAll);
+    app.get("/services/admin", services.findAll);
+
+    app.get("/services", services.findVerifiedAll);
     
     // Retrieve all owned Services
     app.get("/services/owned",validateToken,services.findAllUserService);
@@ -27,7 +29,13 @@ module.exports = app => {
     // Delete all Services
     app.delete("/services", validateToken, authorize(["admin"]), services.deleteAll);
 
-    // still error
+    
+    app.post("/services/admin/search", validateToken, authorize(["admin"]), services.searchService);
+
+    // Search verified
+    app.post("/services/search", validateToken, services.searchVerifiedService);
+
+    // Verify service
     app.get("/services/:serviceId/verify",validateToken, authorize(["admin"]),services.verifyService);
 
 

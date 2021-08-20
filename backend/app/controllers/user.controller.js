@@ -10,39 +10,40 @@ exports.register = (req, res) => {
         res.status(400).send({
             message: "Content can not be empty!"
         });
-    }
-
-    if (req.body.password != req.body.confirmationPassword){
+    } else if (req.body.password != req.body.confirmationPassword){
         res.status(401).send({
             message: "Password and Password Confirmation does not match."
         });
+    } else {
+        bcrypt.hash(req.body.password,10).then((hash) => {
+            // Create a User
+            const user = new User({
+                name : req.body.name,
+                telephone : req.body.telephone,
+                email : req.body.email,
+                password : hash,
+                role_id : req.body.role_id,
+                address : req.body.address,
+                province :req.body.province,
+                city : req.body.city,
+                uniqueString : mail.randString(),
+            });
+            
+            const accessToken = createRegistrationToken(user);
+            res.cookie("valid-email-access-token",accessToken, {
+                maxAge: 5*60*1000,
+                httpOnly: true                
+            });
+            
+            if (accessToken) {
+                const html = `Press <a href=http://api-fixit.herokuapp.com/users/register/verify/${user.uniqueString}> Here </a> to Verify Your Email. Thank You.`
+                mail.sendMail(user.email, "Email Verification", html)
+            } else {
+                res.json({ message: "uniqueString is Empty." })
+            }
+            res.json({ message: "Success." })
+        });
     }
-    
-    bcrypt.hash(req.body.password,10).then((hash) => {
-        // Create a User
-        const user = new User({
-            name : req.body.name,
-            telephone : req.body.telephone,
-            email : req.body.email,
-            password : hash,
-            role_id : req.body.role_id,
-            uniqueString : mail.randString(),
-        });
-        
-        const accessToken = createRegistrationToken(user);
-        res.cookie("valid-email-access-token",accessToken, {
-            maxAge: 5*60*1000,
-            httpOnly: true                
-        });
-        
-        if (accessToken) {
-            const html = `Press <a href=http://api-fixit.herokuapp.com/users/register/verify/${user.uniqueString}> Here </a> to Verify Your Email. Thank You.`
-            mail.sendMail(user.email, "Email Verification", html)
-        } else {
-            res.json({ message: "uniqueString is Empty." })
-        }
-        res.json({ message: "Success." })
-      });
 };
 
 // Logins
@@ -115,6 +116,7 @@ exports.findProfile = (req, res) => {
     });
 };
 
+// validating user password and giving access token
 exports.validateUserPassword = (req, res) => {
     // Validate request
     if (!req.body) {
@@ -122,10 +124,17 @@ exports.validateUserPassword = (req, res) => {
             message: "Content can not be empty!"
         });
     }
+    //checking if confirmation password and password are same
+    if (req.body.password != req.body.confirmationPassword){
+        res.status(401).send({
+            message: "Password and Password Confirmation does not match."
+        });
+    }
     // Validate data
     const user = new User({
         password : req.body.password
     });
+
     // Find User Data by Email
     User.findById(req.user.id, (err, data) => {
         if (err) {
@@ -166,6 +175,12 @@ exports.updateAccount = (req, res) => {
             message: "Content can not be empty!"
         });
     }
+
+    if (req.body.password != req.body.confirmationPassword){
+        res.status(401).send({
+            message: "Password and Password Confirmation does not match."
+        });
+    }
     
     bcrypt.hash(req.body.password,10).then((hash) => {
         // Create a User
@@ -174,7 +189,9 @@ exports.updateAccount = (req, res) => {
             telephone : req.body.telephone,
             email : req.body.email,
             password : hash,
-            role_id : req.body.role_id
+            address : req.body.address,
+            province :req.body.province,
+            city : req.body.city
         });
 
         User.updateById(req.user.id, user,(err, data) => {
@@ -230,6 +247,13 @@ exports.update = (req, res) => {
             message: "Content can not be empty!"
         });
     }
+
+    if (req.body.password != req.body.confirmationPassword){
+        res.status(401).send({
+            message: "Password and Password Confirmation does not match."
+        });
+    }
+
     bcrypt.hash(req.body.password,10).then((hash) => {
         // Create a User
         const user = new User({
@@ -237,18 +261,21 @@ exports.update = (req, res) => {
             telephone : req.body.telephone,
             email : req.body.email,
             password : hash,
+            address : req.body.address,
+            province :req.body.province,
+            city : req.body.city,
             role_id : req.body.role_id
         });
 
-        User.updateById(req.user.id,user,(err, data) => {
+        User.updateById(req.params.userId,user,(err, data) => {
             if (err) {
                 if (err.kind === "not_found") {
                     res.status(404).send({
-                        message: `Not found User with id ${req.user.id}.`
+                        message: `Not found User with id ${req.params.userId}.`
                     });
                 } else {
                     res.status(500).send({
-                        message: "Error updating User with id " + req.user.id
+                        message: "Error updating User with id " + req.params.userId
                     });
                 }
             } else res.send(data);
@@ -297,8 +324,11 @@ exports.verifyEmail = (req, res) => {
         telephone : req.user.telephone,
         email : req.user.email,
         password : req.user.password,
+        address : req.user.address,
+        province :req.user.province,
+        city : req.user.city,
         role_id : req.user.role_id,
-        uniqueString : req.user.uniqueString,
+        uniqueString : req.user.uniqueString
     });
 
     if (user.uniqueString == req.params.uniqueString) {
@@ -362,27 +392,34 @@ exports.verifyResetPassword = async (req, res) => {
         res.status(400).send({
             message: "Content can not be empty!"
         });
+
+    } else if (req.body.password != req.body.confirmationPassword){
+        res.status(401).send({
+            message: "Password and Password Confirmation does not match."
+        });
+
+    } else{
+        bcrypt.hash(req.body.password,10).then((hash) => {
+            // Create new password
+            const user = new User({
+                password : hash
+            });
+            // Find User Data by Unique Password
+            User.findByUniqueString(req.params.uniqueString, (err, data)  => {
+                if (err) {
+                    if (err.kind === "not_found") {
+                        res.status(404).send({
+                            message: `Not found User with Unique String ${req.params.uniqueString}.`
+                        }); 
+                    } else if (err) {
+                        console.log(err)
+                    };
+                } else {
+                    User.resetPassword(data.uniqueString, user.password, res);
+                    res.json({ message: "Password Changed."})
+                    // res.redirect("/users/login");
+                }
+            });
+        });
     }
-     bcrypt.hash(req.body.password,10).then((hash) => {
-        // Create new password
-        const user = new User({
-            password : hash,
-        });
-        // Find User Data by Unique Password
-        User.findByUniqueString(req.params.uniqueString, (err, data)  => {
-            if (err) {
-                if (err.kind === "not_found") {
-                    res.status(404).send({
-                        message: `Not found User with Unique String ${req.params.uniqueString}.`
-                    }); 
-                } else if (err) {
-                    console.log(err)
-                };
-            } else {
-                User.resetPassword(data.uniqueString, user.password, res);
-                res.json({ message: "Password Changed."})
-                // res.redirect("/users/login");
-            }
-        });
-    });
 }

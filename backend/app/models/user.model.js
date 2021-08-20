@@ -7,6 +7,9 @@ const User = function(user) {
     this.email = user.email;
     this.password = user.password;
     this.role_id = user.role_id;
+    this.address = user.address;
+    this.province = user.province;
+    this.city = user.city;
     this.uniqueString = user.uniqueString;
     // this.isValid = user.isValid;
 };
@@ -100,9 +103,9 @@ User.getAll = result => {
 
 User.updateById = (id, user, result) => {
     sql.query(
-        "UPDATE useraccounts SET name = ?, telephone = ?, email = ?, password = ?, role_id = ? WHERE id = ?",
+        "UPDATE useraccounts SET name = ?, telephone = ?, email = ?, password = ?, address = ?, province = ?, city = ?, role_id = ? WHERE id = ?",
 
-        [user.name, user.telephone, user.email, user.password, user.role_id, id],
+        [user.name, user.telephone, user.email, user.password, user.address, user.province, user.city,user.role_id, id],
         (err, res) => {
             if (err) {
                 console.log("error: ", err);
