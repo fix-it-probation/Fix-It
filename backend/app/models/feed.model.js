@@ -9,6 +9,7 @@ const Feed = function(feed) {
     this.totalDay = feed.totalDay;
     this.totalPrice = feed.totalPrice;
     this.isVerified = false;
+    this.user_id = feed.user_id
     this.timestamp = tomorrow();
 };
 
@@ -127,7 +128,7 @@ Feed.findByUserId = (userId, result) => {
 };
 
 Feed.verifyById = (id, result) => {
-    sql.query(`UPDATE feeds set isVerified = ?, timestamp = DATE_ADD( ? , INTERVAL totalDay day) WHERE id = ?`, [true,today,id], (err, res) => {
+    sql.query(`UPDATE feeds set isVerified = ?, timestamp = DATE_ADD( ? , INTERVAL totalDay day) WHERE id = ?`, [true,today(),id], (err, res) => {
     });
 };
 

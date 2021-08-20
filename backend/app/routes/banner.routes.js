@@ -7,19 +7,19 @@ module.exports = app => {
     const banners = require("../controllers/banner.controller.js");
   
     // Create a new Banner
-    app.post("/banners",validateToken, authorize([]), banners.create);
+    app.post("/banners",validateToken, authorize(["admin"]), banners.create);
   
     // Retrieve all banners
     app.get("/banners", banners.findAll);
     
     // Retrieve a single Banner with bannerId
-    app.get("/banners/:bannerId", banners.findOne);
+    app.get("/banners/:bannerId", validateToken, authorize(["admin"]), banners.findOne);
     
     // Update a Banner with bannerId
-    app.put("/banners/:bannerId", banners.update);
+    app.put("/banners/:bannerId",validateToken, authorize(["admin"]), banners.update);
     
     // Delete a Banner with bannerId
-    app.delete("/banners/:bannerId", banners.delete);
+    app.delete("/banners/:bannerId",validateToken, authorize(["admin"]), banners.delete);
     
     // Delete all banners
     app.delete("/banners", validateToken, authorize(["admin"]), banners.deleteAll);

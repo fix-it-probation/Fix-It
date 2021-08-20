@@ -10,16 +10,18 @@ exports.create = (req, res) => {
             message: "Content can not be empty!"
         });
     }
+    console.log(req.user.id)
     
     // Create a Feed ad
     const feed = new Feed({
         title: req.body.title,
         description: req.body.description,
         link: req.body.link,
-        user_id: req.user.id,
         totalDay: req.body.totalDay*7,
-        totalPrice: (req.body.totalDay)* 10000 
+        totalPrice: (req.body.totalDay)* 10000,
+        user_id: req.user.id
     });
+
   
     // Save Feed in the database
     Feed.create(feed, (err, data) => {
@@ -148,13 +150,13 @@ exports.verifyFeed = (req, res) => {
             res.status(200).send({message: "verified"});
         }
     });
-
+}
 exports.findVerifiedAll = (req, res) => {
     Feed.getVerifiedAll((err, data) => {
         if (err)
             res.status(500).send({
                 message:
-                    err.message || "Some error occurred while retrieving feeds."
+                    err.message || "Some error occurred while retrieving banners."
             });
         else res.send(data);
     });
@@ -171,4 +173,3 @@ exports.findAllUserService = (req, res) => {
         else res.send(data);
     });
 };
-}

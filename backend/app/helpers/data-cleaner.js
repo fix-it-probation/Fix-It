@@ -19,19 +19,19 @@ const job = schedule.scheduleJob(rule, removexpiredAll => {
         // result(null, res);
     });
     
-    sql.query(`SELECT timestamp , STR_TO_DATE('${today().toISOString().slice(0, 19)}','%Y-%m-%dT%H:%i:%s') FROM services`, (err, res) => {
-        if (err) {
-            console.log("error: ", err);
-            // result(null, err);
-        return;
-        }
+    // sql.query(`SELECT timestamp , STR_TO_DATE('${today().toISOString().slice(0, 19)}','%Y-%m-%dT%H:%i:%s') FROM services`, (err, res) => {
+    //     if (err) {
+    //         console.log("error: ", err);
+    //         // result(null, err);
+    //     return;
+    //     }
     
-        // console.log(`deleted ${res.affectedRows} services`);
-        console.log(res)
-        console.log(today())
-        // result(null, res);
-    });
-    // console.log(today().toISOString().slice(0, 19))
+    //     // console.log(`deleted ${res.affectedRows} services`);
+    //     console.log(res)
+    //     console.log(today())
+    //     // result(null, res);
+    // });
+    // // console.log(today().toISOString().slice(0, 19))
 
     sql.query(`DELETE FROM banners where timestamp < STR_TO_DATE('${today().toISOString().slice(0, 19)}','%Y-%m-%dT%H:%i:%s')`, (err, res) => {
         if (err) {
