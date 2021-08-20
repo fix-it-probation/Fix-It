@@ -23,5 +23,8 @@ module.exports = app => {
     
     // Delete all feeds
     app.delete("/feeds", validateToken, authorize(["admin"]), feeds.deleteAll);
+
+
+    app.get("/feeds/:feedId/verify",validateToken, authorize(["admin"]),feeds.verifyService);
     
 };

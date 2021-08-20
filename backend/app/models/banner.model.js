@@ -1,8 +1,10 @@
 const sql = require("../helpers/db.js");
+const {updateClock,updateDate} = require("../helpers/time")
 
 // constructor
 const Banner = function(banner) {
     this.link = banner.link;
+    this.timestamp = updateDate()
 };
 
 Banner.create = (newBanner, result) => {

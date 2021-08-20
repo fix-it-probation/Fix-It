@@ -1,10 +1,13 @@
 const sql = require("../helpers/db.js");
+const {updateClock,updateDate} = require("../helpers/time")
 
 // constructor
 const Feed = function(feed) {
     this.title = feed.title;
     this.description = feed.description;
     this.link = feed.link;
+    this.isVerified = false;
+    this.timestamp = updateDate();
 };
 
 Feed.create = (newFeed, result) => {
@@ -120,6 +123,13 @@ Feed.findByUserId = (userId, result) => {
         result(null, res);
     });
 };
+
+Feed.verifyById = (id, result) => {
+    sql.query(`UPDATE feeds set isVerified = ?, timestamp = DATE_ADD( ? , INTERVAL totalDay day) WHERE id = ?`, [true,today,id], (err, res) => {
+    });
+};
+
+
 
 
 module.exports = Feed;

@@ -1,23 +1,23 @@
 const Service = require("../models/service.model.js");
 const schedule = require('node-schedule');
 // const time = require("../middleware/time")
-const { updateDate, updateClock }= require ("../middleware/time.js")
+// const { updateDate, updateClock }= require ("../middleware/time.js")
 
-const rule = new schedule.RecurrenceRule();
-rule.second = 1;
+// const rule = new schedule.RecurrenceRule();
+// rule.second = 1;
 
-const job = schedule.scheduleJob(rule, deleteAll = (req, res) => {
-    Service.removeExpiredAll((err, data) => {
-        if (err)
-            console.log( "Some error occurred while removing all expired services.");
-        else 
-        console.log("All expired services were deleted successfully!");
-        // console.log(time.today)
-        // console.log(time.tomorrow)
-        console.log(updateClock())
-        console.log(updateDate())
-    });
-});
+// const job = schedule.scheduleJob(rule, deleteAll = (req, res) => {
+//     Service.removeExpiredAll((err, data) => {
+//         if (err)
+//             console.log( "Some error occurred while removing all expired services.");
+//         else 
+//         console.log("All expired services were deleted successfully!");
+//         // console.log(time.today)
+//         // console.log(time.tomorrow)
+//         console.log(updateClock())
+//         console.log(updateDate())
+//     });
+// });
 
 // Create and Save a new Service
 exports.create = (req, res) => {

@@ -1,12 +1,12 @@
 const sql = require("../helpers/db.js");
 // const {today, tomorrow} = require ("../middleware/time.js")
-const { updateClock, updateDate }= require ("../middleware/time.js")
+const { updateClock, updateDate }= require ("../helpers/time.js")
 
-updateClock().toISOString().slice(0, 19).replace('T', ' ');
-updateDate().toISOString().slice(0, 19).replace('T', ' ');
+updateClock().toISOString().slice(0, 19)
+updateDate().toISOString().slice(0, 19)
 // console.log(updateDate().toISOString().slice(0, 19).replace('T', ' '))
-console.log(updateClock())
-console.log(updateDate())
+// console.log(updateClock())
+// console.log(updateDate())
 
 // constructor
 const Service = function(service) {
@@ -208,18 +208,18 @@ Service.getVerifiedAll = result => {
     });
 };
 
-Service.removeExpiredAll = result => {
-    sql.query("DELETE FROM services WHERE timestamp < CURRENT_TIMESTAMP + interval 7 hour - interval 1 minute", (err, res) => {
-        if (err) {
-            console.log("error: ", err);
-            result(null, err);
-        return;
-        }
+// Service.removeExpiredAll = result => {
+//     sql.query("DELETE FROM services WHERE timestamp < CURRENT_TIMESTAMP + interval 7 hour - interval 1 minute", (err, res) => {
+//         if (err) {
+//             console.log("error: ", err);
+//             result(null, err);
+//         return;
+//         }
 
-        console.log(`deleted ${res.affectedRows} services`);
-        result(null, res);
-    });
-};
+//         console.log(`deleted ${res.affectedRows} services`);
+//         result(null, res);
+//     });
+// };
 
 
 module.exports = Service;

@@ -123,18 +123,25 @@ exports.findAllUserFeed = (req, res) => {
     });
 };
 
-// exports.findProfile = (req, res) => {
-//     User.findById(req.user.id, (err, data) => {
-//         if (err) {
-//             if (err.kind === "not_found") {
-//                 res.status(404).send({
-//                     message: `Not found User with id ${req.user.id}.`
-//             });
-//         } else {
-//             res.status(500).send({
-//                 message: "Error retrieving User with id " + req.user.id
-//             });
-//         }
-//         } else res.send(data);
-//     });
-// };
+
+exports.verifyService = (req, res) => {
+    if (!req.body) {
+        res.status(400).send({
+            message: "Content can not be empty!"
+        });
+    }
+    Feed.findById(req.params.feedId, (err, data)  => {
+        if (err) {
+            if (err.kind === "not_found") {
+                res.status(404).send({
+                    message: `Not found User with id ${req.params.feedId}.`
+                }); 
+            } else if (err) {
+                console.log(err)
+            };
+        } else {
+            Feed.verifyById(req.params.feedId);
+            res.status(200).send({message: "verified"});
+        }
+    });
+}
