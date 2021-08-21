@@ -8,7 +8,7 @@ setInterval(today, 1000);
 
 function tomorrow() {
     const tomorrow = new Date(today());
-    tomorrow.setDate(tomorrow.getDate());
+    tomorrow.setDate(tomorrow.getDate()+1);
     
     return tomorrow;
 }
