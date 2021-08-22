@@ -20,25 +20,6 @@ Banner.create = (newBanner, result) => {
     });
 };
 
-Banner.findById = (bannerId, result) => {
-    sql.query(`SELECT * FROM banners WHERE id = ${bannerId}`, (err, res) => {
-        if (err) {
-            console.log("error: ", err);
-            result(err, null);
-            return;
-        }
-
-        if (res.length) {
-            console.log("found banner: ", res[0]);
-            result(null, res[0]);
-            return;
-        }
-
-        // not found Banner with the id
-        result({ kind: "not_found" }, null);
-    });
-};
-
 Banner.getAll = result => {
     sql.query("SELECT * FROM banners", (err, res) => {
         if (err) {
