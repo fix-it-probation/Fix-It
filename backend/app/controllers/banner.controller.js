@@ -13,6 +13,7 @@ exports.create = (req, res) => {
     // Create a Banner ad
     const banner = new Banner({
         link: req.body.link,
+        totalDay: req.body.totalDay*7
     });
   
     // Save Banner in the database

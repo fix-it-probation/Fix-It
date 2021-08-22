@@ -10,8 +10,9 @@ const Feed = function(feed) {
     this.totalPrice = feed.totalPrice;
     this.isVerified = false;
     this.user_id = feed.user_id
-    this.timestamp = tomorrow();
+    this.timestamp = today();
 };
+
 
 Feed.create = (newFeed, result) => {
     sql.query("INSERT INTO feeds SET ?", newFeed, (err, res) => {
@@ -127,14 +128,34 @@ Feed.findByUserId = (userId, result) => {
     });
 };
 
-Feed.verifyById = (id, result) => {
-    sql.query(`UPDATE feeds set isVerified = ?, timestamp = DATE_ADD( ? , INTERVAL totalDay day) WHERE id = ?`, [true,today(),id], (err, res) => {
+Feed.verifyById = (id, data) => {
+    let today_ = today();
+    today_.setDate(today_.getDate()+data.totalDay);
+
+    sql.query(`UPDATE feeds set isVerified = ?, timestamp = DATE_ADD( ? , INTERVAL totalDay day) WHERE id = ?`, [true,today_,id], (err, res) => {
+        if (err) {
+            throw err;
+        } 
     });
 };
 
 
 Feed.getVerifiedAll = result => {
     sql.query("SELECT * FROM feeds where isVerified = true", (err, res) => {
+        if (err) {
+            console.log("error: ", err);
+            result(null, err);
+            return;
+        }
+
+        console.log("feeds: ", res);
+        result(null, res);
+    });
+};
+
+
+Feed.getTotalPending = result => {
+    sql.query(`SELECT COUNT(isVerified) as "Verifikasi Iklan" from feeds where isVerified = false`, (err, res) => {
         if (err) {
             console.log("error: ", err);
             result(null, err);

@@ -159,6 +159,18 @@ exports.findAllUserService = (req, res) => {
     });
 };
 
+
+exports.findTotalPending = (req, res) => {
+    Service.getTotalPending((err, data) => {
+        if (err)
+            res.status(500).send({
+                message:
+                    err.message || "Some error occurred while retrieving services."
+            });
+        else res.send(data);
+    });
+}
+
 // exports.findProfile = (req, res) => {
 //     User.findById(req.user.id, (err, data) => {
 //         if (err) {
@@ -191,7 +203,7 @@ exports.verifyService = (req, res) => {
                 console.log(err)
             };
         } else {
-            Service.verifyById(req.params.serviceId);
+            Service.verifyById(req.params.serviceId, data);
             res.status(200).send({message: "verified"});
         }
     });

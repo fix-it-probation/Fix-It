@@ -12,7 +12,11 @@ module.exports = app => {
     // Retrieve all feeds
     app.get("/feeds/admin", validateToken, authorize(["admin"]),feeds.findAll);
 
+    // Retrieve all verified feeds
     app.get("/feeds", feeds.findVerifiedAll);
+
+    // Retrieve total of pending feeds (haven't yet verified) 
+    app.get("/feeds/pending", validateToken, authorize(["admin"]), feeds.findTotalPending)
     
     // Retrieve all owned Services
     app.get("/feeds/owned",validateToken,feeds.findAllUserService);
@@ -31,9 +35,6 @@ module.exports = app => {
 
 
     app.get("/feeds/:feedId/verify",validateToken, authorize(["admin"]),feeds.verifyFeed);
-
-    
-
 
     
 };

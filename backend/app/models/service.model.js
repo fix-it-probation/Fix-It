@@ -137,8 +137,12 @@ Service.removeAll = result => {
 // };
 
 
-Service.verifyById = (id, result) => {
-    sql.query(`UPDATE services set isVerified = ?, timestamp = DATE_ADD( ? , INTERVAL totalDay day) WHERE id = ?`, [true,today(),id], (err, res) => {
+Service.verifyById = (id, data) => {
+    let today_ = today();
+    today_.setDate(today_.getDate()+data.totalDay);
+
+    sql.query(`UPDATE services set isVerified = ?, timestamp = DATE_ADD( ? , INTERVAL totalDay day) WHERE id = ?`, [true,today_,id], (err, res) => {
+        if (err) throw (err);
     });
 };
 
@@ -207,6 +211,20 @@ Service.getVerifiedAll = result => {
         result(null, res);
     });
 };
+
+Service.getTotalPending = result => {
+    sql.query(`SELECT COUNT(isVerified) AS "Verifikasi Mitra" FROM services WHERE isVerified = false`, (err, res) => {
+        if (err) {
+            console.log("error: ", err);
+            result(null, err);
+            return;
+        }
+
+        console.log("feeds: ", res);
+        result(null, res);
+    });
+};
+
 
 // Service.removeExpiredAll = result => {
 //     sql.query("DELETE FROM services WHERE timestamp < CURRENT_TIMESTAMP + interval 7 hour - interval 1 minute", (err, res) => {

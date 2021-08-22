@@ -3,14 +3,15 @@ require("dotenv").config();
 
 // Create a connection to the database
 const connection = mysql.createPool({
-    host: process.env.HOST,
-    user: process.env.USER,
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
-    database: process.env.DB,
+    database: process.env.DB_TABLE_NAME,
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0
 });
+
 
 // open the MySQL connection
 connection.getConnection(error => {
