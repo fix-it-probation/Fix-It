@@ -12,7 +12,11 @@ module.exports = app => {
     // Retrieve all Services
     app.get("/services/admin", services.findAll);
 
+    // Retrieve all verified services
     app.get("/services", services.findVerifiedAll);
+
+    // Retrieve total of pending feeds (haven't yet verified) 
+    app.get("/services/pending", validateToken, authorize(["admin"]), services.findTotalPending)
     
     // Retrieve all owned Services
     app.get("/services/owned",validateToken,services.findAllUserService);
