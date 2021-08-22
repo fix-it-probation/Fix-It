@@ -138,7 +138,7 @@ Service.removeAll = result => {
 
 
 Service.verifyById = (id, result) => {
-    sql.query(`UPDATE services set isVerified = ?, timestamp = DATE_ADD( ? , INTERVAL totalDay day) WHERE id = ?`, [true,today,id], (err, res) => {
+    sql.query(`UPDATE services set isVerified = ?, timestamp = DATE_ADD( ? , INTERVAL totalDay day) WHERE id = ?`, [true,today(),id], (err, res) => {
     });
 };
 

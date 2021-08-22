@@ -31,7 +31,7 @@ const job = schedule.scheduleJob(rule, removexpiredAll => {
     //     console.log(today())
     //     // result(null, res);
     // });
-    // // console.log(today().toISOString().slice(0, 19))
+    
 
     sql.query(`DELETE FROM banners where timestamp < STR_TO_DATE('${today().toISOString().slice(0, 19)}','%Y-%m-%dT%H:%i:%s')`, (err, res) => {
         if (err) {
@@ -54,4 +54,6 @@ const job = schedule.scheduleJob(rule, removexpiredAll => {
         console.log(`deleted ${res.affectedRows} feeds`);
         // result(null, res);
     });
+
+    console.log(today().toISOString().slice(0, 19))
 });

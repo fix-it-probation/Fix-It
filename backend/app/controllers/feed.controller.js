@@ -140,7 +140,7 @@ exports.verifyFeed = (req, res) => {
         if (err) {
             if (err.kind === "not_found") {
                 res.status(404).send({
-                    message: `Not found User with id ${req.params.feedId}.`
+                    message: `Not found Feed with id ${req.params.feedId}.`
                 }); 
             } else if (err) {
                 console.log(err)

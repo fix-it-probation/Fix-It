@@ -185,7 +185,7 @@ exports.verifyService = (req, res) => {
         if (err) {
             if (err.kind === "not_found") {
                 res.status(404).send({
-                    message: `Not found User with id ${req.params.serviceId}.`
+                    message: `Not found Feed with id ${req.params.serviceId}.`
                 }); 
             } else if (err) {
                 console.log(err)
@@ -202,7 +202,7 @@ exports.searchService = (req, res) => {
         if (err) {
             if (err.kind === "not_found") {
                 res.status(404).send({
-                    message: `Not found User with keyword ${req.body.keyWord}.`
+                    message: `Not found service with keyword ${req.body.keyWord}.`
                 }); 
             } else if (err) {
                 console.log(err)
@@ -219,7 +219,7 @@ exports.searchVerifiedService = (req, res) => {
         if (err) {
             if (err.kind === "not_found") {
                 res.status(404).send({
-                    message: `Not found User with keyword ${req.body.keyWord}.`
+                    message: `Not found service with keyword ${req.body.keyWord}.`
                 }); 
             } else if (err) {
                 console.log(err)
