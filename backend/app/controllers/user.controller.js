@@ -191,7 +191,8 @@ exports.updateAccount = (req, res) => {
             password : hash,
             address : req.body.address,
             province :req.body.province,
-            city : req.body.city
+            city : req.body.city,
+            role_id : req.user.role_id
         });
 
         User.updateById(req.user.id, user,(err, data) => {
@@ -268,6 +269,7 @@ exports.update = (req, res) => {
         });
 
         User.updateById(req.params.userId,user,(err, data) => {
+            console.log("ok")
             if (err) {
                 if (err.kind === "not_found") {
                     res.status(404).send({
