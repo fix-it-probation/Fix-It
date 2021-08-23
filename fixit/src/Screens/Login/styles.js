@@ -6,11 +6,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginTop: 40,
   },
-  forgotPass: {
-    ...FONT_PRIMARY_HEADLINE2,
-    color: COLOR_BASE_PRIMARY_MAIN,
-    marginLeft: 44,
-  },
   backButton: {
     marginTop: 40,
     marginLeft: 40,

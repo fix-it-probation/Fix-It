@@ -10,7 +10,7 @@ const RegisterMitra = ({ navigation }) => {
   return (
     <View style={{backgroundColor: COLOR_WHITE, flex: 1}}>
       <ScrollView showsVerticalScrollIndicator={false}>
-      <TouchableOpacity onPress={() => navigation.push('Home')}>
+      <TouchableOpacity onPress={() => navigation.push('Login')}>
         <View style={{flexDirection: 'row'}}>
           <Image source={IMAGES.backButton} style={styles.backButton} />
         </View>

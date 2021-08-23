@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
   textIndicator: {
     ...FONT_PRIMARY_BODY,
     marginLeft: 260,
-    top: 34,
+    top: 36,
   },
 });
 

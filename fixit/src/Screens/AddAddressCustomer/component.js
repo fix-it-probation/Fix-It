@@ -1,12 +1,13 @@
 import React from 'react';
-import {View, Text, TouchableOpacity, Image} from 'react-native';
+import {View, Text, KeyboardAvoidingView, ScrollView} from 'react-native';
 import styles from './styles';
-import BassicTitle from '../../Components/BassicTitle';
-import Button from '../../Components/Button';
-import IMAGES from '../../configs';
+import BassicTitle from '../../components/BassicTitle';
+import Button from '../../components/Button';
+import Back from '../../components/Back';
 import {COLOR_WHITE} from '../../styles';
 import {useState} from 'react';
 import baseURL from '../../baseURL';
+
 const AddAddressCustomer = ({route, navigation}) => {
   const [user, setUser] = useState({
     name: route.params.name,
@@ -41,13 +42,13 @@ const AddAddressCustomer = ({route, navigation}) => {
   };
   return (
     <View style={{backgroundColor: COLOR_WHITE, flex: 1}}>
-      <TouchableOpacity onPress={() => navigation.goBack()}>
-        <View style={{flexDirection: 'row'}}>
-          <Image source={IMAGES.backButton} style={styles.backButton} />
-          <Text style={styles.textIndicator}>4 dari 4</Text>
-        </View>
-      </TouchableOpacity>
+      <ScrollView showsVerticalScrollIndicator={false}>
+      <View style={{ flexDirection: 'row' }}>
+        <Back custom={styles.backButton} />
+        <Text style={styles.textIndicator}>4 dari 4</Text>
+      </View>
       <Text style={styles.textHeader}>Masukkan Alamat</Text>
+      <KeyboardAvoidingView>
       <BassicTitle
         label="Ex: Perumahan Telkom"
         title="Alamat Lengkap"
@@ -55,6 +56,8 @@ const AddAddressCustomer = ({route, navigation}) => {
         customLabel={styles.labelName}
         customTextInput={styles.fieldInput}
       />
+      </KeyboardAvoidingView>
+      <KeyboardAvoidingView>
       <BassicTitle
         title="Provinsi"
         label="Ex: Jawa Tengah"
@@ -62,6 +65,8 @@ const AddAddressCustomer = ({route, navigation}) => {
         customLabel={styles.labelPass}
         customTextInput={styles.fieldInput}
       />
+      </KeyboardAvoidingView>
+      <KeyboardAvoidingView>
       <BassicTitle
         title="Kota / Kabupaten"
         label="Ex: Cilacap"
@@ -69,6 +74,7 @@ const AddAddressCustomer = ({route, navigation}) => {
         customLabel={styles.labelPass}
         customTextInput={styles.fieldInput}
       />
+      </KeyboardAvoidingView>
       <Button
         customContainer={styles.button}
         title="Daftar Sekarang"
@@ -78,6 +84,7 @@ const AddAddressCustomer = ({route, navigation}) => {
       <Text style={styles.footerWarning}>
         Terms of Services & Privacy Policy
       </Text>
+      </ScrollView>
     </View>
   );
 };

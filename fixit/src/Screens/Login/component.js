@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import {View, Text, TouchableOpacity, Image} from 'react-native';
 import styles from './styles';
-import BassicTitle from '../../Components/BassicTitle';
-import Button from '../../Components/Button';
-import IMAGES from '../../configs';
+import BassicTitle from '../../components/BassicTitle';
+import Button from '../../components/Button';
+import Back from '../../components/Back';
 import {COLOR_WHITE} from '../../styles';
 
 const Login = ({ navigation }) => {
@@ -25,17 +25,15 @@ const Login = ({ navigation }) => {
   const checkField = () => {
     console.log('===checkfield', checkField)
     if (email === '' || password === '') {
-     setdisableButton(true);
+     setdisableButton({disableButton: false});
     } else {
-      setdisableButton(false);
+      setdisableButton({disableButton: true});
     }
   }
 
   return (
     <View style={{backgroundColor: COLOR_WHITE, flex: 1}}>
-      <TouchableOpacity onPress={() => navigation.goBack()}>
-       <Image source={IMAGES.backButton} style={styles.backButton} />
-      </TouchableOpacity>
+      <Back custom={styles.backButton}/>
       <Text style={styles.textHeader}>Selamat datang kembali</Text>
       <Text style={styles.textWarning}>
         Login menggunakan email dan password.

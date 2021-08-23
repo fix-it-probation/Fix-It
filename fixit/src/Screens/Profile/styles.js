@@ -1,11 +1,12 @@
 import {StyleSheet} from 'react-native';
+import { COLOR_BASE_PRIMARY_MAIN } from '../../styles';
 
 const styles = StyleSheet.create({
   textHeader: {
     backgroundColor: 'white',
     borderBottomWidth: 0.5,
     borderBottomColor: '#c4c4c4',
-    color: 'green',
+    color: COLOR_BASE_PRIMARY_MAIN,
     width: 500,
     fontSize: 20,
     fontWeight: 'bold',

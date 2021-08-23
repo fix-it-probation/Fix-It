@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import { FONT_PRIMARY_HEADLINE, COLOR_FIELD, FONT_PRIMARY_COLOR, FONT_LIGHT } from '../../styles';
+import { COLOR_FIELD, FONT_PRIMARY_COLOR, FONT_LIGHT, FONT_CUSTOM_FIELD } from '../../styles';
 
 const styles = StyleSheet.create({
   container: {
@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   titleText: {
-    ...FONT_PRIMARY_HEADLINE,
+    ...FONT_CUSTOM_FIELD,
     color: FONT_PRIMARY_COLOR,
     marginBottom: 10,
   },

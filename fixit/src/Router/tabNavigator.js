@@ -1,12 +1,12 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Home from "../Screens/Home";
-import Search from '../Screens/Search';
-import Profile from '../Screens/Profile';
-import Feed from '../Screens/Feed';
+import Home from "../screens/Home";
+import Favorites from '../screens/Favorites';
+import Profile from '../screens/Profile';
+import Feed from '../screens/Feed';
 import { View, Image, Text } from "react-native";
 import IMAGES from '../configs';
-import { COLOR_BASE_PRIMARY_MAIN, COLOR_FIELD, COLOR_INACTIVE, COLOR_WHITE, FONT_PRIMARY_COLOR } from "../styles";
+import { COLOR_BASE_PRIMARY_MAIN, COLOR_INACTIVE, COLOR_WHITE, FONT_PRIMARY_COLOR } from "../styles";
 
 const Tabs = createBottomTabNavigator();
 
@@ -27,30 +27,30 @@ const Tab = () => {
                         alignSelf: 'center',
                         marginBottom: 3, 
                         tintColor: focused ? COLOR_BASE_PRIMARY_MAIN : COLOR_INACTIVE}} />
-                    <Text style={{color: FONT_PRIMARY_COLOR}}>Home</Text>
+                    <Text style={{color: focused ? COLOR_BASE_PRIMARY_MAIN : FONT_PRIMARY_COLOR}}>Home</Text>
                 </View>
              ),
-            }} /><Tabs.Screen name="Search" component={Search} options={{tabBarIcon : ({focused}) => (
+            }} /><Tabs.Screen name="Feed" component={Feed} options={{tabBarIcon : ({focused}) => (
                 <View style={{flexDirection: 'column'}}>
-                    <Image source={IMAGES.search} resizeMode="contain" style={{
+                    <Image source={IMAGES.feed} resizeMode="contain" style={{
                         width: 20, 
                         height: 20,
                         alignSelf: 'center',
                         marginBottom: 3, 
                         tintColor: focused ? COLOR_BASE_PRIMARY_MAIN : COLOR_INACTIVE}} />
-                    <Text style={{color: FONT_PRIMARY_COLOR}}>Search</Text>
+                    <Text style={{color: focused ? COLOR_BASE_PRIMARY_MAIN : FONT_PRIMARY_COLOR}}>Feed</Text>
                 </View>
              ),
             }} />
-            <Tabs.Screen name="Feed" component={Feed} options={{tabBarIcon : ({focused}) => (
+            <Tabs.Screen name="Favorites" component={Favorites} options={{tabBarIcon : ({focused}) => (
                 <View>
-                    <Image source={IMAGES.feed} resizeMode="contain" style={{
+                    <Image source={IMAGES.favorites} resizeMode="contain" style={{
                         width: 20, 
                         height: 20,
                         alignSelf: 'center',
                         marginBottom: 3,  
                         tintColor: focused ? COLOR_BASE_PRIMARY_MAIN : COLOR_INACTIVE}} />
-                    <Text style={{color: FONT_PRIMARY_COLOR}}>Feed</Text>
+                    <Text style={{color: focused ? COLOR_BASE_PRIMARY_MAIN : FONT_PRIMARY_COLOR}}>Favorites</Text>
                 </View>
              ),
             }} />
@@ -62,7 +62,7 @@ const Tab = () => {
                         alignSelf: 'center',
                         marginBottom: 3, 
                         tintColor: focused ? COLOR_BASE_PRIMARY_MAIN : COLOR_INACTIVE}} />
-                    <Text style={{color: FONT_PRIMARY_COLOR}}>Profile</Text>
+                    <Text style={{color: focused ? COLOR_BASE_PRIMARY_MAIN : FONT_PRIMARY_COLOR}}>Profile</Text>
                 </View>
              ),
             }} />

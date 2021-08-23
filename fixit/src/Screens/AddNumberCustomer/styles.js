@@ -12,6 +12,7 @@ const styles = StyleSheet.create({
   },
   inputName: {
     alignSelf: 'center',
+    marginTop: 24,
     width: 328,
   },
   inputPass: {
@@ -42,8 +43,8 @@ const styles = StyleSheet.create({
   textIndicator: {
     ...FONT_PRIMARY_BODY,
     marginLeft: 260,
-    top: 34,
-  },  
+    top: 36,
+  }, 
 });
 
 export default styles;

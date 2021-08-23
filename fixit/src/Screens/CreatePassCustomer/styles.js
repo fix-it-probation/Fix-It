@@ -12,10 +12,12 @@ const styles = StyleSheet.create({
   },
   inputName: {
     alignSelf: 'center',
+    marginTop: 20,
     width: 328,
   },
   inputPass: {
     alignSelf: 'center',
+    marginTop: 20,
     width: 328,
   },
   nameInput: {
@@ -31,12 +33,6 @@ const styles = StyleSheet.create({
     color: COLOR_BLACK,
     marginLeft: 40,
     marginTop: 28,
-  },
-  textWarning: {
-    ...FONT_PRIMARY_HEADLINE2,
-    color: COLOR_BLACK,
-    marginLeft: 40,
-    marginTop: 36,
   },
   textIndicator: {
     ...FONT_PRIMARY_BODY,

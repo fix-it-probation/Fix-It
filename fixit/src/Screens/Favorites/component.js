@@ -2,12 +2,12 @@ import React from 'react';
 import {View, Text} from 'react-native';
 import styles from './styles';
 
-const Home = () => {
+const Favorites = () => {
   return (
     <View>
-      <Text style={styles.textHeader}>Search</Text>
+      <Text style={styles.textHeader}>Favorites</Text>
     </View>
   );
 };
 
-export default Home;
+export default Favorites;
