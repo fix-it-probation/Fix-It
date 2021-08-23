@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import { COLOR_BASE_PRIMARY_MAIN, COLOR_BLACK, FONT_PRIMARY_BODY, FONT_PRIMARY_COLOR, FONT_PRIMARY_HEADER, FONT_PRIMARY_HEADLINE, FONT_PRIMARY_HEADLINE2 } from '../../styles';
+import { COLOR_BASE_PRIMARY_MAIN, COLOR_BLACK, FONT_CUSTOM_INPUT, FONT_PRIMARY_BODY, FONT_PRIMARY_COLOR, FONT_PRIMARY_HEADER, FONT_PRIMARY_HEADLINE, FONT_PRIMARY_HEADLINE2 } from '../../styles';
 
 const styles = StyleSheet.create({
   button: {
@@ -9,6 +9,9 @@ const styles = StyleSheet.create({
   backButton: {
     marginTop: 40,
     marginLeft: 40,
+  },
+  fieldInput: {
+    ...FONT_CUSTOM_INPUT,
   },
   inputName: {
     alignSelf: 'center',

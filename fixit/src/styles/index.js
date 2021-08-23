@@ -15,6 +15,7 @@ const FONT_SIZE_HEADER = 24;
 const FONT_SIZE_HEADLINE = 20;
 const FONT_SIZE_TITLE = 16;
 const FONT_SIZE_BODY = 12;
+const FONT_SIZE_INPUT = 14;
 const FONT_SIZE_ICON = 10;
 
 export const FONT_PRIMARY_BODY = {
@@ -39,6 +40,11 @@ export const FONT_PRIMARY_HEAD = {
 export const FONT_PRIMARY_HEADLINE = {
     fontFamily : FONT_PRIMARY_MEDIUM,
     fontSize : FONT_SIZE_HEADLINE
+}
+
+export const FONT_CUSTOM_INPUT = {
+    fontFamily : FONT_PRIMARY_REGULAR,
+    fontSize : FONT_SIZE_INPUT,
 }
 
 export const FONT_PRIMARY_BUTTON = {

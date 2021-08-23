@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import { COLOR_BLACK, FONT_PRIMARY_BODY, FONT_PRIMARY_HEADER, FONT_CUSTOM_BOLD } from '../../styles';
+import { COLOR_BLACK, FONT_PRIMARY_BODY, FONT_PRIMARY_HEADER, FONT_CUSTOM_BOLD, FONT_CUSTOM_INPUT } from '../../styles';
 
 const styles = StyleSheet.create({
   button: {
@@ -9,6 +9,9 @@ const styles = StyleSheet.create({
   backButton: {
     marginTop: 40,
     marginLeft: 40,
+  },
+  fieldInput: {
+    ...FONT_CUSTOM_INPUT,
   },
   footerWarning: {
     ...FONT_CUSTOM_BOLD,

@@ -8,7 +8,7 @@ import IMAGES from '../../configs';
 import Card from '../../components/Card';
 
 const Home = ({user}) => {
-  user = "Tomplo"
+  user = "Alex"
   return (
     <View style={{backgroundColor: COLOR_WHITE, flex: 1}}>
       <Text style={styles.textHeader}>Selamat Datang, {user}</Text>

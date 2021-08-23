@@ -18,7 +18,7 @@ const AuthStack = createStackNavigator();
 const Router = () => {
   return(
       <NavigationContainer>
-        <AuthStack.Navigator initialRouteName="DetailMitra">
+        <AuthStack.Navigator initialRouteName="RegisterCustomer">
           <AuthStack.Screen name="SplashScreen" component={SplashScreen} options={{ headerShown: false }} />
           <AuthStack.Screen name="Login" component={Login} options={{ headerShown: false }} />
           <AuthStack.Screen name="RegisterCustomer" component={RegisterCustomer} options={{ headerShown: false }}  />

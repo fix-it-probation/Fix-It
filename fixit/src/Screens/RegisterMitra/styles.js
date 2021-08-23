@@ -1,11 +1,11 @@
 import {StyleSheet} from 'react-native';
-import { FONT_LIGHT, COLOR_BLACK, FONT_PRIMARY_BODY, FONT_PRIMARY_HEADER, FONT_CUSTOM_BOLD } from '../../styles';
+import { COLOR_BLACK, FONT_PRIMARY_BODY, FONT_PRIMARY_HEADER, FONT_CUSTOM_BOLD, FONT_CUSTOM_INPUT } from '../../styles';
 
 const styles = StyleSheet.create({
   button: {
     alignSelf: 'center',
     marginBottom: 20,
-    marginTop: 50,
+    marginTop: 20,
   },
   backButton: {
     marginTop: 40,
@@ -17,8 +17,16 @@ const styles = StyleSheet.create({
     width: 328,
   },
   fieldInput: {
-    ...FONT_LIGHT,
-    color: COLOR_BLACK,
+    ...FONT_CUSTOM_INPUT,
+  },
+  footerWarning: {
+    ...FONT_CUSTOM_BOLD,
+    textAlign: 'center',
+  },
+  headWarning: {
+    ...FONT_PRIMARY_BODY,
+    marginTop: 24,
+    textAlign: 'center',
   },
   textHeader: {
     ...FONT_PRIMARY_HEADER,
@@ -26,11 +34,6 @@ const styles = StyleSheet.create({
     marginBottom: 24,
     marginLeft: 40,
     marginTop: 30,
-  },
-  textIndicator: {
-    ...FONT_PRIMARY_BODY,
-    marginLeft: 260,
-    top: 34,
   },
 });
 

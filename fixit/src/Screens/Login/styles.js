@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import { COLOR_BASE_PRIMARY_MAIN, COLOR_BLACK, FONT_PRIMARY_BODY, FONT_PRIMARY_COLOR, FONT_PRIMARY_HEADER, FONT_PRIMARY_HEADLINE2 } from '../../styles';
+import { COLOR_BLACK, FONT_CUSTOM_INPUT, FONT_PRIMARY_BODY, FONT_PRIMARY_HEADER } from '../../styles';
 
 const styles = StyleSheet.create({
   button: {
@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     width: 328,
   },
   fieldInput: {
-    ...FONT_PRIMARY_BODY,
+    ...FONT_CUSTOM_INPUT,
     color: COLOR_BLACK,
   },
   textFooter: {

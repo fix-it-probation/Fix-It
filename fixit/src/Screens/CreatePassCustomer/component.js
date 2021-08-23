@@ -33,7 +33,7 @@ const CreatePassCustomer = ({route, navigation}) => {
       <Text style={styles.textHeader}>Buat password</Text>
       <BassicTitle
         title="Password"
-        customContainer={styles.inputName}
+        customContainer={styles.inputPass}
         customLabel={styles.labelName}
         customTextInput={styles.fieldInput}
         changeText={value => onChangePassword(value)}
