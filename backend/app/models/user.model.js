@@ -14,7 +14,6 @@ const User = function(user) {
     // this.isValid = user.isValid;
 };
 
-
 User.create = (newUser, result) => {
     sql.query("INSERT INTO useraccounts SET ?", newUser, (err, res) => {
         if (err) {
@@ -27,7 +26,6 @@ User.create = (newUser, result) => {
         result(null, { id: res.insertId, ...newUser });
     });
 };
-
 
 User.findById = (userId, result) => {
     sql.query(`SELECT * FROM useraccounts WHERE id = ${userId}`, (err, res) => {
@@ -86,7 +84,6 @@ User.findByEmail = async (userEmail, result) => {
     });
 };
 
-
 User.getAll = result => {
     sql.query("SELECT * FROM useraccounts", (err, res) => {
         if (err) {
@@ -99,7 +96,6 @@ User.getAll = result => {
         result(null, res);
     });
 };
-
 
 User.updateById = (id, user, result) => {
     sql.query(
@@ -125,7 +121,6 @@ User.updateById = (id, user, result) => {
     );
 };
 
-
 User.remove = (id, result) => {
     sql.query("DELETE FROM useraccounts WHERE id = ?", id, (err, res) => {
         if (err) {
@@ -145,7 +140,6 @@ User.remove = (id, result) => {
     });
 };
 
-
 User.removeAll = result => {
     sql.query("DELETE FROM useraccounts", (err, res) => {
         if (err) {
@@ -159,7 +153,6 @@ User.removeAll = result => {
     });
 };
 
-
 User.resetPassword = (uniqueString, newPass, res) => {
     sql.query(`UPDATE useraccounts set password = ? WHERE uniqueString = ?`,
     [newPass, uniqueString],
@@ -169,6 +162,5 @@ User.resetPassword = (uniqueString, newPass, res) => {
         } 
     })
 }
-
 
 module.exports = User;
