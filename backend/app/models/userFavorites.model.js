@@ -48,11 +48,12 @@ UserFavorite.remove = (user_id, service_id, result) => {
             result({ kind: "not_found" }, null);
             return;
         }
-
+        
         console.log(`deleted userFavorites with user id : ${user_id} and service id : ${service_id}`);
         result(null, res);
     });
 };
+
 
 UserFavorite.removeAll = result => {
     sql.query("DELETE FROM userFavorites", (err, res) => {

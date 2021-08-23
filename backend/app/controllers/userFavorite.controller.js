@@ -1,4 +1,3 @@
-const { verify } = require("jsonwebtoken");
 const UserFavorite = require("../models/userFavorites.model.js");
 
 // Create and Save a new User Favorite
@@ -27,6 +26,7 @@ exports.create = (req, res) => {
     });
 };
 
+// Retrieve all favorites per specific user
 exports.findFavorite = (req,res) => {
     UserFavorite.getExistence(req.user.id,req.params.serviceId,(err,data) =>{
         if (err){
@@ -50,8 +50,6 @@ exports.findAllByUserId = (req, res) => {
         else res.send(data);
     });
 };
-
-
 
 // Delete a Banner with the specified customerId in the request
 exports.delete = (req, res) => {

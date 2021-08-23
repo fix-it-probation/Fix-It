@@ -1,7 +1,5 @@
-// const { upload } = require("../middleware/store-image.js")
 const { validateToken} = require("../middleware/JWT.js");
 const { authorize } = require("../middleware/authorize.js")
-
 
 module.exports = app => {
     const services = require("../controllers/service.controller.js");
@@ -22,10 +20,11 @@ module.exports = app => {
     // Retrieve all owned Services
     app.get("/services/owned",validateToken,services.findAllUserService);
     
-    //  Retrieve all Favorite Service
+    // Retrieve all Favorite Services
     app.get("/favorites", validateToken, userFavorites.findAllByUserId);
-    
-    app.delete("/services/favorite", validateToken,authorize(["admin"]), userFavorites.deleteAll);
+
+    // Delete all services from Favorites for all users
+    app.delete("/services/favorite", validateToken, authorize(["admin"]), userFavorites.deleteAll);
 
     // Retrieve a single Service with serviceId
     app.get("/services/:serviceId", services.findOne);
@@ -39,23 +38,21 @@ module.exports = app => {
     // Delete all Services
     app.delete("/services", validateToken, authorize(["admin"]), services.deleteAll);
 
-    
+    // Search spesific service 
     app.post("/services/admin/search", validateToken, authorize(["admin"]), services.searchService);
-
-    // Search verified
+    
+    // Search verified services
     app.post("/services/search", validateToken, services.searchVerifiedService);
 
-    // Verify Service
-    app.get("/services/:serviceId/verify",validateToken, authorize(["admin"]),services.verifyService);
-
+    // Verify a Service by serviceId
+    app.get("/services/:serviceId/verify", validateToken, authorize(["admin"]), services.verifyService);
+    
     // Create a new Favorite
     app.post("/services/:serviceId/favorite", validateToken, userFavorites.create);
 
+    // Retrieve Favorites per Specific User
     app.get("/services/:serviceId/favorite", validateToken, userFavorites.findFavorite);
 
-
+    // Delete Favorites per Specific User
     app.delete("/services/:serviceId/favorite", validateToken, userFavorites.delete);
-    
-
-
 };

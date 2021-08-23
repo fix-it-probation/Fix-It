@@ -124,7 +124,7 @@ exports.validateUserPassword = (req, res) => {
             message: "Content can not be empty!"
         });
     }
-    //checking if confirmation password and password are same
+    // Checking if confirmation password and password are same
     if (req.body.password != req.body.confirmationPassword){
         res.status(401).send({
             message: "Password and Password Confirmation does not match."
@@ -301,7 +301,7 @@ exports.delete = (req, res) => {
         } else res.send({ message: `User was deleted successfully!` });
     });
 };
-  
+
 // Delete all Users from the database.
 exports.deleteAll = (req,res) => {
     User.removeAll(err => {
@@ -378,9 +378,6 @@ exports.requestResetPassword = async (req, res) => {
                 }
         } else {
             const html = `Press <a href=http://api-fixit.herokuapp.com/users/reset-password/${data.uniqueString}> Here </a> to Reset Your Password. Thank You.`
-            // const html =    `<form action="http://api-fixit.herokuapp.com/users/reset-password/${data.uniqueString}" method="post">
-            //                 <button type="submit" name="verify" value="verify" class="btn-link">Verify</button>
-            //                 </form>`
             mail.sendMail(user.email, "Password Reset", html)
             res.json({ message: "Success."})
         }
@@ -419,7 +416,6 @@ exports.verifyResetPassword = async (req, res) => {
                 } else {
                     User.resetPassword(data.uniqueString, user.password, res);
                     res.json({ message: "Password Changed."})
-                    // res.redirect("/users/login");
                 }
             });
         });

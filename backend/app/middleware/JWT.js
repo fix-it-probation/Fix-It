@@ -9,7 +9,6 @@ const createToken = (user) => {
     return accessToken;
 }; 
 
-
 const createRegistrationToken = (user) => {
     const accessToken = sign(
         {id: user.id, name: user.name, telephone: user.telephone,
@@ -19,7 +18,6 @@ const createRegistrationToken = (user) => {
     );
     return accessToken;
 }; 
-
 
 const validateToken = (req, res, next) => {
     const accessToken = req.cookies["access-token"]
@@ -37,7 +35,6 @@ const validateToken = (req, res, next) => {
     } 
 };
 
-
 const validateAccountPasswordToken = (req, res, next) => {
     const accessToken = req.cookies["valid-password-access-token"]
     if (!accessToken) return res.status(400).json({ error: "User not Authenticated!" });
@@ -54,7 +51,6 @@ const validateAccountPasswordToken = (req, res, next) => {
     } 
 };
     
-
 const validateEmailToken = (req, res, next) => {
     const accessToken = req.cookies["valid-email-access-token"]
     if (!accessToken) return res.status(400).json({ error: "cookies expired!" });

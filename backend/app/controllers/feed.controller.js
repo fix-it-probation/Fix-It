@@ -1,6 +1,4 @@
-const { verify } = require("jsonwebtoken");
 const Feed = require("../models/feed.model.js");
-
 
 // Create and Save a new Feed ad
 exports.create = (req, res) => {
@@ -10,8 +8,7 @@ exports.create = (req, res) => {
             message: "Content can not be empty!"
         });
     }
-    
-    
+        
     // Create a Feed ad
     const feed = new Feed({
         title: req.body.title,
@@ -21,7 +18,6 @@ exports.create = (req, res) => {
         totalPrice: (req.body.totalDay)*50000,
         user_id: req.user.id
     });
-
   
     // Save Feed in the database
     Feed.create(feed, (err, data) => {
@@ -33,7 +29,6 @@ exports.create = (req, res) => {
         else res.send(data);
     });
 };
-
 
 // Retrieve all Feeds from the database.
 exports.findAll = (req, res) => {
@@ -105,7 +100,7 @@ exports.delete = (req, res) => {
     });
 };
 
-// Delete all Banners from the database.
+// Delete all feeds from the database.
 exports.deleteAll = (req, res) => {
     Feed.removeAll((err, data) => {
         if (err)
@@ -117,7 +112,7 @@ exports.deleteAll = (req, res) => {
     });
 };
 
-
+// Retrieve all feeds from database
 exports.findAllUserFeed = (req, res) => {
     Feed.findByUserId(req.user.id,(err, data) => {
         if (err)
@@ -129,7 +124,7 @@ exports.findAllUserFeed = (req, res) => {
     });
 };
 
-
+// Verify a feed by Id
 exports.verifyFeed = (req, res) => {
     if (!req.body) {
         res.status(400).send({
@@ -151,6 +146,8 @@ exports.verifyFeed = (req, res) => {
         }
     });
 }
+
+// Retrieve all verified feeds
 exports.findVerifiedAll = (req, res) => {
     Feed.getVerifiedAll((err, data) => {
         if (err)
@@ -162,19 +159,19 @@ exports.findVerifiedAll = (req, res) => {
     });
 };
 
-
-exports.findAllUserService = (req, res) => {
+// Retrieve all feeds per specific user
+exports.findAllUserFeeds = (req, res) => {
     Feed.findByUserId(req.user.id,(err, data) => {
         if (err)
             res.status(500).send({
                 message:
-                    err.message || "Some error occurred while retrieving services."
+                    err.message || "Some error occurred while retrieving feeds."
             });
         else res.send(data);
     });
 };
 
-
+// Retrieve total pending feeds (haven't yet verified)
 exports.findTotalPending = (req, res) => {
     Feed.getTotalPending((err, data) => {
         if (err)

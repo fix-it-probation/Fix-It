@@ -1,5 +1,5 @@
 const sql = require("../helpers/db.js");
-const {today,tomorrow} = require("../helpers/time")
+const {today} = require("../helpers/time")
 
 // constructor
 const Feed = function(feed) {
@@ -27,6 +27,7 @@ Feed.create = (newFeed, result) => {
     });
 };
 
+
 Feed.findById = (feedId, result) => {
     sql.query(`SELECT * FROM feeds WHERE id = ${feedId}`, (err, res) => {
         if (err) {
@@ -46,6 +47,7 @@ Feed.findById = (feedId, result) => {
     });
 };
 
+
 Feed.getAll = result => {
     sql.query("SELECT * FROM feeds", (err, res) => {
         if (err) {
@@ -58,6 +60,7 @@ Feed.getAll = result => {
         result(null, res);
     });
 };
+
 
 Feed.updateById = (id, feed, result) => {
     sql.query(
@@ -82,6 +85,7 @@ Feed.updateById = (id, feed, result) => {
       );
 };
 
+
 Feed.remove = (id, result) => {
     sql.query("DELETE FROM feeds WHERE id = ?", id, (err, res) => {
         if (err) {
@@ -100,6 +104,7 @@ Feed.remove = (id, result) => {
         result(null, res);
     });
 };
+
 
 Feed.removeAll = result => {
     sql.query("DELETE FROM feeds", (err, res) => {
@@ -128,6 +133,7 @@ Feed.findByUserId = (userId, result) => {
     });
 };
 
+
 Feed.verifyById = (id, data) => {
     let today_ = today();
     today_.setDate(today_.getDate()+data.totalDay);
@@ -155,7 +161,7 @@ Feed.getVerifiedAll = result => {
 
 
 Feed.getTotalPending = result => {
-    sql.query(`SELECT COUNT(isVerified) as "Verifikasi Iklan" from feeds where isVerified = false`, (err, res) => {
+    sql.query(`SELECT COUNT(isVerified) as "Ads Verification" from feeds where isVerified = false`, (err, res) => {
         if (err) {
             console.log("error: ", err);
             result(null, err);

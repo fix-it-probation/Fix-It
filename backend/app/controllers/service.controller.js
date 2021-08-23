@@ -1,23 +1,4 @@
 const Service = require("../models/service.model.js");
-const schedule = require('node-schedule');
-// const time = require("../middleware/time")
-// const { updateDate, updateClock }= require ("../middleware/time.js")
-
-// const rule = new schedule.RecurrenceRule();
-// rule.second = 1;
-
-// const job = schedule.scheduleJob(rule, deleteAll = (req, res) => {
-//     Service.removeExpiredAll((err, data) => {
-//         if (err)
-//             console.log( "Some error occurred while removing all expired services.");
-//         else 
-//         console.log("All expired services were deleted successfully!");
-//         // console.log(time.today)
-//         // console.log(time.tomorrow)
-//         console.log(updateClock())
-//         console.log(updateDate())
-//     });
-// });
 
 // Create and Save a new Service
 exports.create = (req, res) => {
@@ -51,7 +32,6 @@ exports.create = (req, res) => {
         else res.send(data);
     });
 };
-
 
 // Retrieve all Services from the database.
 exports.findAll = (req, res) => {
@@ -147,7 +127,7 @@ exports.deleteAll = (req, res) => {
     });
 };
 
-
+// Retrieve all services per specific user
 exports.findAllUserService = (req, res) => {
     Service.findByUserId(req.user.id,(err, data) => {
         if (err)
@@ -159,7 +139,7 @@ exports.findAllUserService = (req, res) => {
     });
 };
 
-
+// Retrieve total pending services (haven't yet verified)
 exports.findTotalPending = (req, res) => {
     Service.getTotalPending((err, data) => {
         if (err)
@@ -171,22 +151,7 @@ exports.findTotalPending = (req, res) => {
     });
 }
 
-// exports.findProfile = (req, res) => {
-//     User.findById(req.user.id, (err, data) => {
-//         if (err) {
-//             if (err.kind === "not_found") {
-//                 res.status(404).send({
-//                     message: `Not found User with id ${req.user.id}.`
-//             });
-//         } else {
-//             res.status(500).send({
-//                 message: "Error retrieving User with id " + req.user.id
-//             });
-//         }
-//         } else res.send(data);
-//     });
-// };
-
+// Verify a service
 exports.verifyService = (req, res) => {
     if (!req.body) {
         res.status(400).send({
@@ -209,6 +174,7 @@ exports.verifyService = (req, res) => {
     });
 }
 
+// Search services by keyword
 exports.searchService = (req, res) => {
     Service.findByKeyword(req.body.keyword,(err, data) => {
         if (err) {
@@ -225,7 +191,7 @@ exports.searchService = (req, res) => {
     });
 };
 
-
+// Search verified services by keyword
 exports.searchVerifiedService = (req, res) => {
     Service.findVerifiedByKeyword(req.body.keyword,(err, data) => {
         if (err) {

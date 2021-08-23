@@ -1,7 +1,5 @@
-// const { upload } = require("../middleware/store-image.js")
 const { validateToken} = require("../middleware/JWT.js");
 const { authorize } = require("../middleware/authorize.js")
-
 
 module.exports = app => {
     const banners = require("../controllers/banner.controller.js");
@@ -12,16 +10,15 @@ module.exports = app => {
     // Retrieve all banners
     app.get("/banners", banners.findAll);
     
-    // Retrieve a single Banner with bannerId
+    // Retrieve a single Banner by bannerId
     app.get("/banners/:bannerId", validateToken, authorize(["admin"]), banners.findOne);
     
-    // Update a Banner with bannerId
+    // Update a Banner by bannerId
     app.put("/banners/:bannerId",validateToken, authorize(["admin"]), banners.update);
     
-    // Delete a Banner with bannerId
+    // Delete a Banner by bannerId
     app.delete("/banners/:bannerId",validateToken, authorize(["admin"]), banners.delete);
     
     // Delete all banners
     app.delete("/banners", validateToken, authorize(["admin"]), banners.deleteAll);
-    
 };

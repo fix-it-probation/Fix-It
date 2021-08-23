@@ -10,13 +10,13 @@ module.exports = app => {
     // Verify User Email
     app.get("/users/register/verify/:uniqueString", validateEmailToken, users.verifyEmail)
 
-    // Login
+    // Login a User
     app.post("/users/login", users.login);
     
-    // Logout
+    // Logout a User
     app.get("/users/logout", validateToken, users.logout)
 
-    // Profile
+    // Access User Profile
     app.get("/users/profile", validateToken, users.findProfile)
   
     // Retrieve all Users
@@ -27,22 +27,22 @@ module.exports = app => {
 
     // Request Reset Password
     app.post("/users/reset-password/", users.requestResetPassword)
-
+    
     // Reset Password
     app.post("/users/reset-password/:uniqueString", users.verifyResetPassword)
 
     // Update an Account
     app.put("/users/update", validateAccountPasswordToken, users.updateAccount);
-  
+    
     // Retrieve a User by UserId
     app.get("/users/:userId", validateToken, authorize(["admin"]), users.findOne);
-  
-    // Update a User by userId
+    
+    // Update a User by UserId
     app.put("/users/:userId", validateToken ,authorize(["admin"]), users.update);
-  
-    // Delete a User by userId
+    
+    // Delete a User by UserId
     app.delete("/users/:userId", validateToken, authorize(["admin"]), users.delete);
-  
+    
     // Delete all Users
     app.delete("/users", validateToken, authorize(["admin"]), users.deleteAll);
-    };
+};

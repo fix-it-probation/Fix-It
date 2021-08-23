@@ -1,5 +1,5 @@
 const sql = require("../helpers/db.js");
-const { today,tomorrow } = require("../helpers/time")
+const { tomorrow } = require("../helpers/time")
 
 // constructor
 const Banner = function(banner) {
@@ -10,6 +10,7 @@ const Banner = function(banner) {
     this.totalDay = banner.totalDay,
     this.timestamp = tomorrow_
 };
+
 
 Banner.create = (newBanner, result) => {
     sql.query("INSERT INTO banners SET ?", newBanner, (err, res) => {
@@ -24,6 +25,7 @@ Banner.create = (newBanner, result) => {
     });
 };
 
+
 Banner.getAll = result => {
     sql.query("SELECT * FROM banners", (err, res) => {
         if (err) {
@@ -36,6 +38,7 @@ Banner.getAll = result => {
         result(null, res);
     });
 };
+
 
 Banner.updateById = (id, banner, result) => {
     sql.query(
@@ -60,6 +63,7 @@ Banner.updateById = (id, banner, result) => {
       );
 };
 
+                           
 Banner.remove = (id, result) => {
     sql.query("DELETE FROM banners WHERE id = ?", id, (err, res) => {
         if (err) {
@@ -78,6 +82,7 @@ Banner.remove = (id, result) => {
         result(null, res);
     });
 };
+
 
 Banner.removeAll = result => {
     sql.query("DELETE FROM banners", (err, res) => {

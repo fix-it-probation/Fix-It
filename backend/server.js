@@ -21,7 +21,6 @@ app.get("/", (req, res) => {
     res.json({ message: "Welcome." });
 });
 
-
 // routes
 const userRouteFunction = require("./app/routes/user.routes.js");
 userRouteFunction(app);
@@ -34,8 +33,6 @@ bannerRouteFunction(app);
 
 const feedRouteFunction = require("./app/routes/feed.routes.js");
 feedRouteFunction(app);
-
-
 
 // set port, listen for requests
 const port = process.env.PORT || 3000

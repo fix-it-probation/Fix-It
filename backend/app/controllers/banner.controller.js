@@ -1,4 +1,3 @@
-const { verify } = require("jsonwebtoken");
 const Banner = require("../models/banner.model.js");
 
 // Create and Save a new Banner ad
@@ -21,12 +20,11 @@ exports.create = (req, res) => {
         if (err)
             res.status(500).send({
                 message:
-                    err.message || "Some error occurred while creating the Banner."
+                    err.message || "Some error occurred while creating the banner."
             });
         else res.send(data);
     });
 };
-
 
 // Retrieve all Banners from the database.
 exports.findAll = (req, res) => {
@@ -40,17 +38,17 @@ exports.findAll = (req, res) => {
     });
 };
 
-// Find a single Banner with a customerId
+// Retrieve a single banner with a customerId
 exports.findOne = (req, res) => {
     Banner.findById(req.params.bannerId, (err, data) => {
         if (err) {
             if (err.kind === "not_found") {
                 res.status(404).send({
-                    message: `Not found Banner with id ${req.params.bannerId}.`
+                    message: `Not found banner with id ${req.params.bannerId}.`
                 });
             } else {
             res.status(500).send({
-                message: "Error retrieving Banner with id " + req.params.bannerId
+                message: "Error retrieving banner with id " + req.params.bannerId
                 });
             }
         } else res.send(data);
@@ -110,7 +108,7 @@ exports.deleteAll = (req, res) => {
     });
 };
 
-
+// Retrieve all banners from specific user
 exports.findAllUserBanner = (req, res) => {
     Banner.findByUserId(req.user.id,(err, data) => {
         if (err)
@@ -121,19 +119,3 @@ exports.findAllUserBanner = (req, res) => {
         else res.send(data);
     });
 };
-
-// exports.findProfile = (req, res) => {
-//     User.findById(req.user.id, (err, data) => {
-//         if (err) {
-//             if (err.kind === "not_found") {
-//                 res.status(404).send({
-//                     message: `Not found User with id ${req.user.id}.`
-//             });
-//         } else {
-//             res.status(500).send({
-//                 message: "Error retrieving User with id " + req.user.id
-//             });
-//         }
-//         } else res.send(data);
-//     });
-// };

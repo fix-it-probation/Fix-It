@@ -1,11 +1,9 @@
-// const { upload } = require("../middleware/store-image.js")
 const { validateToken} = require("../middleware/JWT.js");
 const { authorize } = require("../middleware/authorize.js")
 
-
 module.exports = app => {
     const feeds = require("../controllers/feed.controller.js");
-  
+    
     // Create a new Banner
     app.post("/feeds",validateToken, feeds.create);
   
@@ -18,23 +16,21 @@ module.exports = app => {
     // Retrieve total of pending feeds (haven't yet verified) 
     app.get("/feeds/pending", validateToken, authorize(["admin"]), feeds.findTotalPending)
     
-    // Retrieve all owned Services
-    app.get("/feeds/owned",validateToken,feeds.findAllUserService);
+    // Retrieve all owned feeds
+    app.get("/feeds/owned", validateToken,feeds.findAllUserFeeds);
     
-    // Retrieve a single feed with feedId
+    // Retrieve a single feed by feedId
     app.get("/feeds/:feedId",validateToken, authorize(["admin"]),  feeds.findOne);
     
-    // Update a feed with feedId
+    // Update a feed by feedId
     app.put("/feeds/:feedId",validateToken, authorize(["admin"]), feeds.update);
     
-    // Delete a feed with feedId
+    // Delete a feed by feedId
     app.delete("/feeds/:feedId", validateToken, authorize(["admin"]), feeds.delete);
     
     // Delete all feeds
     app.delete("/feeds", validateToken, authorize(["admin"]), feeds.deleteAll);
 
-
-    app.get("/feeds/:feedId/verify",validateToken, authorize(["admin"]),feeds.verifyFeed);
-
-    
+    // Verify a feed ad by feedId
+    app.get("/feeds/:feedId/verify", validateToken, authorize(["admin"]), feeds.verifyFeed);
 };

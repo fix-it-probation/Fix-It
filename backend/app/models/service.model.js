@@ -1,12 +1,8 @@
 const sql = require("../helpers/db.js");
-// const {today, tomorrow} = require ("../middleware/time.js")
 const { today, tomorrow }= require ("../helpers/time.js")
 
 today().toISOString().slice(0, 19)
 tomorrow().toISOString().slice(0, 19)
-// console.log(tomorrow().toISOString().slice(0, 19).replace('T', ' '))
-// console.log(today())
-// console.log(tomorrow())
 
 // constructor
 const Service = function(service) {
@@ -22,6 +18,7 @@ const Service = function(service) {
     this.timestamp = tomorrow();
 };
 
+
 Service.create = (newService, result) => {
     sql.query("INSERT INTO services SET ?", newService, (err, res) => {
         if (err) {
@@ -34,6 +31,7 @@ Service.create = (newService, result) => {
         result(null, { id: res.insertId, ...newService });
     });
 };
+
 
 Service.findById = (serviceId, result) => {
     sql.query(`SELECT * FROM services WHERE id = ${serviceId}`, (err, res) => {
@@ -54,6 +52,7 @@ Service.findById = (serviceId, result) => {
     });
 };
 
+
 Service.getAll = result => {
     sql.query("SELECT * FROM services", (err, res) => {
         if (err) {
@@ -66,6 +65,7 @@ Service.getAll = result => {
         result(null, res);
     });
 };
+
 
 Service.updateById = (id, service, result) => {
     sql.query(
@@ -90,6 +90,7 @@ Service.updateById = (id, service, result) => {
     );
 };
 
+
 Service.remove = (id, result) => {
     sql.query("DELETE FROM services WHERE id = ?", id, (err, res) => {
         if (err) {
@@ -109,6 +110,7 @@ Service.remove = (id, result) => {
     });
 };
 
+
 Service.removeAll = result => {
     sql.query("DELETE FROM services", (err, res) => {
         if (err) {
@@ -121,20 +123,6 @@ Service.removeAll = result => {
         result(null, res);
     });
 };
-
-// Service.verifyById = (serviceId, result) => {
-//     sql.query(`UPDATE services set isVerified = ${true}, timestamp = DATE_ADD( ${today} , INTERVAL totalDay day) WHERE id = ${serviceId}`,
-//     (err, res) => {
-//         if (err) {
-//             console.log("error: ", err);
-//             result(err);
-//         return;
-//         }
-
-//         console.log(`deleted ${res.affectedRows} services`);
-//         result(res);
-//     });
-// };
 
 
 Service.verifyById = (id, data) => {
@@ -180,6 +168,7 @@ Service.findByKeyword = (keyword, result) => {
     });
 };
 
+
 Service.findVerifiedByKeyword = (keyword, result) => {
     sql.query(`select * from services where (name like "% ${keyword} %" or name like "% ${keyword}" or name like "${keyword} %") and isVerified = true`, (err, res) => {
         if (err) {
@@ -199,6 +188,7 @@ Service.findVerifiedByKeyword = (keyword, result) => {
     });
 };
 
+
 Service.getVerifiedAll = result => {
     sql.query("SELECT * FROM services where isVerified = true", (err, res) => {
         if (err) {
@@ -212,6 +202,7 @@ Service.getVerifiedAll = result => {
     });
 };
 
+
 Service.getTotalPending = result => {
     sql.query(`SELECT COUNT(isVerified) AS "Verifikasi Mitra" FROM services WHERE isVerified = false`, (err, res) => {
         if (err) {
@@ -224,20 +215,6 @@ Service.getTotalPending = result => {
         result(null, res);
     });
 };
-
-
-// Service.removeExpiredAll = result => {
-//     sql.query("DELETE FROM services WHERE timestamp < CURRENT_TIMESTAMP + interval 7 hour - interval 1 minute", (err, res) => {
-//         if (err) {
-//             console.log("error: ", err);
-//             result(null, err);
-//         return;
-//         }
-
-//         console.log(`deleted ${res.affectedRows} services`);
-//         result(null, res);
-//     });
-// };
 
 
 module.exports = Service;
