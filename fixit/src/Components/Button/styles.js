@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
     ...FONT_PRIMARY_BUTTON,
     color: COLOR_WHITE,
     textAlign: 'center',
-    paddingVertical: 12,
+    paddingVertical: 10,
   },
 });
 

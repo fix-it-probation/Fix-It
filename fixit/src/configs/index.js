@@ -18,6 +18,12 @@ const image = {
     iconSearch: require('../../assets/image/searchIcon.png'),
     cardHome: require('../../assets/image/cardHome.png'),
     result: require('../../assets/image/result.png'),
+    onBoarding1: require('../../assets/image/onBoarding1.png'),
+    onBoarding2: require('../../assets/image/onBoarding2.png'),
+    onBoarding3: require('../../assets/image/onBoarding3.png'),
+    edit: require('../../assets/image/edit.png'),
+    safety: require('../../assets/image/safety.png'),
+    star: require('../../assets/image/star.png')
 }
 
 export default image;
