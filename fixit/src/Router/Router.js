@@ -1,41 +1,106 @@
-import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import SplashScreen from '../screens/SplashScreen';
-import Onboarding from '../screens/OnBoarding';
-import Login from '../screens/Login'
-import RegisterCustomer from '../screens/RegisterCustomer';
-import CreatePassCustomer from '../screens/CreatePassCustomer';
-import AddNumberCustomer from '../screens/AddNumberCustomer';
-import AddAddressCustomer from '../screens/AddAddressCustomer';
-import SearchCustomer from '../screens/SearchCustomer';
-import DetailCustomer from '../screens/DetailMitra';
-import EditProfile from '../screens/EditProfile';
-
-import RegisterMitra from '../screens/RegisterMitra';
+import React, {useState, useMemo, useReducer, useEffect} from 'react';
+import {NavigationContainer} from '@react-navigation/native';
 import Tab from './tabNavigator';
-
+import AuthStackScreen from './AuthStack';
+import {AuthContext} from '../components/Context';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import CookieManager from '@react-native-cookies/cookies';
+import {createStackNavigator} from '@react-navigation/stack';
 const AuthStack = createStackNavigator();
 
 const Router = () => {
-  return(
+  const initialLoginState = {
+    userName: null,
+    accessToken: null,
+  };
+
+  const loginReducer = (prevState, action) => {
+    switch (action.type) {
+      case 'RETRIEVE_TOKEN':
+        return {
+          ...prevState,
+          accessToken: action.token,
+        };
+      case 'LOGIN':
+        return {
+          ...prevState,
+          accessToken: action.token,
+        };
+      case 'LOGOUT':
+        return {
+          ...prevState,
+          accessToken: null,
+        };
+      case 'REGISTER':
+        return {
+          ...prevState,
+          userName: action.id,
+          accessToken: action.token,
+        };
+    }
+  };
+
+  const [loginState, dispatch] = useReducer(loginReducer, initialLoginState);
+
+  const authContext = useMemo(
+    () => ({
+      _Login: async token => {
+        const accessToken = String(token);
+        try {
+          await AsyncStorage.setItem('accessToken', accessToken);
+          console.log('access token: ', accessToken);
+        } catch (error) {
+          console.log(error);
+        }
+        dispatch({type: 'LOGIN', token: accessToken});
+      },
+      Logout: async() => {
+        try {
+          await AsyncStorage.removeItem('accessToken');
+        } catch(error) {
+          console.log(error);
+        }
+        dispatch({ type: 'LOGOUT' });
+      },
+      Register: () => {
+        // setaccessToken('fgkj');
+      },
+    }),
+    [],
+  );
+
+  useEffect(() => {
+    setTimeout(async () => {
+      let accessToken;
+      accessToken = null;
+      try {
+        accessToken = await AsyncStorage.getItem('accessToken');
+      } catch (error) {
+        console.log(error);
+      }
+      console.log('user token: ', accessToken);
+      dispatch({type: 'RETRIEVE_TOKEN', token: accessToken});
+    }, 1000);
+  }, []);
+
+  return (
+    <AuthContext.Provider value={authContext}>
       <NavigationContainer>
-        <AuthStack.Navigator initialRouteName="EditProfile">
-          <AuthStack.Screen name="SplashScreen" component={SplashScreen} options={{ headerShown: false }} />
-          <AuthStack.Screen name="OnBoarding" component={Onboarding} options={{ headerShown: false }} />
-          <AuthStack.Screen name="Login" component={Login} options={{ headerShown: false }} />
-          <AuthStack.Screen name="RegisterCustomer" component={RegisterCustomer} options={{ headerShown: false }}  />
-          <AuthStack.Screen name="CreatePassCustomer" component={CreatePassCustomer} options={{ headerShown: false }}  />
-          <AuthStack.Screen name="AddNumberCustomer" component={AddNumberCustomer} options={{ headerShown: false }}  />
-          <AuthStack.Screen name="AddAddressCustomer" component={AddAddressCustomer} options={{ headerShown: false }} />
-          <AuthStack.Screen name="SearchCustomer" component={SearchCustomer} options={{ headerShown: false}} />
-          <AuthStack.Screen name="DetailMitra" component={DetailCustomer} options={{ headerShown: false}} />
-          <AuthStack.Screen name="EditProfile" component={EditProfile} options={{ headerShown: false}} />
-          <AuthStack.Screen name="RegisterMitra" component={RegisterMitra} options={{ headerShown: false }}  />
-          <AuthStack.Screen name="Home" component={Tab} options={{ headerShown: false }} />
-        </AuthStack.Navigator>
+        {loginState.accessToken !== null ? (
+          <AuthStack.Navigator
+            AuthContent={props => <AuthContent {...props} />}>
+            <AuthStack.Screen
+              name="Home"
+              component={Tab}
+              options={{headerShown: false}}
+            />
+          </AuthStack.Navigator>
+        ) : (
+          <AuthStackScreen />
+        )}
       </NavigationContainer>
-  )
-}
+    </AuthContext.Provider>
+  );
+};
 
 export default Router;

@@ -1,9 +1,9 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Home from "../screens/Home";
-import Favorites from '../screens/Favorites';
-import Profile from '../screens/Profile';
-import Feed from '../screens/Feed';
+import Home from "../Screens/Home";
+import Favorites from '../Screens/Favorites';
+import Profile from '../Screens/Profile';
+import Feed from '../Screens/Feed';
 import { View, Image, Text } from "react-native";
 import IMAGES from '../configs';
 import { COLOR_BASE_PRIMARY_MAIN, COLOR_INACTIVE, COLOR_WHITE, FONT_PRIMARY_COLOR } from "../styles";

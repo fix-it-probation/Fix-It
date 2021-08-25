@@ -1,14 +1,21 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {View, Text, Image, TouchableOpacity} from 'react-native';
 import styles from './styles';
 import IMAGES from '../../configs';
 import { COLOR_FIELD, COLOR_WHITE } from '../../styles';
 import Button from '../../components/Button';
+import { AuthContext } from '../../components/Context';
 
 const Home = ({ name, number, email }) => {
   name="Alex"
   number= "081272938932"
   email= "alex123@gmail.com"
+
+  const { Logout } = useContext(AuthContext);
+  const LogoutHandle = () => {
+    Logout()
+  }
+
   return (
     <View style={{backgroundColor: COLOR_FIELD, flex:1}}>
       <View style={{backgroundColor: COLOR_WHITE, height: 110}}>
@@ -36,7 +43,7 @@ const Home = ({ name, number, email }) => {
         </TouchableOpacity>
       </View>
       <Text style={styles.textVersion}>Version 1.0.0</Text>
-      <Button title="Sign Out" customContainer={styles.button} />
+      <Button title="Sign Out" customContainer={styles.button} onPress={LogoutHandle} />
     </View>
   );
 };
