@@ -1,12 +1,13 @@
 const { validateToken} = require("../middleware/JWT.js");
 const { authorize } = require("../middleware/authorize.js")
+const imageUploader = require('../helpers/image-uploader');
 
 module.exports = app => {
     const services = require("../controllers/service.controller.js");
     const userFavorites = require("../controllers/userFavorite.controller.js")
   
     // Create a new Service
-    app.post("/services",validateToken,authorize(["mitra"]), services.create);
+    app.post("/services", validateToken, authorize(["mitra"]),imageUploader.multiUploadHelper, services.create);
   
     // Retrieve all Services
     app.get("/services/admin", services.findAll);

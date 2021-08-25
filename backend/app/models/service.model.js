@@ -14,6 +14,9 @@ const Service = function(service) {
     this.totalDay = service.totalDay;
     this.totalPrice = service.totalPrice;
     this.user_id = service.user_id;
+    this.image_url1= service.image_url1,
+    this.image_url2= service.image_url2,
+    this.image_url3= service.image_url3,
     this.isVerified = service.isVerified;
     this.timestamp = tomorrow();
 };

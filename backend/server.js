@@ -16,6 +16,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // add cookie parser
 app.use(cookieParser());
 
+// app.use('/uploads', express.static('public/assets/uploads'));
+
 // simple route
 app.get("/", (req, res) => {
     res.json({ message: "Welcome." });

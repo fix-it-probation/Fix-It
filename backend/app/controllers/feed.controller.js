@@ -16,6 +16,7 @@ exports.create = (req, res) => {
         link: req.body.link,
         totalDay: req.body.totalDay*7,
         totalPrice: (req.body.totalDay)*50000,
+        image_url: req.file.filename,
         user_id: req.user.id
     });
   
@@ -182,3 +183,26 @@ exports.findTotalPending = (req, res) => {
         else res.send(data);
     });
 }
+
+exports.uploadReceipt = (req, res) => {
+    // Validate Request
+    if (!req.body) {
+        res.status(400).send({
+            message: "Content can not be empty!"
+        });
+    }
+  
+    Feed.uploadReceiptById(req.params.feedId, req.file.filename, (err, data) => {
+        if (err) {
+            if (err.kind === "not_found") {
+                res.status(404).send({
+                    message: `Not found Feed with id ${req.params.feedId}.`
+                });
+            } else {
+                res.status(500).send({
+                    message: "Error updating Feed with id " + req.params.feedId
+                });
+            }
+        } else res.send(data);
+    });
+};

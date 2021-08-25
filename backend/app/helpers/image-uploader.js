@@ -1,9 +1,10 @@
 const multer = require('multer');
 const path = require('path');
+const util = require('util');
 
 const storage = multer.diskStorage({
     destination: function(req, file, cb){
-        cb(null, './uploads');
+        cb(null, './public/assets/uploads');
     },
     filename: function(req, file, cb){
         cb(null, new Date().getTime() + path.extname(file.originalname));
@@ -26,6 +27,17 @@ const upload = multer({
     fileFilter:fileFilter
 });
 
+const upload_ = multer({
+    storage: storage,
+    limits: {
+        fileSize:1024*1024*10
+    },
+    fileFilter:fileFilter
+})
+
+let multiUploadHelper = upload_.fields([{name:'file1', maxCount:1},{name:'file2', maxCount:1},{name:'file3', maxCount:1}])
+
 module.exports = {
-    upload: upload
+    upload: upload,
+    multiUploadHelper: multiUploadHelper
 }

@@ -1,11 +1,13 @@
 const { validateToken} = require("../middleware/JWT.js");
-const { authorize } = require("../middleware/authorize.js")
+const { authorize } = require("../middleware/authorize.js");
+const imageUploader = require('../helpers/image-uploader');
+
 
 module.exports = app => {
     const feeds = require("../controllers/feed.controller.js");
     
     // Create a new Banner
-    app.post("/feeds",validateToken, feeds.create);
+    app.post("/feeds",validateToken,imageUploader.upload.single("image"), feeds.create);
   
     // Retrieve all feeds
     app.get("/feeds/admin", validateToken, authorize(["admin"]),feeds.findAll);
@@ -33,4 +35,6 @@ module.exports = app => {
 
     // Verify a feed ad by feedId
     app.get("/feeds/:feedId/verify", validateToken, authorize(["admin"]), feeds.verifyFeed);
+
+    app.put("/feeds/upload-receipt/:feedId",validateToken, imageUploader.upload.single("image"), feeds.uploadReceipt);
 };
