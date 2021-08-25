@@ -18,7 +18,6 @@ const Service = function(service) {
     this.timestamp = tomorrow();
 };
 
-
 Service.create = (newService, result) => {
     sql.query("INSERT INTO services SET ?", newService, (err, res) => {
         if (err) {
@@ -31,7 +30,6 @@ Service.create = (newService, result) => {
         result(null, { id: res.insertId, ...newService });
     });
 };
-
 
 Service.findById = (serviceId, result) => {
     sql.query(`SELECT * FROM services WHERE id = ${serviceId}`, (err, res) => {
@@ -52,7 +50,6 @@ Service.findById = (serviceId, result) => {
     });
 };
 
-
 Service.getAll = result => {
     sql.query("SELECT * FROM services", (err, res) => {
         if (err) {
@@ -65,7 +62,6 @@ Service.getAll = result => {
         result(null, res);
     });
 };
-
 
 Service.updateById = (id, service, result) => {
     sql.query(
@@ -90,7 +86,6 @@ Service.updateById = (id, service, result) => {
     );
 };
 
-
 Service.remove = (id, result) => {
     sql.query("DELETE FROM services WHERE id = ?", id, (err, res) => {
         if (err) {
@@ -110,7 +105,6 @@ Service.remove = (id, result) => {
     });
 };
 
-
 Service.removeAll = result => {
     sql.query("DELETE FROM services", (err, res) => {
         if (err) {
@@ -124,7 +118,6 @@ Service.removeAll = result => {
     });
 };
 
-
 Service.verifyById = (id, data) => {
     let today_ = today();
     today_.setDate(today_.getDate()+data.totalDay);
@@ -133,7 +126,6 @@ Service.verifyById = (id, data) => {
         if (err) throw (err);
     });
 };
-
 
 Service.findByUserId = (userId, result) => {
     sql.query("SELECT * FROM services where user_id = ?",userId, (err, res) => {
@@ -147,7 +139,6 @@ Service.findByUserId = (userId, result) => {
         result(null, res);
     });
 };
-
 
 Service.findByKeyword = (keyword, result) => {
     sql.query(`select * from services where name like "% ${keyword} %" or name like "% ${keyword}" or name like "${keyword} %"`, (err, res) => {
@@ -168,7 +159,6 @@ Service.findByKeyword = (keyword, result) => {
     });
 };
 
-
 Service.findVerifiedByKeyword = (keyword, result) => {
     sql.query(`select * from services where (name like "% ${keyword} %" or name like "% ${keyword}" or name like "${keyword} %") and isVerified = true`, (err, res) => {
         if (err) {
@@ -188,7 +178,6 @@ Service.findVerifiedByKeyword = (keyword, result) => {
     });
 };
 
-
 Service.getVerifiedAll = result => {
     sql.query("SELECT * FROM services where isVerified = true", (err, res) => {
         if (err) {
@@ -202,7 +191,6 @@ Service.getVerifiedAll = result => {
     });
 };
 
-
 Service.getTotalPending = result => {
     sql.query(`SELECT COUNT(isVerified) AS "Verifikasi Mitra" FROM services WHERE isVerified = false`, (err, res) => {
         if (err) {
@@ -215,6 +203,5 @@ Service.getTotalPending = result => {
         result(null, res);
     });
 };
-
 
 module.exports = Service;

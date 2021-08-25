@@ -84,7 +84,10 @@ exports.login = (req, res) => {
                         maxAge: 60*60*1000*24*30,
                         httpOnly: true
                     });
-                    res.json({ message: "Logged In"})
+                    res.json({
+                        message: "Logged In",
+                        role_id: data.role_id
+                    })
                 };
             });
         };
@@ -192,6 +195,7 @@ exports.updateAccount = (req, res) => {
             address : req.body.address,
             province :req.body.province,
             city : req.body.city,
+            image_url: req.file.filename,
             role_id : req.user.role_id
         });
 
@@ -397,7 +401,7 @@ exports.verifyResetPassword = async (req, res) => {
             message: "Password and Password Confirmation does not match."
         });
 
-    } else{
+    } else {
         bcrypt.hash(req.body.password,10).then((hash) => {
             // Create new password
             const user = new User({

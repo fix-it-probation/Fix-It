@@ -1,5 +1,6 @@
 const { validateToken, validateAccountPasswordToken, validateEmailToken} = require("../middleware/JWT.js");
 const { authorize } = require("../middleware/authorize.js")
+const imageUploader = require('../helpers/image-uploader');
 
 module.exports = app => {
     const users = require("../controllers/user.controller.js");

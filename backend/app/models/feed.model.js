@@ -13,7 +13,6 @@ const Feed = function(feed) {
     this.timestamp = today();
 };
 
-
 Feed.create = (newFeed, result) => {
     sql.query("INSERT INTO feeds SET ?", newFeed, (err, res) => {
         if (err) {
@@ -26,7 +25,6 @@ Feed.create = (newFeed, result) => {
         result(null, { id: res.insertId, ...newFeed });
     });
 };
-
 
 Feed.findById = (feedId, result) => {
     sql.query(`SELECT * FROM feeds WHERE id = ${feedId}`, (err, res) => {
@@ -47,7 +45,6 @@ Feed.findById = (feedId, result) => {
     });
 };
 
-
 Feed.getAll = result => {
     sql.query("SELECT * FROM feeds", (err, res) => {
         if (err) {
@@ -60,7 +57,6 @@ Feed.getAll = result => {
         result(null, res);
     });
 };
-
 
 Feed.updateById = (id, feed, result) => {
     sql.query(
@@ -85,7 +81,6 @@ Feed.updateById = (id, feed, result) => {
       );
 };
 
-
 Feed.remove = (id, result) => {
     sql.query("DELETE FROM feeds WHERE id = ?", id, (err, res) => {
         if (err) {
@@ -105,7 +100,6 @@ Feed.remove = (id, result) => {
     });
 };
 
-
 Feed.removeAll = result => {
     sql.query("DELETE FROM feeds", (err, res) => {
         if (err) {
@@ -118,7 +112,6 @@ Feed.removeAll = result => {
         result(null, res);
     });
 };
-
 
 Feed.findByUserId = (userId, result) => {
     sql.query("SELECT * FROM feeds where user_id = ?",userId, (err, res) => {
@@ -133,7 +126,6 @@ Feed.findByUserId = (userId, result) => {
     });
 };
 
-
 Feed.verifyById = (id, data) => {
     let today_ = today();
     today_.setDate(today_.getDate()+data.totalDay);
@@ -144,7 +136,6 @@ Feed.verifyById = (id, data) => {
         } 
     });
 };
-
 
 Feed.getVerifiedAll = result => {
     sql.query("SELECT * FROM feeds where isVerified = true", (err, res) => {
@@ -159,7 +150,6 @@ Feed.getVerifiedAll = result => {
     });
 };
 
-
 Feed.getTotalPending = result => {
     sql.query(`SELECT COUNT(isVerified) as "Ads Verification" from feeds where isVerified = false`, (err, res) => {
         if (err) {
@@ -172,6 +162,5 @@ Feed.getTotalPending = result => {
         result(null, res);
     });
 };
-
 
 module.exports = Feed;

@@ -12,12 +12,10 @@ const connection = mysql.createPool({
     queueLimit: 0
 });
 
-
 // open the MySQL connection
 connection.getConnection(error => {
     if (error) throw error;
     console.log("Successfully connected to the database.");
 });
-
 
 module.exports = connection;

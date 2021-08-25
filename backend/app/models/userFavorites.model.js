@@ -6,7 +6,6 @@ const UserFavorite = function(userFavorite) {
     this.service_id = userFavorite.service_id;
 };
 
-
 UserFavorite.create = (newUserFavorite, result) => {
     sql.query("INSERT INTO userFavorites SET ?", newUserFavorite, (err, res) => {
         if (err) {
@@ -20,7 +19,6 @@ UserFavorite.create = (newUserFavorite, result) => {
     });
 };
 
-
 UserFavorite.getAllByUserId = (user_id, result)  => {
     sql.query("select * from services as s inner join userFavorites as uf on uf.service_id = s.id inner join useraccounts as ua on ua.id = uf.user_id where uf.user_id = 2", (err, res) => {
         if (err) {
@@ -33,7 +31,6 @@ UserFavorite.getAllByUserId = (user_id, result)  => {
         result(null, res);
     });
 };
-
 
 UserFavorite.remove = (user_id, service_id, result) => {
     sql.query("DELETE FROM userFavorites WHERE user_id = ? and service_id = ?", [user_id, service_id], (err, res) => {
@@ -54,7 +51,6 @@ UserFavorite.remove = (user_id, service_id, result) => {
     });
 };
 
-
 UserFavorite.removeAll = result => {
     sql.query("DELETE FROM userFavorites", (err, res) => {
         if (err) {
@@ -68,7 +64,6 @@ UserFavorite.removeAll = result => {
     });
 };
 
-
 UserFavorite.getExistence = (user_id, service_id, result)  => {
     sql.query(`SELECT COUNT(*) as exist FROM userFavorites WHERE user_id = ${user_id} and service_id = ${service_id}`, (err, res) => {
         if (err) {
@@ -81,6 +76,5 @@ UserFavorite.getExistence = (user_id, service_id, result)  => {
         result(null, res);
     });
 };
-
 
 module.exports = UserFavorite;
