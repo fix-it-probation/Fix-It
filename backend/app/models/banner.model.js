@@ -11,7 +11,6 @@ const Banner = function(banner) {
     this.timestamp = tomorrow_
 };
 
-
 Banner.create = (newBanner, result) => {
     sql.query("INSERT INTO banners SET ?", newBanner, (err, res) => {
         if (err) {
@@ -25,7 +24,6 @@ Banner.create = (newBanner, result) => {
     });
 };
 
-
 Banner.getAll = result => {
     sql.query("SELECT * FROM banners", (err, res) => {
         if (err) {
@@ -38,7 +36,6 @@ Banner.getAll = result => {
         result(null, res);
     });
 };
-
 
 Banner.updateById = (id, banner, result) => {
     sql.query(
@@ -62,7 +59,6 @@ Banner.updateById = (id, banner, result) => {
           }
       );
 };
-
                            
 Banner.remove = (id, result) => {
     sql.query("DELETE FROM banners WHERE id = ?", id, (err, res) => {
@@ -83,7 +79,6 @@ Banner.remove = (id, result) => {
     });
 };
 
-
 Banner.removeAll = result => {
     sql.query("DELETE FROM banners", (err, res) => {
         if (err) {
@@ -97,7 +92,6 @@ Banner.removeAll = result => {
     });
 };
 
-
 Banner.findByUserId = (userId, result) => {
     sql.query("SELECT * FROM banners where user_id = ?",userId, (err, res) => {
         if (err) {
@@ -110,6 +104,5 @@ Banner.findByUserId = (userId, result) => {
         result(null, res);
     });
 };
-
 
 module.exports = Banner;

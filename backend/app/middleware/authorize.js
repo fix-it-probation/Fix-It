@@ -10,7 +10,6 @@ const authorize = (roles = []) => {
             }
         }
     }
-    
         
     return (req, res, next) => {
         if (roles.length && !roles.includes(req.user.role_id)) {

@@ -67,5 +67,4 @@ const validateEmailToken = (req, res, next) => {
     } 
 };
 
-
 module.exports = {createToken, createRegistrationToken, validateToken, validateAccountPasswordToken, validateEmailToken}

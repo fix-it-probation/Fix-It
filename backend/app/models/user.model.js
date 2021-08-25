@@ -163,4 +163,5 @@ User.resetPassword = (uniqueString, newPass, res) => {
     })
 }
 
+
 module.exports = User;
