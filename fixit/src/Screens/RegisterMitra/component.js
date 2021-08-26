@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {View, Text, ScrollView} from 'react-native';
 import styles from './styles';
 import BassicTitle from '../../components/BassicTitle';
 import Button from '../../components/Button';
 import Back from '../../components/Back';
 import {COLOR_WHITE} from '../../styles';
-import {useState} from 'react';
 import baseURL from '../../baseURL';
+import BassicTitlePass from '../../components/BassicTitlePass/component';
 
 const RegisterMitra = ({navigation}) => {
   const [mitra, setMitra] = useState({
@@ -95,13 +95,13 @@ const RegisterMitra = ({navigation}) => {
           customTextInput={styles.fieldInput}
           changeText={value => onChangeEmail(value)}
         />
-        <BassicTitle
+        <BassicTitlePass
           title="Password"
           customContainer={styles.inputField}
           customTextInput={styles.fieldInput}
           changeText={value => onChangePassword(value)}
         />
-        <BassicTitle
+        <BassicTitlePass
           title="Konfirmasi Password"
           customContainer={styles.inputField}
           customTextInput={styles.fieldInput}

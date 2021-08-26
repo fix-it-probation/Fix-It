@@ -79,7 +79,7 @@ const EditProfile = ({navigation}) => {
     <View style={{backgroundColor: COLOR_WHITE, flex: 1}}>
       <ScrollView showsVerticalScrollIndicator={false}>
       <View style={{ flexDirection: 'row' }}>
-        <Back custom={styles.backButton} />
+        <Back onPress={() => navigation.goBack()} custom={styles.backButton} />
         <Text style={styles.textHeader}>Ubah Profile</Text>
       </View>
       <Image source={IMAGES.avatar} style={styles.avatar} />

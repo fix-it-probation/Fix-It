@@ -4,16 +4,15 @@ import IMAGES from '../../configs';
 import PropTypes from 'prop-types';
 import styles from '../../screens/Home/styles';
 
-const Icon = ({ navigation, custom }) => {
+const Icon = ({ custom, onPress }) => {
   return (
-    <TouchableOpacity onPress={() => navigation.goBack()}>
+    <TouchableOpacity onPress={onPress}>
       <Image source={IMAGES.backButton} style={[styles.image, custom]} />
     </TouchableOpacity>
   );
 };
 
 Component.propTypes = {
-  navigation: PropTypes.object.isRequiared,
   custom: PropTypes.object,
 };
 

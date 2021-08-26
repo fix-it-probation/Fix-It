@@ -1,6 +1,10 @@
 const image = {
+    add: require('../../assets/image/add.png'),
     avatar: require('../../assets/image/avatar.jpg'),
+    addImgService: require('../../assets/image/addImgService.png'),
+    addImgAdvert: require('../../assets/image/addImgAdvert.png'),
     backButton: require('../../assets/image/back.png'),
+    close: require('../../assets/image/close.png'),
     logo: require('../../assets/image/logo.png'),
     home: require('../../assets/image/home.png'),
     profile: require('../../assets/image/profile.png'),
@@ -16,6 +20,7 @@ const image = {
     iconKeramik: require('../../assets/image/keramikIcon.png'),
     iconBangunan: require('../../assets/image/bangunanIcon.png'),
     iconSearch: require('../../assets/image/searchIcon.png'),
+    illusConfirmPay: require('../../assets/image/illusConfirm.png'),
     cardHome: require('../../assets/image/cardHome.png'),
     result: require('../../assets/image/result.png'),
     onBoarding1: require('../../assets/image/onBoarding1.png'),
@@ -23,7 +28,9 @@ const image = {
     onBoarding3: require('../../assets/image/onBoarding3.png'),
     edit: require('../../assets/image/edit.png'),
     safety: require('../../assets/image/safety.png'),
-    star: require('../../assets/image/star.png')
+    star: require('../../assets/image/star.png'),
+    eyeActive: require('../../assets/image/eyeActive.png'),
+    eyeInactive: require('../../assets/image/eyeInactive.png'),
 }
 
 export default image;

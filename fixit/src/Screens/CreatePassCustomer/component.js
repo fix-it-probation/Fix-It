@@ -1,11 +1,10 @@
-import React from 'react';
-import {View, Text, TouchableOpacity, Image} from 'react-native';
+import React, { useState } from 'react';
+import {View, Text} from 'react-native';
 import styles from './styles';
-import BassicTitle from '../../components/BassicTitle';
 import Button from '../../components/Button';
 import Back from '../../components/Back';
 import {COLOR_WHITE} from '../../styles';
-import {useState} from 'react';
+import BassicTitlePass from '../../components/BassicTitlePass/component';
 
 const CreatePassCustomer = ({route, navigation}) => {
   const [user, setUser] = useState({
@@ -27,18 +26,18 @@ const CreatePassCustomer = ({route, navigation}) => {
   return (
     <View style={{backgroundColor: COLOR_WHITE, flex: 1}}>
       <View style={{ flexDirection: 'row' }}>
-        <Back custom={styles.backButton} />
+        <Back onPress={() => navigation.goBack()} custom={styles.backButton} />
         <Text style={styles.textIndicator}>2 dari 4</Text>
       </View>
       <Text style={styles.textHeader}>Buat password</Text>
-      <BassicTitle
+      <BassicTitlePass
         title="Password"
         customContainer={styles.inputPass}
         customLabel={styles.labelName}
         customTextInput={styles.fieldInput}
         changeText={value => onChangePassword(value)}
       />
-      <BassicTitle
+      <BassicTitlePass
         title="Konfirmasi Password"
         customContainer={styles.inputPass}
         customLabel={styles.labelPass}

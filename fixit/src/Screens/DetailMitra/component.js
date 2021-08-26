@@ -16,7 +16,7 @@ const DetailMitra = ({service, price, desk, textAddress}) => {
     <View style={{backgroundColor: COLOR_WHITE, flex: 1}}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.container}>
-          <Back custom={styles.backButton} />
+          <Back onPress={() => navigation.goBack()} custom={styles.backButton} />
           <Text style={styles.textTitle}>Mitra</Text>
           <TouchableOpacity>
             <Image source={IMAGES.favorites} style={styles.favorites} />

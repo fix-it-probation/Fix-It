@@ -7,7 +7,11 @@ const BassicTitle = ({label, customContainer, title, customTextInput, customTitl
   return (
     <View style={[styles.container, customContainer]}>
       <Text style={[styles.titleText, customTitle]}>{title}</Text>
-      <TextInput style={[styles.input, customTextInput]} placeholder={label} onChangeText={changeText}  />
+      <TextInput 
+        multiline={true}
+        maxLength={400}
+        editable={true} 
+        style={[styles.input, customTextInput]} placeholder={label} onChangeText={changeText}  />
     </View>
   );
 };

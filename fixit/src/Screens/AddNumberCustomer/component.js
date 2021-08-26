@@ -1,11 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {View, Text} from 'react-native';
 import styles from './styles';
 import BassicTitle from '../../components/BassicTitle';
 import Button from '../../components/Button';
 import Back from '../../components/Back';
 import {COLOR_WHITE} from '../../styles';
-import {useState} from 'react';
 
 const AddNumberCustomer = ({route, navigation}) => {
   const [user, setUser] = useState({
@@ -24,7 +23,7 @@ const AddNumberCustomer = ({route, navigation}) => {
   return (
     <View style={{backgroundColor: COLOR_WHITE, flex: 1}}>
       <View style={{ flexDirection: 'row' }}>
-        <Back custom={styles.backButton} />
+        <Back onPress={() => navigation.goBack()} custom={styles.backButton} />
         <Text style={styles.textIndicator}>3 dari 4</Text>
       </View>
       <Text style={styles.textHeader}>Masukkan Nomor Telepon</Text>

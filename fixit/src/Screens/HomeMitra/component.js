@@ -7,7 +7,7 @@ import { COLOR_FIELD, COLOR_WHITE } from '../../styles';
 import IMAGES from '../../configs';
 import Card from '../../components/Card';
 
-const Home = ({user}) => {
+const HomeMitra = ({user}) => {
   useEffect(() => {
     alert('Halooo')
   })
@@ -33,4 +33,4 @@ const Home = ({user}) => {
   );
 };
 
-export default Home;
+export default HomeMitra;

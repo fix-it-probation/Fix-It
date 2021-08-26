@@ -1,8 +1,9 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Home from "../screens/Home";
+import HomeMitra from "../screens/HomeMitra";
 import Favorites from '../screens/Favorites';
 import Profile from '../screens/Profile';
+import AddPost from "../screens/AddPost";
 import Feed from '../screens/Feed';
 import { View, Image, Text } from "react-native";
 import IMAGES from '../configs';
@@ -19,7 +20,7 @@ const Tab = () => {
               height: 60
             }
           }}>
-            <Tabs.Screen name="Home" component={Home} options={{tabBarIcon : ({focused}) => (
+            <Tabs.Screen name="HomeMitra" component={HomeMitra} options={{tabBarIcon : ({focused}) => (
                 <View style={{flexDirection: 'column'}}>
                     <Image source={IMAGES.home} resizeMode="contain" style={{
                         width: 20, 
@@ -30,7 +31,8 @@ const Tab = () => {
                     <Text style={{color: focused ? COLOR_BASE_PRIMARY_MAIN : FONT_PRIMARY_COLOR}}>Home</Text>
                 </View>
              ),
-            }} /><Tabs.Screen name="Feed" component={Feed} options={{tabBarIcon : ({focused}) => (
+            }} />
+            <Tabs.Screen name="Feed" component={Feed} options={{tabBarIcon : ({focused}) => (
                 <View style={{flexDirection: 'column'}}>
                     <Image source={IMAGES.feed} resizeMode="contain" style={{
                         width: 20, 
@@ -39,6 +41,17 @@ const Tab = () => {
                         marginBottom: 3, 
                         tintColor: focused ? COLOR_BASE_PRIMARY_MAIN : COLOR_INACTIVE}} />
                     <Text style={{color: focused ? COLOR_BASE_PRIMARY_MAIN : FONT_PRIMARY_COLOR}}>Feed</Text>
+                </View>
+             ),
+            }} />
+            <Tabs.Screen name="AddPost" component={AddPost} options={{tabBarIcon : ({focused}) => (
+                <View style={{flexDirection: 'column'}}>
+                    <Image source={IMAGES.add} resizeMode="contain" style={{
+                        width: 20, 
+                        height: 20,
+                        alignSelf: 'center',
+                        marginBottom: 3 }} />
+                    <Text style={{color: focused ? COLOR_BASE_PRIMARY_MAIN : FONT_PRIMARY_COLOR}}>Add</Text>
                 </View>
              ),
             }} />

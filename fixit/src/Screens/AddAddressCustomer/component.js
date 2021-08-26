@@ -1,11 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {View, Text, KeyboardAvoidingView, ScrollView} from 'react-native';
 import styles from './styles';
 import BassicTitle from '../../components/BassicTitle';
 import Button from '../../components/Button';
 import Back from '../../components/Back';
 import {COLOR_WHITE} from '../../styles';
-import {useState} from 'react';
 import baseURL from '../../baseURL';
 
 const AddAddressCustomer = ({route, navigation}) => {
@@ -58,7 +57,7 @@ const AddAddressCustomer = ({route, navigation}) => {
     <View style={{backgroundColor: COLOR_WHITE, flex: 1}}>
       <ScrollView showsVerticalScrollIndicator={false}>
       <View style={{ flexDirection: 'row' }}>
-        <Back custom={styles.backButton} />
+        <Back onPress={() => navigation.goBack()} custom={styles.backButton} />
         <Text style={styles.textIndicator}>4 dari 4</Text>
       </View>
       <Text style={styles.textHeader}>Masukkan Alamat</Text>

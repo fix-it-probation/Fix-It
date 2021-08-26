@@ -5,7 +5,7 @@ import IMAGES from '../../configs';
 import { COLOR_FIELD, COLOR_WHITE } from '../../styles';
 import Button from '../../components/Button';
 
-const Home = ({ name, number, email }) => {
+const Home = ({ name, number, email, navigation }) => {
   name="Alex"
   number= "081272938932"
   email= "alex123@gmail.com"
@@ -19,7 +19,7 @@ const Home = ({ name, number, email }) => {
       </View>
       <View style={{backgroundColor: COLOR_WHITE, height: 160, marginTop: 8,}}>
         <Text style={styles.textTitle}>Akun</Text>
-        <TouchableOpacity style={{flexDirection: 'row'}}>
+        <TouchableOpacity onPress={() => navigation.push('EditProfile')} style={{flexDirection: 'row'}}>
           <Image source={IMAGES.edit} style={styles.Icon} />
           <Text style={styles.textEdit}>Ubah Profile</Text>
         </TouchableOpacity>
