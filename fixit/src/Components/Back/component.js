@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {TouchableOpacity, Image} from 'react-native';
 import IMAGES from '../../configs';
 import PropTypes from 'prop-types';
-import styles from '../../screens/Home/styles';
+import styles from './styles';
 
 const Icon = ({ custom, onPress }) => {
   return (

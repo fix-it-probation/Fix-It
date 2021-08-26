@@ -6,7 +6,7 @@ import { COLOR_WHITE } from '../../styles';
 
 const SplashScreen = ({navigation}) => {
     setTimeout(() => {
-        navigation.navigate('RegisterCustomer')
+        navigation.navigate('Home')
     }, 3000)
     return (
         <View style={{flex: 1, backgroundColor: COLOR_WHITE}}>
