@@ -164,7 +164,7 @@ exports.validateUserPassword = (req, res) => {
                 } else {
                     const accessToken = createToken(data);
                     res.cookie("valid-password-access-token",accessToken,{
-                        maxAge: 60*1000,
+                        maxAge: 3*60*1000,
                         httpOnly: true
                     });
                     res.json("Password Valid")
@@ -214,7 +214,7 @@ exports.updateAccount = (req, res) => {
                         message: `Error updating User with id ${req.user.id}.`
                     });
                 }
-            } else res.send(data);
+            } else res.clearCookie("valid-password-access-token"); res.send(data);
         });
     });
 }
@@ -420,7 +420,7 @@ exports.verifyResetPassword = async (req, res) => {
 
     } else if (req.user.uniqueString != req.body.uniqueStringConfirm){
         res.status(401).send({
-            message: "Password and Password Confirmation does not match."
+            message: "UniqueCode and UniqueCode Confirmation does not match."
         });
     } else if (req.body.password != req.body.confirmationPassword){
         res.status(401).send({
@@ -464,11 +464,11 @@ exports.uploadAvatar = (req, res) => {
         if (err) {
             if (err.kind === "not_found") {
                 res.status(404).send({
-                    message: `Not found Feed with id ${req.params.userId}.`
+                    message: `Not found User with id ${req.params.userId}.`
                 });
             } else {
                 res.status(500).send({
-                    message: "Error updating Feed with id " + req.params.userId
+                    message: "Error updating User with id " + req.params.userId
                 });
             }
         } else res.send(data);
