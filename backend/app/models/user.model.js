@@ -10,6 +10,7 @@ const User = function(user) {
     this.address = user.address;
     this.province = user.province;
     this.city = user.city;
+    this.avatar_url = user.avatar_url;
     this.uniqueString = user.uniqueString;
     // this.isValid = user.isValid;
 };
@@ -99,9 +100,9 @@ User.getAll = result => {
 
 User.updateById = (id, user, result) => {
     sql.query(
-        "UPDATE useraccounts SET name = ?, telephone = ?, email = ?, password = ?, address = ?, province = ?, city = ?, role_id = ? WHERE id = ?",
+        "UPDATE useraccounts SET name = ?, telephone = ?, email = ?, password = ?, address = ?, province = ?, city = ?, role_id = ?, avatar_url = ? WHERE id = ?",
 
-        [user.name, user.telephone, user.email, user.password, user.address, user.province, user.city,user.role_id, id],
+        [user.name, user.telephone, user.email, user.password, user.address, user.province, user.city,user.role_id, user.avatar_url, id],
         (err, res) => {
             if (err) {
                 console.log("error: ", err);
@@ -153,14 +154,34 @@ User.removeAll = result => {
     });
 };
 
-User.resetPassword = (uniqueString, newPass, res) => {
-    sql.query(`UPDATE useraccounts set password = ? WHERE uniqueString = ?`,
-    [newPass, uniqueString],
+User.resetPassword = (email, newPass, res) => {
+    sql.query(`UPDATE useraccounts set password = ? WHERE email = ?`,
+    [newPass, email],
     (err, data) => {
     if (err) {
         console.log(err)
         } 
     })
+}
+
+User.uploadAvatarById =  (id,avatar_url, result)  => {
+    sql.query(`UPDATE useraccounts set avatar_url = "${avatar_url}" WHERE id = ${id}`, (err, res) => {
+        if (err) {
+            console.log("error: ", err);
+            result(null, err);
+            return;
+        }
+
+        if (res.affectedRows == 0) {
+            // not found Feed with the id
+            result({ kind: "not_found" }, null);
+            return;
+        }
+
+        console.log("updated feed: ", { id: id, receipt: avatar_url });
+        result(null, { id: id, receipt: avatar_url  });
+      }
+    ); 
 }
 
 

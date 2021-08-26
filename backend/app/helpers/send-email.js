@@ -14,7 +14,6 @@ oauth2Client.setCredentials({
 });
 const accessToken = oauth2Client.getAccessToken()
 
-
 exports.sendMail = (email, subject, html) => {
     var Transport = nodemailer.createTransport({
         service: "Gmail",
@@ -46,9 +45,8 @@ exports.sendMail = (email, subject, html) => {
     })
 };
 
-
 exports.randString = () => {
-    const len = 20
+    const len = 6
     let randStr = ""
     for (let i=0; i<len; i++) {
         const ch = Math.floor((Math.random() * 10) + 1)

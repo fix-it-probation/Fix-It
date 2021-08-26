@@ -3,7 +3,7 @@ const Service = require("../models/service.model.js");
 // Create and Save a new Service
 exports.create = (req, res) => {
     // Validate request
-    if (!req.body) {
+    if (!req.body || !req.files) {
         res.status(400).send({
             message: "Content can not be empty!"
         });
@@ -18,6 +18,10 @@ exports.create = (req, res) => {
         address: req.body.address,
         totalDay: req.body.totalDay*7,
         totalPrice: (req.body.totalDay)* 10000,
+        image_url : req.file.filename,
+        image_url1: req.files['file1'][0].filename,
+        image_url2: req.files['file2'][0].filename,
+        image_url3: req.files['file3'][0].filename,
         user_id: req.user.id,
         isVerified : false
     });
@@ -205,5 +209,29 @@ exports.searchVerifiedService = (req, res) => {
         } else {
             res.status(200).send(data)
         }
+    });
+};
+
+// Upload a single receipt image 
+exports.uploadReceipt = (req, res) => {
+    // Validate Request
+    if (!req.body) {
+        res.status(400).send({
+            message: "Content can not be empty!"
+        });
+    }
+  
+    Service.uploadReceiptById(req.params.serviceId, req.file.filename, (err, data) => {
+        if (err) {
+            if (err.kind === "not_found") {
+                res.status(404).send({
+                    message: `Not found Feed with id ${req.params.serviceId}.`
+                });
+            } else {
+                res.status(500).send({
+                    message: "Error updating Feed with id " + req.params.serviceId
+                });
+            }
+        } else res.send(data);
     });
 };

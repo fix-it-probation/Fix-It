@@ -3,16 +3,18 @@ const Banner = require("../models/banner.model.js");
 // Create and Save a new Banner ad
 exports.create = (req, res) => {
     // Validate request
-    if (!req.body) {
+    if (!req.body || !req.file.filename) {
         res.status(400).send({
             message: "Content can not be empty!"
         });
     }
+
     
     // Create a Banner ad
     const banner = new Banner({
         link: req.body.link,
-        totalDay: req.body.totalDay*7
+        totalDay: req.body.totalDay*7,
+        image_url: req.file.filename
     });
   
     // Save Banner in the database

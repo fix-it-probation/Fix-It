@@ -14,6 +14,10 @@ const Service = function(service) {
     this.totalDay = service.totalDay;
     this.totalPrice = service.totalPrice;
     this.user_id = service.user_id;
+    this.image_url = service.image_url;
+    this.image_url1= service.image_url1,
+    this.image_url2= service.image_url2,
+    this.image_url3= service.image_url3,
     this.isVerified = service.isVerified;
     this.timestamp = tomorrow();
 };
@@ -203,5 +207,24 @@ Service.getTotalPending = result => {
         result(null, res);
     });
 };
+
+Service.uploadReceiptById =  (id,receipt_url, result)  => {
+    sql.query(`UPDATE services set receipt_url = "${receipt_url}" WHERE id = ${id}`, (err, res) => {
+        if (err) {
+            console.log("error: ", err);
+            result(null, err);
+            return;
+        }
+
+        if (res.affectedRows == 0) {
+            // not found Feed with the id
+            result({ kind: "not_found" }, null);
+            return;
+        }
+
+        console.log("updated service: ", { id: id, receipt: receipt_url });
+        result(null, { id: id, receipt: receipt_url  });
+      }
+)}; 
 
 module.exports = Service;

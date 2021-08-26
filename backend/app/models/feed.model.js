@@ -9,7 +9,8 @@ const Feed = function(feed) {
     this.totalDay = feed.totalDay;
     this.totalPrice = feed.totalPrice;
     this.isVerified = false;
-    this.user_id = feed.user_id
+    this.image_url = feed.image_url;
+    this.user_id = feed.user_id;
     this.timestamp = today();
 };
 
@@ -78,7 +79,7 @@ Feed.updateById = (id, feed, result) => {
             console.log("updated feed: ", { id: id, ...feed });
             result(null, { id: id, ...feed });
           }
-      );
+    );
 };
 
 Feed.remove = (id, result) => {
@@ -162,5 +163,25 @@ Feed.getTotalPending = result => {
         result(null, res);
     });
 };
+
+Feed.uploadReceiptById =  (id,receipt_url, result)  => {
+    sql.query(`UPDATE feeds set receipt_url = "${receipt_url}" WHERE id = ${id}`, (err, res) => {
+        if (err) {
+            console.log("error: ", err);
+            result(null, err);
+            return;
+        }
+
+        if (res.affectedRows == 0) {
+            // not found Feed with the id
+            result({ kind: "not_found" }, null);
+            return;
+        }
+
+        console.log("updated feed: ", { id: id, receipt: receipt_url });
+        result(null, { id: id, receipt: receipt_url  });
+      }
+    ); 
+}
 
 module.exports = Feed;

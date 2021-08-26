@@ -1,6 +1,6 @@
 const User = require("../models/user.model.js");
 const bcrypt = require('bcrypt');
-const { createToken, createRegistrationToken } = require("../middleware/JWT");
+const { createToken, createRegistrationToken, createResetPasswordToken } = require("../middleware/JWT");
 const mail = require("../helpers/send-email.js");
 
 // Create and Save a new User
@@ -16,6 +16,8 @@ exports.register = (req, res) => {
         });
     } else {
         bcrypt.hash(req.body.password,10).then((hash) => {
+            let defaultAvatar = "defaultAvatar.png"
+
             // Create a User
             const user = new User({
                 name : req.body.name,
@@ -26,9 +28,10 @@ exports.register = (req, res) => {
                 address : req.body.address,
                 province :req.body.province,
                 city : req.body.city,
+                avatar_url : defaultAvatar,
                 uniqueString : mail.randString(),
             });
-            
+
             const accessToken = createRegistrationToken(user);
             res.cookie("valid-email-access-token",accessToken, {
                 maxAge: 5*60*1000,
@@ -36,7 +39,8 @@ exports.register = (req, res) => {
             });
             
             if (accessToken) {
-                const html = `Press <a href=http://api-fixit.herokuapp.com/users/register/verify/${user.uniqueString}> Here </a> to Verify Your Email. Thank You.`
+                // const html = `Press <a href=http://api-fixit.herokuapp.com/users/register/verify/${user.uniqueString}> Here </a> to Verify Your Email. Thank You.`
+                const html = `Please Input This Unique Code on Your App to Verify Your Email. Thank You. <br> <em>${user.uniqueString}</em>`
                 mail.sendMail(user.email, "Email Verification", html)
             } else {
                 res.json({ message: "uniqueString is Empty." })
@@ -84,7 +88,10 @@ exports.login = (req, res) => {
                         maxAge: 60*60*1000*24*30,
                         httpOnly: true
                     });
-                    res.json({ message: "Logged In"})
+                    res.json({
+                        message: "Logged In",
+                        role_id: data.role_id
+                    })
                 };
             });
         };
@@ -181,7 +188,7 @@ exports.updateAccount = (req, res) => {
             message: "Password and Password Confirmation does not match."
         });
     }
-    
+
     bcrypt.hash(req.body.password,10).then((hash) => {
         // Create a User
         const user = new User({
@@ -192,6 +199,7 @@ exports.updateAccount = (req, res) => {
             address : req.body.address,
             province :req.body.province,
             city : req.body.city,
+            avatar_url: req.file.filename,
             role_id : req.user.role_id
         });
 
@@ -330,10 +338,11 @@ exports.verifyEmail = (req, res) => {
         province :req.user.province,
         city : req.user.city,
         role_id : req.user.role_id,
-        uniqueString : req.user.uniqueString
+        avatar_url : req.user.avatar_url,
+        // uniqueString : req.user.uniqueString,
     });
 
-    if (user.uniqueString == req.params.uniqueString) {
+    if (req.user.uniqueString == req.body.uniqueStringConfirm) {
         User.create(user, (err, data) => {
             if (err)
                 res.status(500).send({
@@ -363,61 +372,105 @@ exports.requestResetPassword = async (req, res) => {
     // Validate data
     const user = new User({
         email : req.body.email,
+        uniqueString : mail.randString()
     });
-    // Find User Data by Email
-    User.findByEmail(user.email, (err, data) => {
-        if (err) {
-            if (err.kind === "not_found") {
-                res.status(404).send({
-                    message: `Not found User with email ${user.email}.`
-                });
-                } else {
-                    res.status(500).send({
-                        message: "Error retrieving User with email " + user.email
+
+    const accessToken = createResetPasswordToken(user);
+        res.cookie("req-password-access-token", accessToken, {
+            maxAge: 5*60*1000,
+            httpOnly: true                
+        });
+
+    if (accessToken) {
+        // Find User Data by Email
+        User.findByEmail(user.email, (err, data) => {
+            if (err) {
+                if (err.kind === "not_found") {
+                    res.status(404).send({
+                        message: `Not found User with email ${user.email}.`
                     });
-                }
-        } else {
-            const html = `Press <a href=http://api-fixit.herokuapp.com/users/reset-password/${data.uniqueString}> Here </a> to Reset Your Password. Thank You.`
-            mail.sendMail(user.email, "Password Reset", html)
-            res.json({ message: "Success."})
-        }
-    });
+                    } else {
+                        res.status(500).send({
+                            message: "Error retrieving User with email " + user.email
+                        });
+                    }
+            } else {
+                // const html = `Press <a href=http://api-fixit.herokuapp.com/users/reset-password/${data.uniqueString}> Here </a> to Reset Your Password. Thank You.`
+                const html = `Please Input This Unique Code on Your App to Verify Your Email. Thank You. <br> <em>${user.uniqueString}</em>`
+                console.log(user.uniqueString)
+                mail.sendMail(user.email, "Password Reset", html)
+                res.json({ message: "Success."})
+            }
+        });
+    } else {
+        res.json({message: "Invalid Token."})
+    }
+        
 }
 
 // Reset Password Verification
 exports.verifyResetPassword = async (req, res) => {
+    console.log(req.user)
+
     // Validate request
     if (!req.body) {
         res.status(400).send({
             message: "Content can not be empty!"
         });
 
+    } else if (req.user.uniqueString != req.body.uniqueStringConfirm){
+        res.status(401).send({
+            message: "Password and Password Confirmation does not match."
+        });
     } else if (req.body.password != req.body.confirmationPassword){
         res.status(401).send({
             message: "Password and Password Confirmation does not match."
         });
 
-    } else{
+    } else {
         bcrypt.hash(req.body.password,10).then((hash) => {
             // Create new password
             const user = new User({
                 password : hash
             });
             // Find User Data by Unique Password
-            User.findByUniqueString(req.params.uniqueString, (err, data)  => {
+            User.findByEmail(req.user.email, (err, data)  => {
                 if (err) {
                     if (err.kind === "not_found") {
                         res.status(404).send({
-                            message: `Not found User with Unique String ${req.params.uniqueString}.`
+                            message: `Not found User with Email ${req.user.email}.`
                         }); 
                     } else if (err) {
                         console.log(err)
                     };
                 } else {
-                    User.resetPassword(data.uniqueString, user.password, res);
+                    User.resetPassword(data.email, user.password, res);
                     res.json({ message: "Password Changed."})
                 }
             });
         });
     }
 }
+
+exports.uploadAvatar = (req, res) => {
+    // Validate Request
+    if (!req.body) {
+        res.status(400).send({
+            message: "Content can not be empty!"
+        });
+    }
+  
+    User.uploadAvatarById(req.params.userId, req.file.filename, (err, data) => {
+        if (err) {
+            if (err.kind === "not_found") {
+                res.status(404).send({
+                    message: `Not found Feed with id ${req.params.userId}.`
+                });
+            } else {
+                res.status(500).send({
+                    message: "Error updating Feed with id " + req.params.userId
+                });
+            }
+        } else res.send(data);
+    });
+};

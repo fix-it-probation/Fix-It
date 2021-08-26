@@ -8,6 +8,7 @@ const Banner = function(banner) {
     
     this.link = banner.link,
     this.totalDay = banner.totalDay,
+    this.image_url = banner.image_url,
     this.timestamp = tomorrow_
 };
 
@@ -59,7 +60,7 @@ Banner.updateById = (id, banner, result) => {
           }
       );
 };
-                           
+                        
 Banner.remove = (id, result) => {
     sql.query("DELETE FROM banners WHERE id = ?", id, (err, res) => {
         if (err) {

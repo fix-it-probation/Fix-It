@@ -77,5 +77,4 @@ UserFavorite.getExistence = (user_id, service_id, result)  => {
     });
 };
 
-
 module.exports = UserFavorite;

@@ -19,6 +19,14 @@ const createRegistrationToken = (user) => {
     return accessToken;
 }; 
 
+const createResetPasswordToken = (user) => {
+    const accessToken = sign(
+         {email: user.email, id: user.id, uniqueString: user.uniqueString},
+        process.env.SECRET_KEY
+    );
+    return accessToken;
+};
+
 const validateToken = (req, res, next) => {
     const accessToken = req.cookies["access-token"]
     if (!accessToken) return res.status(400).json({ error: "User not Authenticated!" });
@@ -67,4 +75,20 @@ const validateEmailToken = (req, res, next) => {
     } 
 };
 
-module.exports = {createToken, createRegistrationToken, validateToken, validateAccountPasswordToken, validateEmailToken}
+const requestResetPassword = (req, res, next) => {
+    const accessToken = req.cookies["req-password-access-token"]
+    if (!accessToken) return res.status(400).json({ error: "cookies expired!" });
+    try {
+        const validToken = verify(accessToken, process.env.SECRET_KEY)
+        if (validToken) {
+            req.user = validToken
+            req.authenticated = true
+            return next()
+        }
+        
+    } catch(err)  {
+        return res.status(400).json({ error: err });
+    } 
+};
+
+module.exports = {createToken, createRegistrationToken, createResetPasswordToken, validateToken, validateAccountPasswordToken, validateEmailToken, requestResetPassword}

@@ -1,11 +1,12 @@
 const { validateToken} = require("../middleware/JWT.js");
 const { authorize } = require("../middleware/authorize.js")
+const imageUploader = require('../helpers/image-uploader');
 
 module.exports = app => {
     const banners = require("../controllers/banner.controller.js");
   
     // Create a new Banner
-    app.post("/banners",validateToken, authorize(["admin"]), banners.create);
+    app.post("/banners",validateToken, authorize(["admin"]),imageUploader.upload.single('image'), banners.create);
   
     // Retrieve all banners
     app.get("/banners", banners.findAll);
