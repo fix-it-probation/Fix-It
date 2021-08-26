@@ -1,5 +1,6 @@
 const sql = require("../helpers/db.js");
-const { today, tomorrow }= require ("../helpers/time.js")
+const { today, tomorrow }= require ("../helpers/time.js");
+const fs = require("fs");
 
 today().toISOString().slice(0, 19)
 tomorrow().toISOString().slice(0, 19)
@@ -14,7 +15,7 @@ const Service = function(service) {
     this.totalDay = service.totalDay;
     this.totalPrice = service.totalPrice;
     this.user_id = service.user_id;
-    this.image_url = service.image_url;
+    this.receipt_url = service.receipt_url;
     this.image_url1= service.image_url1,
     this.image_url2= service.image_url2,
     this.image_url3= service.image_url3,
@@ -91,6 +92,51 @@ Service.updateById = (id, service, result) => {
 };
 
 Service.remove = (id, result) => {
+    sql.query(`SELECT * FROM services WHERE id = ${id}`, (err, res) => {
+        if (err) {
+            console.log("error: ", err);
+            return;
+        }
+
+        for (let i = 0 ; i < res.length ;i++){
+            fs.unlink(`public/assets/uploads/${res[i].image_url}`, (err) => {
+                if (err) {
+                    console.log("error: ", err);
+                    return;
+                }
+                console.log(`deleted image: public/assets/uploads/${res[i].image_url}`);
+            });
+            fs.unlink(`public/assets/uploads/${res[i].image_url1}`, (err) => {
+                if (err) {
+                    console.log("error: ", err);
+                    return;
+                }
+                console.log(`deleted image: public/assets/uploads/${res[i].image_url1}`);
+            });
+            fs.unlink(`public/assets/uploads/${res[i].image_url2}`, (err) => {
+                if (err) {
+                    console.log("error: ", err);
+                    return;
+                }
+                console.log(`deleted image: public/assets/uploads/${res[i].image_url2}`);
+            });
+            fs.unlink(`public/assets/uploads/${res[i].image_url3}`, (err) => {
+                if (err) {
+                    console.log("error: ", err);
+                    return;
+                }
+                console.log(`deleted image: public/assets/uploads/${res[i].image_url3}`);
+            });
+            fs.unlink(`public/assets/uploads/${res[i].receipt_url}`, (err) => {
+                if (err) {
+                    console.log("error: ", err);
+                    return;
+                }
+                console.log(`deleted image: public/assets/uploads/${res[i].receipt_url}`);
+            });
+        } 
+    });
+    
     sql.query("DELETE FROM services WHERE id = ?", id, (err, res) => {
         if (err) {
             console.log("error: ", err);
@@ -110,6 +156,51 @@ Service.remove = (id, result) => {
 };
 
 Service.removeAll = result => {
+    sql.query(`SELECT * FROM services`, (err, res) => {
+        if (err) {
+            console.log("error: ", err);
+            return;
+        }
+
+        for (let i = 0 ; i < res.length ;i++){
+            fs.unlink(`public/assets/uploads/${res[i].image_url}`, (err) => {
+                if (err) {
+                    console.log("error: ", err);
+                    return;
+                }
+                console.log(`deleted image: public/assets/uploads/${res[i].image_url}`);
+            });
+            fs.unlink(`public/assets/uploads/${res[i].image_url1}`, (err) => {
+                if (err) {
+                    console.log("error: ", err);
+                    return;
+                }
+                console.log(`deleted image: public/assets/uploads/${res[i].image_url1}`);
+            });
+            fs.unlink(`public/assets/uploads/${res[i].image_url2}`, (err) => {
+                if (err) {
+                    console.log("error: ", err);
+                    return;
+                }
+                console.log(`deleted image: public/assets/uploads/${res[i].image_url2}`);
+            });
+            fs.unlink(`public/assets/uploads/${res[i].image_url3}`, (err) => {
+                if (err) {
+                    console.log("error: ", err);
+                    return;
+                }
+                console.log(`deleted image: public/assets/uploads/${res[i].image_url3}`);
+            });
+            fs.unlink(`public/assets/uploads/${res[i].receipt_url}`, (err) => {
+                if (err) {
+                    console.log("error: ", err);
+                    return;
+                }
+                console.log(`deleted image: public/assets/uploads/${res[i].receipt_url}`);
+            });
+        } 
+    });
+    
     sql.query("DELETE FROM services", (err, res) => {
         if (err) {
             console.log("error: ", err);
@@ -209,6 +300,23 @@ Service.getTotalPending = result => {
 };
 
 Service.uploadReceiptById =  (id,receipt_url, result)  => {
+    sql.query(`SELECT * FROM services WHERE id = ${id}`, (err, res) => {
+        if (err) {
+            console.log("error: ", err);
+            return;
+        }
+
+        for (let i = 0 ; i < res.length ;i++){
+            fs.unlink(`public/assets/uploads/${res[i].receipt_url}`, (err) => {
+                if (err) {
+                    console.log("error: ", err);
+                    return;
+                }
+                console.log(`deleted image: public/assets/uploads/${res[i].receipt_url}`);
+            });
+        } 
+    });
+    
     sql.query(`UPDATE services set receipt_url = "${receipt_url}" WHERE id = ${id}`, (err, res) => {
         if (err) {
             console.log("error: ", err);

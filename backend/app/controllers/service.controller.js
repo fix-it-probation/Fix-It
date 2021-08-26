@@ -18,7 +18,7 @@ exports.create = (req, res) => {
         address: req.body.address,
         totalDay: req.body.totalDay*7,
         totalPrice: (req.body.totalDay)* 10000,
-        image_url : req.file.filename,
+        // image_url : req.file.filename,
         image_url1: req.files['file1'][0].filename,
         image_url2: req.files['file2'][0].filename,
         image_url3: req.files['file3'][0].filename,

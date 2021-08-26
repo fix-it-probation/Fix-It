@@ -1,5 +1,6 @@
 const sql = require("../helpers/db.js");
-const { tomorrow } = require("../helpers/time")
+const { tomorrow } = require("../helpers/time");
+const fs = require("fs");
 
 // constructor
 const Banner = function(banner) {
@@ -62,6 +63,23 @@ Banner.updateById = (id, banner, result) => {
 };
                         
 Banner.remove = (id, result) => {
+    sql.query(`SELECT * FROM banners WHERE id = ${id}`, (err, res) => {
+        if (err) {
+            console.log("error: ", err);
+            return;
+        }
+
+        for (let i = 0 ; i < res.length ;i++){
+            fs.unlink(`public/assets/uploads/${res[i].image_url}`, (err) => {
+                if (err) {
+                    console.log("error: ", err);
+                    return;
+                }
+                console.log(`deleted image: public/assets/uploads/${res[i].image_url}`);
+            });
+        } 
+    });
+
     sql.query("DELETE FROM banners WHERE id = ?", id, (err, res) => {
         if (err) {
             console.log("error: ", err);
@@ -81,6 +99,24 @@ Banner.remove = (id, result) => {
 };
 
 Banner.removeAll = result => {
+    sql.query(`SELECT * FROM banners`, (err, res) => {
+        if (err) {
+            console.log("error: ", err);
+            return;
+        }
+
+        for (let i = 0 ; i < res.length ;i++){
+            fs.unlink(`public/assets/uploads/${res[i].image_url}`, (err) => {
+                if (err) {
+                    console.log("error: ", err);
+                    return;
+                }
+                console.log(`deleted image: public/assets/uploads/${res[i].image_url}`);
+            });
+        } 
+    });
+    
+
     sql.query("DELETE FROM banners", (err, res) => {
         if (err) {
             console.log("error: ", err);

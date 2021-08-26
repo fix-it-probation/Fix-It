@@ -9,7 +9,7 @@ module.exports = app => {
     app.post("/users/register", imageUploader.upload.single("image"), users.register);
     
     // Verify User Email
-    app.get("/users/register/verify/", validateEmailToken, users.verifyEmail)
+    app.post("/users/register/verify/", validateEmailToken, users.verifyEmail)
 
     // Login a User
     app.post("/users/login", users.login);

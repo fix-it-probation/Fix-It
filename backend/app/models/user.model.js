@@ -1,4 +1,5 @@
 const sql = require("../helpers/db.js");
+const fs = require("fs");
 
 // constructor
 const User = function(user) {
@@ -47,24 +48,24 @@ User.findById = (userId, result) => {
     });
 };
 
-User.findByUniqueString = (uniqueString, result) => {
-    sql.query(`SELECT * FROM useraccounts WHERE uniqueString = ${uniqueString}`, (err, res) => {
-        if (err) {
-            console.log("error: ", err);
-            result(err, null);
-            return;
-        }
+// User.findByUniqueString = (uniqueString, result) => {
+//     sql.query(`SELECT * FROM useraccounts WHERE uniqueString = ${uniqueString}`, (err, res) => {
+//         if (err) {
+//             console.log("error: ", err);
+//             result(err, null);
+//             return;
+//         }
 
-        if (res.length) {
-            console.log("found user: ", res[0]);
-            result(null, res[0]);
-            return;
-        }
+//         if (res.length) {
+//             console.log("found user: ", res[0]);
+//             result(null, res[0]);
+//             return;
+//         }
 
-        // not found Customer with the id
-        result({ kind: "not_found" }, null);
-    });
-};
+//         // not found Customer with the id
+//         result({ kind: "not_found" }, null);
+//     });
+// };
 
 User.findByEmail = async (userEmail, result) => {
     sql.query(`SELECT * FROM useraccounts WHERE email = "${userEmail}"`, (err, res) => {
@@ -99,9 +100,25 @@ User.getAll = result => {
 };
 
 User.updateById = (id, user, result) => {
+    sql.query(`SELECT * FROM useraccounts where id = ${id}`, (err, res) => {
+        if (err) {
+            console.log("error: ", err);
+            return;
+        }
+
+        for (let i = 0 ; i < res.length ;i++){
+            fs.unlink(`public/assets/uploads/${res[i].avatar_url}`, (err) => {
+                if (err) {
+                    console.log("error: ", err);
+                    return;
+                }
+                console.log(`deleted image: public/assets/uploads/${res[i].avatar_url}`);
+            });
+        } 
+    });
+
     sql.query(
         "UPDATE useraccounts SET name = ?, telephone = ?, email = ?, password = ?, address = ?, province = ?, city = ?, role_id = ?, avatar_url = ? WHERE id = ?",
-
         [user.name, user.telephone, user.email, user.password, user.address, user.province, user.city,user.role_id, user.avatar_url, id],
         (err, res) => {
             if (err) {
@@ -123,6 +140,23 @@ User.updateById = (id, user, result) => {
 };
 
 User.remove = (id, result) => {
+    sql.query(`SELECT * FROM useraccounts where id = ${id}`, (err, res) => {
+        if (err) {
+            console.log("error: ", err);
+            return;
+        }
+
+        for (let i = 0 ; i < res.length ;i++){
+            fs.unlink(`public/assets/uploads/${res[i].avatar_url}`, (err) => {
+                if (err) {
+                    console.log("error: ", err);
+                    return;
+                }
+                console.log(`deleted image: public/assets/uploads/${res[i].avatar_url}`);
+            });
+        } 
+    });
+
     sql.query("DELETE FROM useraccounts WHERE id = ?", id, (err, res) => {
         if (err) {
             console.log("error: ", err);
@@ -142,6 +176,23 @@ User.remove = (id, result) => {
 };
 
 User.removeAll = result => {
+    sql.query(`SELECT * FROM useraccounts`, (err, res) => {
+        if (err) {
+            console.log("error: ", err);
+            return;
+        }
+
+        for (let i = 0 ; i < res.length ;i++){
+            fs.unlink(`public/assets/uploads/${res[i].avatar_url}`, (err) => {
+                if (err) {
+                    console.log("error: ", err);
+                    return;
+                }
+                console.log(`deleted image: public/assets/uploads/${res[i].avatar_url}`);
+            });
+        } 
+    });
+
     sql.query("DELETE FROM useraccounts", (err, res) => {
         if (err) {
             console.log("error: ", err);
@@ -164,25 +215,41 @@ User.resetPassword = (email, newPass, res) => {
     })
 }
 
-User.uploadAvatarById =  (id,avatar_url, result)  => {
-    sql.query(`UPDATE useraccounts set avatar_url = "${avatar_url}" WHERE id = ${id}`, (err, res) => {
-        if (err) {
-            console.log("error: ", err);
-            result(null, err);
-            return;
-        }
+// User.uploadAvatarById =  (id,avatar_url, result)  => {
+//     sql.query(`SELECT * FROM useraccounts where id = ${id}`, (err, res) => {
+//         if (err) {
+//             console.log("error: ", err);
+//             return;
+//         }
 
-        if (res.affectedRows == 0) {
-            // not found Feed with the id
-            result({ kind: "not_found" }, null);
-            return;
-        }
+//         for (let i = 0 ; i < res.length ;i++){
+//             fs.unlink(`public/assets/uploads/${res[i].avatar_url}`, (err) => {
+//                 if (err) {
+//                     console.log("error: ", err);
+//                     return;
+//                 }
+//                 console.log(`deleted image: public/assets/uploads/${res[i].avatar_url}`);
+//             });
+//         } 
+//     });
+//     sql.query(`UPDATE useraccounts set avatar_url = "${avatar_url}" WHERE id = ${id}`, (err, res) => {
+//         if (err) {
+//             console.log("error: ", err);
+//             result(null, err);
+//             return;
+//         }
 
-        console.log("updated feed: ", { id: id, receipt: avatar_url });
-        result(null, { id: id, receipt: avatar_url  });
-      }
-    ); 
-}
+//         if (res.affectedRows == 0) {
+//             // not found Feed with the id
+//             result({ kind: "not_found" }, null);
+//             return;
+//         }
+
+//         console.log("updated feed: ", { id: id, receipt: avatar_url });
+//         result(null, { id: id, receipt: avatar_url  });
+//       }
+//     ); 
+// }
 
 
 module.exports = User;
