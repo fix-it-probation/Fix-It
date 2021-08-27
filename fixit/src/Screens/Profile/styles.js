@@ -1,36 +1,49 @@
 import {StyleSheet} from 'react-native';
+import { COLOR_BASE_PRIMARY_MAIN, COLOR_BLACK, FONT_CUSTOM_BODY, FONT_PRIMARY_BODY, FONT_PRIMARY_HEADLINE, FONT_PRIMARY_TITLE } from '../../styles';
 
 const styles = StyleSheet.create({
-  textHeader: {
-    backgroundColor: 'white',
-    borderBottomWidth: 0.5,
-    borderBottomColor: '#c4c4c4',
-    color: 'green',
-    width: 500,
-    fontSize: 20,
-    fontWeight: 'bold',
-    paddingVertical: 20,
-    paddingLeft: 20,
+  avatar: {
+    borderRadius: 40,
+    height: 58,
+    marginLeft: 34,
+    marginTop: 30,
+    width: 58,
+  },
+  button: {
+    alignSelf: 'center',
+    marginTop: 60,
+  },
+  Icon: {
+    marginLeft: 34,
+    marginTop: 16,
+  },
+  textName: {
+    ...FONT_PRIMARY_TITLE,
+    color: COLOR_BLACK,
+    marginLeft: 110,
+    bottom: 60
   },
   textBody: {
-    backgroundColor: 'white',
-    borderBottomWidth: 0.5,
-    borderBottomColor: '#c4c4c4',
-    color: '#c4c4c4',
-    width: 500,
-    fontSize: 16,
-    paddingLeft: 20,
-    paddingVertical: 20,
+    ...FONT_PRIMARY_BODY,
+    bottom: 60,
+    marginTop: 4,
+    left: 110,
+    color: COLOR_BLACK,
   },
-  textTelp: {
-    backgroundColor: 'white',
-    borderBottomWidth: 3,
-    borderBottomColor: '#c4c4c4',
-    color: '#c4c4c4',
-    width: 500,
-    fontSize: 16,
-    paddingLeft: 20,
-    paddingVertical: 20,
+  textEdit: {
+    ...FONT_PRIMARY_TITLE,
+    marginLeft: 20,
+    marginTop: 16,
+  },
+  textTitle: {
+    ...FONT_PRIMARY_HEADLINE,
+    marginLeft: 34,
+    marginTop: 16
+  },
+  textVersion: {
+    ...FONT_PRIMARY_BODY,
+    marginTop: 8,
+    marginLeft: 300,
   },
 });
 
