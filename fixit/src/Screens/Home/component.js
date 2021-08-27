@@ -1,19 +1,18 @@
-import React, {useEffect} from 'react';
-import {View, Text} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View, Text, Image, TouchableOpacity} from 'react-native';
 import styles from './styles';
 import Search from '../../components/SearchBar';
 import Icon from '../../components/Icon';
 import { COLOR_FIELD, COLOR_WHITE } from '../../styles';
 import IMAGES from '../../configs';
 import Card from '../../components/Card';
+import Popup from '../../components/Popup';
 
 const Home = ({user}) => {
-  useEffect(() => {
-    alert('Halooo')
-  })
   user = "Alex"
   return (
     <View style={{backgroundColor: COLOR_WHITE, flex: 1}}>
+      <Popup />
       <Text style={styles.textHeader}>Selamat Datang, {user}</Text>
       <Search label="Cari tukang cat" customContainer={styles.searchBar} />
       <View style={styles.icon}>

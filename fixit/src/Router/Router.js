@@ -1,6 +1,7 @@
 import React, {useState, useMemo, useReducer, useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import Tab from './tabCustomer';
+import VerifyFeed from '../screens/Profile';
 import AuthStackScreen from './AuthStack';
 import {AuthContext} from '../components/Context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -86,7 +87,7 @@ const Router = () => {
   return (
     <AuthContext.Provider value={authContext}>
       <NavigationContainer>
-        {loginState.accessToken !== null ? (
+        {loginState.accessToken == null ? (
           <AuthStack.Navigator
             AuthContent={props => <AuthContent {...props} />}>
             <AuthStack.Screen

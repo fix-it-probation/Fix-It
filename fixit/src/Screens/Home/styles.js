@@ -1,5 +1,7 @@
-import {StyleSheet} from 'react-native';
+import {StyleSheet, Platform, Dimensions} from 'react-native';
 import { COLOR_BLACK, FONT_PRIMARY_HEADER, FONT_PRIMARY_HEADLINE } from '../../styles';
+const ios = Platform.OS === 'ios';
+const {width, height} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   cardHome: {

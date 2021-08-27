@@ -1,25 +1,53 @@
-import React from 'react'
-import { View, Text, Image, TouchableOpacity } from 'react-native';
-import IMAGES from '../../configs';
+import React, {useState, useEffect} from 'react';
+import {
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import Modal from 'react-native-modal';
 import styles from './styles';
 
-const AddPost = ({navigation}) => {
+const App = () => {
+  useEffect(() => {
+    openModal()
+  })
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const openModal = () => {
+    setIsModalVisible(true);
+  };
+  const closeModal = () => {
+    setIsModalVisible(false);
+  };
   return (
     <View style={styles.container}>
-      <View style={{flexDirection: 'row', marginTop: 32, marginLeft: 34,}}>
-        <Image source={IMAGES.close} />
-        <Text style={styles.textHeader}>New Post</Text>
-      </View>
-      <View style={{flexDirection: 'row'}}>
-        <TouchableOpacity onPress={() => navigation.navigate('UploadService')} style={styles.card}>
-          <Text style={styles.textCard}>Jasa</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('UploadFeed')} style={styles.card}>
-          <Text style={styles.textCard}>Feed</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
-  )
-}
 
-export default AddPost;
+      <Modal
+        animationIn="slideInUp"
+        animationOut="slideOutDown"
+        onBackdropPress={closeModal}
+        onSwipeComplete={closeModal}
+        swipeDirection="left"
+        isVisible={isModalVisible}
+        style={styles.modal}>
+        <View style={styles.contentContainer}>
+          <Text style={styles.modalContent}>Modal Content</Text>
+          <View style={styles.buttonContainer}>
+            <View style={styles.buttonRow}>
+              <TouchableOpacity style={styles.okButton}>
+                <Text style={styles.text}>Ok</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.cancelButton}
+                onPress={closeModal}>
+                <Text style={styles.text}>Cancel</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
+    </View>
+  );
+};
+
+export default App;

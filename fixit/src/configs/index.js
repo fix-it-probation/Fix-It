@@ -31,6 +31,8 @@ const image = {
     star: require('../../assets/image/star.png'),
     eyeActive: require('../../assets/image/eyeActive.png'),
     eyeInactive: require('../../assets/image/eyeInactive.png'),
+    verifyMitra: require('../../assets/image/verifyMitra.png'),
+    verifyFeed: require('../../assets/image/verifyFeed.png'),
 }
 
 export default image;
