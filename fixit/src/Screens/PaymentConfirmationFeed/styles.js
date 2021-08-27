@@ -1,5 +1,14 @@
 import {StyleSheet} from 'react-native';
-import { COLOR_BLACK, FONT_CUSTOM_FIELD, FONT_PRIMARY_HEADER, FONT_PRIMARY_COLOR, FONT_CUSTOM_BODY, COLOR_FIELD, FONT_PRIMARY_BODY, FONT_CUSTOM_INPUT } from '../../styles';
+import {
+  COLOR_BLACK,
+  FONT_CUSTOM_FIELD,
+  FONT_PRIMARY_HEADER,
+  FONT_PRIMARY_COLOR,
+  FONT_CUSTOM_BODY,
+  COLOR_FIELD,
+  FONT_PRIMARY_BODY,
+  FONT_CUSTOM_INPUT,
+} from '../../styles';
 
 const styles = StyleSheet.create({
   addImage: {
@@ -51,7 +60,7 @@ const styles = StyleSheet.create({
     color: FONT_PRIMARY_COLOR,
     marginLeft: 60,
     marginTop: 6,
-  }
+  },
 });
 
 export default styles;

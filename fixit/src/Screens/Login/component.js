@@ -1,5 +1,5 @@
 import React, {useState, useContext} from 'react';
-import { View, Text } from 'react-native';
+import {View, Text} from 'react-native';
 import styles from './styles';
 import BassicTitle from '../../components/BassicTitle';
 import BassicTitlePass from '../../components/BassicTitlePass';
@@ -25,9 +25,9 @@ const Login = ({navigation}) => {
         password: password,
       });
       console.log(res);
-      const role_id = res.data['role_id']
+      const role_id = res.data['role_id'];
       CookieManager.get(base + '/user/login').then(cookies => {
-        const accessToken = cookies['access-token'].value
+        const accessToken = cookies['access-token'].value;
         _Login(role_id, accessToken);
       });
     } catch (error) {

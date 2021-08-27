@@ -7,8 +7,10 @@ import DetailCustomer from '../screens/DetailMitra';
 import EditProfile from '../screens/EditProfile';
 import UploadService from '../screens/UploadService';
 import UploadFeed from '../screens/UploadFeed';
-import PaymentConfirmation from '../screens/PaymentConfirmation';
-import PaymentConfirmationProcess from '../screens/PaymentConfirmationProcess';
+import PaymentConfirmationService from '../screens/PaymentConfirmationService/';
+import PaymentConfirmationFeed from '../screens/PaymentConfirmationFeed';
+import PaymentConfirmationProcessService from '../screens/PaymentConfirmationProcessService';
+import PaymentConfirmationProcessFeed from '../screens/PaymentConfirmationProcessFeed/component';
 
 const AuthStack = createStackNavigator();
 
@@ -40,20 +42,31 @@ const AuthStackScreen2 = () => (
       options={{headerShown: false}}
     />
     <AuthStack.Screen
+      name="PaymentConfirmationService"
+      component={PaymentConfirmationService}
+      options={{headerShown: false}}
+    />
+    <AuthStack.Screen
+      name="PaymentConfirmationProcessService"
+      component={PaymentConfirmationProcessService}
+      options={{headerShown: false}}
+    />
+    <AuthStack.Screen
       name="UploadFeed"
       component={UploadFeed}
       options={{headerShown: false}}
     />
     <AuthStack.Screen
-      name="PaymentConfirmation"
-      component={PaymentConfirmation}
+      name="PaymentConfirmationFeed"
+      component={PaymentConfirmationFeed}
       options={{headerShown: false}}
     />
     <AuthStack.Screen
-      name="PaymentConfirmationProcess"
-      component={PaymentConfirmationProcess}
+      name="PaymentConfirmationProcessFeed"
+      component={PaymentConfirmationProcessFeed}
       options={{headerShown: false}}
     />
+    
   </AuthStack.Navigator>
 );
 

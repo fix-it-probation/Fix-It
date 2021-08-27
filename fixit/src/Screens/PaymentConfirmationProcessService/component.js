@@ -6,7 +6,7 @@ import IMAGES from '../../configs';
 import styles from './styles';
 import Button from '../../components/Button';
 
-const PaymentConfirmationProcess = ({ navigation }) => {
+const PaymentConfirmationProcessService = ({ navigation }) => {
   return (
     <View style={{flex: 1, backgroundColor: COLOR_WHITE}}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -20,4 +20,4 @@ const PaymentConfirmationProcess = ({ navigation }) => {
   );
 };
 
-export default PaymentConfirmationProcess;
+export default PaymentConfirmationProcessService;

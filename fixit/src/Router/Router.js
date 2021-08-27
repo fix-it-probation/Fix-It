@@ -15,7 +15,6 @@ import AddNumberCustomer from '../screens/AddNumberCustomer/component';
 import AddAddressCustomer from '../screens/AddAddressCustomer/component';
 import RegisterMitra from '../screens/RegisterMitra/component';
 
-
 const AuthStack = createStackNavigator();
 
 const Router = () => {
@@ -115,7 +114,7 @@ const Router = () => {
     <AuthContext.Provider value={authContext}>
       <NavigationContainer>
         {console.log(loginState.accessToken)}
-        {loginState.accessToken !== null ? (
+        {loginState.accessToken == null ? (
           decideRole()
         ) : (
           <AuthStack.Navigator initialRouteName="SplashScreen">
