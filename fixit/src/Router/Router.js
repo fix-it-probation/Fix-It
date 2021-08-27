@@ -9,7 +9,6 @@ import {createStackNavigator} from '@react-navigation/stack';
 import SplashScreen from '../screens/SplashScreen/component';
 import Onboarding from '../screens/OnBoarding/component';
 import Login from '../screens/Login/component';
-import SearchCustomer from '../screens/SearchCustomer/component';
 import RegisterCustomer from '../screens/RegisterCustomer/component';
 import CreatePassCustomer from '../screens/CreatePassCustomer/component';
 import AddNumberCustomer from '../screens/AddNumberCustomer/component';
@@ -118,15 +117,10 @@ const Router = () => {
         {loginState.accessToken !== null ? (
           decideRole()
         ) : (
-          <AuthStack.Navigator initialRouteName="SearchCustomer">
+          <AuthStack.Navigator initialRouteName="OnBoarding">
             <AuthStack.Screen
               name="SplashScreen"
               component={SplashScreen}
-              options={{headerShown: false}}
-            />
-            <AuthStack.Screen
-              name="SearchCustomer"
-              component={SearchCustomer}
               options={{headerShown: false}}
             />
             <AuthStack.Screen

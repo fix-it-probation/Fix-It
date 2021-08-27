@@ -4,6 +4,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import TabMitra from './tabMitra';
 import SearchCustomer from '../screens/SearchCustomer';
 import DetailCustomer from '../screens/DetailMitra';
+import AccountSecurity from '../screens/AccountSecurity';
 import EditProfile from '../screens/EditProfile';
 import UploadService from '../screens/UploadService';
 import UploadFeed from '../screens/UploadFeed';
@@ -24,6 +25,11 @@ const AuthStackScreen2 = () => (
     <AuthStack.Screen
       name="SearchCustomer"
       component={SearchCustomer}
+      options={{headerShown: false}}
+    />
+    <AuthStack.Screen
+      name="AccountSecurity"
+      component={AccountSecurity}
       options={{headerShown: false}}
     />
     <AuthStack.Screen

@@ -50,7 +50,7 @@ const Profile = ({ name, number, email, navigation }) => {
       <View style={{backgroundColor: COLOR_WHITE, height: 100, marginTop: 8,}}>
         <Text style={styles.textTitle}>Akun</Text>
         <TouchableOpacity
-          onPress={() => navigation.push('EditProfile')}
+          onPress={() => navigation.push('AccountSecurity')}
           style={{flexDirection: 'row'}}>
           <Image source={IMAGES.edit} style={styles.Icon} />
           <Text style={styles.textEdit}>Ubah Profile</Text>
