@@ -10,9 +10,9 @@ const job = schedule.scheduleJob(rule, () => {
     sql.query(` SELECT * FROM feeds where timestamp < STR_TO_DATE('${today().toISOString().slice(0, 19)}','%Y-%m-%dT%H:%i:%s'); SELECT * FROM services where timestamp < STR_TO_DATE('${today().toISOString().slice(0, 19)}','%Y-%m-%dT%H:%i:%s'); SELECT * FROM banners where timestamp < STR_TO_DATE('${today().toISOString().slice(0, 19)}','%Y-%m-%dT%H:%i:%s'); DELETE FROM feeds where timestamp < STR_TO_DATE('${today().toISOString().slice(0, 19)}','%Y-%m-%dT%H:%i:%s'); DELETE FROM services where timestamp < STR_TO_DATE('${today().toISOString().slice(0, 19)}','%Y-%m-%dT%H:%i:%s'); DELETE FROM banners where timestamp < STR_TO_DATE('${today().toISOString().slice(0, 19)}','%Y-%m-%dT%H:%i:%s');`, (err, res) => {
         if (err) {
             console.log("error: ", err);
-            // result(null, err);
-        return;
+            return;
         }
+
         for (let i = 0 ; i < 3; i++){
             if (i == 0){
                 for (let j = 0 ; j < res[i].length ;j++){
