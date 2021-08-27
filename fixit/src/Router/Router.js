@@ -115,7 +115,7 @@ const Router = () => {
     <AuthContext.Provider value={authContext}>
       <NavigationContainer>
         {console.log(loginState.accessToken)}
-        {loginState.accessToken == null ? (
+        {loginState.accessToken !== null ? (
           decideRole()
         ) : (
           <AuthStack.Navigator initialRouteName="SplashScreen">
