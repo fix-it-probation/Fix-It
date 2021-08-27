@@ -24,7 +24,7 @@ const AddNumberCustomer = ({route, navigation}) => {
     <View style={{backgroundColor: COLOR_WHITE, flex: 1}}>
       <View style={{ flexDirection: 'row' }}>
         <Back onPress={() => navigation.goBack()} custom={styles.backButton} />
-        <Text style={styles.textIndicator}>3 dari 4</Text>
+        <Text style={styles.textIndicator}>3 dari 5</Text>
       </View>
       <Text style={styles.textHeader}>Masukkan Nomor Telepon</Text>
       <BassicTitle

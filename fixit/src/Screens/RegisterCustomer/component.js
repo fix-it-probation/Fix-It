@@ -26,7 +26,7 @@ const RegisterCustomer = ({navigation}) => {
     <View style={{backgroundColor: COLOR_WHITE, flex: 1}}>
       <View style={{ flexDirection: 'row' }}>
         <Back custom={styles.backButton} />
-        <Text style={styles.textIndicator}>1 dari 4</Text>
+        <Text style={styles.textIndicator}>1 dari 5</Text>
       </View>
       <Text style={styles.textHeader}>Welcome to Fix it </Text>
       <BassicTitle

@@ -64,6 +64,12 @@ export const FONT_LIGHT = {
     fontFamily : FONT_PRIMARY_LIGHT,
     fontSize : FONT_SIZE_BODY,
 }
+
+export const FONT_WARNING_LIGHT = {
+    fontFamily : FONT_PRIMARY_LIGHT,
+    fontSize : FONT_SIZE_INPUT,
+}
+
 export const FONT_CUSTOM_LIGHT = {
     fontFamily : FONT_PRIMARY_LIGHT,
     fontSize : FONT_SIZE_ICON,

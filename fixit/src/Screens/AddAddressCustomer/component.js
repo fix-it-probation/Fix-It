@@ -58,7 +58,7 @@ const AddAddressCustomer = ({route, navigation}) => {
       <ScrollView showsVerticalScrollIndicator={false}>
       <View style={{ flexDirection: 'row' }}>
         <Back onPress={() => navigation.goBack()} custom={styles.backButton} />
-        <Text style={styles.textIndicator}>4 dari 4</Text>
+        <Text style={styles.textIndicator}>4 dari 5</Text>
       </View>
       <Text style={styles.textHeader}>Masukkan Alamat</Text>
       <KeyboardAvoidingView>

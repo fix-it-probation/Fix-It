@@ -8,6 +8,7 @@ import DetailCustomer from '../screens/DetailMitra';
 import EditProfile from '../screens/EditProfile';
 import AccountSecurity from '../screens/AccountSecurity';
 import PlacingAd from '../screens/PlacingAd';
+import VerificationCode from '../screens/VerificationCode';
 
 const AuthStack = createStackNavigator();
 
@@ -41,6 +42,11 @@ const AuthStack3 = () => (
     <AuthStack.Screen
       name="Placingad"
       component={PlacingAd}
+      options={{headerShown: false}}
+    />
+    <AuthStack.Screen
+      name="VerificationCode"
+      component={VerificationCode}
       options={{headerShown: false}}
     />
   </AuthStack.Navigator>
