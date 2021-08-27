@@ -46,7 +46,4 @@ module.exports = app => {
     
     // Delete all Users
     app.delete("/users", validateToken, authorize(["admin"]), users.deleteAll);
-
-    // Upload single avatar photo 
-    app.put("/users/upload-avatar/:userId",validateToken, imageUploader.upload.single("image"), users.uploadAvatar);
 };
