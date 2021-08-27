@@ -39,11 +39,26 @@ exports.register = (req, res) => {
             });
             
             if (accessToken) {
-                // const html = `Press <a href=http://api-fixit.herokuapp.com/users/register/verify/${user.uniqueString}> Here </a> to Verify Your Email. Thank You.`
-                const html = `Please Input This Unique Code on Your App to Verify Your Email. Thank You. <br> <em>${user.uniqueString}</em>`
+                const html = `<div style="font-family: Helvetica,Arial,sans-serif;min-width:1000px;overflow:auto;line-height:2">
+                <div style="margin:50px auto;width:70%;padding:20px 0">
+                    <div style="border-bottom:1px solid #eee">
+                    <a href="" style="font-size:1.4em;color: #00466a;text-decoration:none;font-weight:600">FIX-IT</a>
+                    </div>
+                    <p style="font-size:1.1em">Hi,</p>
+                    <p>Thank you for choosing FIX-IT. Use the following OTP to complete your Sign Up procedures. OTP is valid for 5 minutes</p>
+                    <h2 style="background: #0063FF;margin: 0 auto;width: max-content;padding: 0 10px;color: #fff;border-radius: 4px;">${user.uniqueString}</h2>
+                    <p style="font-size:0.9em;">Regards,<br />FIX-IT</p>
+                    <hr style="border:none;border-top:1px solid #eee" />
+                    <div style="float:right;padding:8px 0;color:#aaa;font-size:0.8em;line-height:1;font-weight:300">
+                    <p>FIX-IT</p>
+                    <p>Bandung</p>
+                    <p>Indonesia</p>
+                    </div>
+                </div>
+                </div>`
                 mail.sendMail(user.email, "Email Verification", html)
             } else {
-                res.json({ message: "uniqueString is Empty." })
+                res.json({ message: "OTP is Empty." })
             }
             res.json({ message: "Success." })
         });
@@ -339,7 +354,6 @@ exports.verifyEmail = (req, res) => {
         city : req.user.city,
         role_id : req.user.role_id,
         avatar_url : req.user.avatar_url,
-        // uniqueString : req.user.uniqueString,
     });
 
     if (req.user.uniqueString == req.body.uniqueStringConfirm) {
@@ -356,7 +370,7 @@ exports.verifyEmail = (req, res) => {
             });
     } else {
         res.status(401).send({
-            message: `Incorrect Unique String`,
+            message: `Incorrect OTP.`,
         }); 
     }
 };
@@ -395,9 +409,23 @@ exports.requestResetPassword = async (req, res) => {
                         });
                     }
             } else {
-                // const html = `Press <a href=http://api-fixit.herokuapp.com/users/reset-password/${data.uniqueString}> Here </a> to Reset Your Password. Thank You.`
-                const html = `Please Input This Unique Code on Your App to Verify Your Email. Thank You. <br> <em>${user.uniqueString}</em>`
-                console.log(user.uniqueString)
+                 const html = `<div style="font-family: Helvetica,Arial,sans-serif;min-width:1000px;overflow:auto;line-height:2">
+                                <div style="margin:50px auto;width:70%;padding:20px 0">
+                                    <div style="border-bottom:1px solid #eee">
+                                    <a href="" style="font-size:1.4em;color: #00466a;text-decoration:none;font-weight:600">FIX-IT</a>
+                                    </div>
+                                    <p style="font-size:1.1em">Hi,</p>
+                                    <p>Thank you for choosing FIX-IT. Use the following OTP to complete your reset password procedures. OTP is valid for 5 minutes</p>
+                                    <h2 style="background: #0063FF;margin: 0 auto;width: max-content;padding: 0 10px;color: #fff;border-radius: 4px;">${user.uniqueString}</h2>
+                                    <p style="font-size:0.9em;">Regards,<br />FIX-IT</p>
+                                    <hr style="border:none;border-top:1px solid #eee" />
+                                    <div style="float:right;padding:8px 0;color:#aaa;font-size:0.8em;line-height:1;font-weight:300">
+                                    <p>FIX-IT</p>
+                                    <p>Bandung</p>
+                                    <p>Indonesia</p>
+                                    </div>
+                                </div>
+                                </div>`
                 mail.sendMail(user.email, "Password Reset", html)
                 res.json({ message: "Success."})
             }
@@ -410,8 +438,6 @@ exports.requestResetPassword = async (req, res) => {
 
 // Reset Password Verification
 exports.verifyResetPassword = async (req, res) => {
-    console.log(req.user)
-
     // Validate request
     if (!req.body) {
         res.status(400).send({
@@ -420,13 +446,12 @@ exports.verifyResetPassword = async (req, res) => {
 
     } else if (req.user.uniqueString != req.body.uniqueStringConfirm){
         res.status(401).send({
-            message: "UniqueCode and UniqueCode Confirmation does not match."
+            message: "Invalid OTP."
         });
     } else if (req.body.password != req.body.confirmationPassword){
         res.status(401).send({
             message: "Password and Password Confirmation does not match."
         });
-
     } else {
         bcrypt.hash(req.body.password,10).then((hash) => {
             // Create new password
@@ -450,27 +475,4 @@ exports.verifyResetPassword = async (req, res) => {
             });
         });
     }
-}
-
-exports.uploadAvatar = (req, res) => {
-    // Validate Request
-    if (!req.body) {
-        res.status(400).send({
-            message: "Content can not be empty!"
-        });
-    }
-  
-    User.uploadAvatarById(req.params.userId, req.file.filename, (err, data) => {
-        if (err) {
-            if (err.kind === "not_found") {
-                res.status(404).send({
-                    message: `Not found User with id ${req.params.userId}.`
-                });
-            } else {
-                res.status(500).send({
-                    message: "Error updating User with id " + req.params.userId
-                });
-            }
-        } else res.send(data);
-    });
 };
