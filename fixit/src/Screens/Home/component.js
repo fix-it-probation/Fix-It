@@ -8,8 +8,29 @@ import IMAGES from '../../configs';
 import Card from '../../components/Card';
 import Popup from '../../components/Popup';
 
-const Home = ({user}) => {
-  user = "Alex"
+const Home = () => {
+  const [user, setUser] = useState({
+    name: '',
+  });
+
+  const getData = async () => {
+    try {
+      const res = await baseURL.get('/users/profile');
+      setUser({
+        ...user,
+        name: res.data['name']
+      });
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+  useEffect(() => {
+    setTimeout(async () => {
+      getData();
+      alert('Halooo')
+    }, 10);
+  }, []);
+  
   return (
     <View style={{backgroundColor: COLOR_WHITE, flex: 1}}>
       <Popup />

@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect,useState} from 'react';
 import {View, Text} from 'react-native';
 import styles from './styles';
 import Search from '../../components/SearchBar';
@@ -6,15 +6,33 @@ import Icon from '../../components/Icon';
 import {COLOR_FIELD, COLOR_WHITE} from '../../styles';
 import IMAGES from '../../configs';
 import Card from '../../components/Card';
+import baseURL from '../../baseURL';
 
-const HomeMitra = ({user}) => {
-  useEffect(() => {
-    alert('Halooo');
+const HomeMitra = () => {
+  const [user, setUser] = useState({
+    name: '',
   });
-  user = 'Alex';
+
+  const getData = async () => {
+    try {
+      const res = await baseURL.get('/users/profile');
+      setUser({
+        ...user,
+        name: res.data['name']
+      });
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+  useEffect(() => {
+    setTimeout(async () => {
+      getData();
+      alert('Halooo')
+    }, 10);
+  }, []);
   return (
     <View style={{backgroundColor: COLOR_WHITE, flex: 1}}>
-      <Text style={styles.textHeader}>Selamat Datang, {user}</Text>
+      <Text style={styles.textHeader}>Selamat Datang, {user.name}</Text>
       <Search label="Cari tukang cat" customContainer={styles.searchBar} />
       <View style={styles.icon}>
         <Icon

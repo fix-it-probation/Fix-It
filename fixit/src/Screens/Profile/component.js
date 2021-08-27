@@ -36,7 +36,7 @@ const Profile = ({ name, number, email, navigation }) => {
   useEffect(() => {
     setTimeout(async () => {
       getData();
-    }, 1000);
+    }, 10);
   }, []);
 
   return (

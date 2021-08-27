@@ -1,8 +1,8 @@
 import React, {useMemo, useReducer, useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import AuthStack1 from './AuthStack1';
-import AuthStackScreen2 from './AuthStack2';
-import AuthStackScreen3 from './AuthStack3';
+import AuthStack2 from './AuthStack2';
+import AuthStack3 from './AuthStack3';
 import {AuthContext} from '../components/Context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -87,9 +87,9 @@ const Router = () => {
     if (loginState.role_id === '1') {
       return <AuthStack1 />;
     } else if (loginState.role_id === '2') {
-      return <AuthStackScreen2 />;
+      return <AuthStack2 />;
     } else if (loginState.role_id === '3') {
-      return <AuthStackScreen3 />;
+      return <AuthStack3 />;
     }
   };
 

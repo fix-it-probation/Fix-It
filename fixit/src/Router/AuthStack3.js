@@ -9,7 +9,7 @@ import EditProfile from '../screens/EditProfile';
 
 const AuthStack = createStackNavigator();
 
-const AuthStackScreen3 = () => (
+const AuthStack3 = () => (
   <AuthStack.Navigator initialRouteName="Home">
     <AuthStack.Screen
       name="Home"
@@ -31,7 +31,12 @@ const AuthStackScreen3 = () => (
       component={EditProfile}
       options={{headerShown: false}}
     />
+    <AuthStack.Screen
+      name="AccountSecurity"
+      component={AccountSecurity}
+      options={{headerShown: false}}
+    />
   </AuthStack.Navigator>
 );
 
-export default AuthStackScreen3;
+export default AuthStack3;
