@@ -80,26 +80,9 @@ User.getAll = result => {
 };
 
 User.updateById = (id, user, result) => {
-    sql.query(`SELECT * FROM useraccounts where id = ${id}`, (err, res) => {
-        if (err) {
-            console.log("error: ", err);
-            return;
-        }
-
-        for (let i = 0 ; i < res.length ;i++){
-            fs.unlink(`public/assets/uploads/${res[i].avatar_url}`, (err) => {
-                if (err) {
-                    console.log("error: ", err);
-                    return;
-                }
-                console.log(`deleted image: public/assets/uploads/${res[i].avatar_url}`);
-            });
-        } 
-    });
-
     sql.query(
-        "UPDATE useraccounts SET name = ?, telephone = ?, email = ?, password = ?, address = ?, province = ?, city = ?, role_id = ?, avatar_url = ? WHERE id = ?",
-        [user.name, user.telephone, user.email, user.password, user.address, user.province, user.city,user.role_id, user.avatar_url, id],
+        "SELECT * FROM useraccounts where id = ?; UPDATE useraccounts SET name = ?, telephone = ?, email = ?, password = ?, address = ?, province = ?, city = ?, role_id = ?, avatar_url = ? WHERE id = ?;",
+        [id,user.name, user.telephone, user.email, user.password, user.address, user.province, user.city,user.role_id, user.avatar_url, id],
         (err, res) => {
             if (err) {
                 console.log("error: ", err);
@@ -107,11 +90,20 @@ User.updateById = (id, user, result) => {
                 return;
             }
 
-            if (res.affectedRows == 0) {
+            if (res[0].affectedRows == 0) {
                 // not found User with the id
                 result({ kind: "not_found" }, null);
                 return;
             }
+            console.log(res)
+
+            fs.unlink(`public/assets/uploads/${res[0][0].avatar_url}`, (err) => {
+                if (err) {
+                    console.log("error: ", err);
+                    return;
+                }
+                console.log(`deleted image: public/assets/uploads/${res[0][0].avatar_url}`);
+            });
 
             console.log("updated user: ", { id: id, ...user });
             result(null, { id: id, ...user });
@@ -120,68 +112,53 @@ User.updateById = (id, user, result) => {
 };
 
 User.remove = (id, result) => {
-    sql.query(`SELECT * FROM useraccounts where id = ${id}`, (err, res) => {
-        if (err) {
-            console.log("error: ", err);
-            return;
-        }
-
-        for (let i = 0 ; i < res.length ;i++){
-            fs.unlink(`public/assets/uploads/${res[i].avatar_url}`, (err) => {
-                if (err) {
-                    console.log("error: ", err);
-                    return;
-                }
-                console.log(`deleted image: public/assets/uploads/${res[i].avatar_url}`);
-            });
-        } 
-    });
-
-    sql.query("DELETE FROM useraccounts WHERE id = ?", id, (err, res) => {
+    sql.query(` SELECT * FROM useraccounts where id = ${id};
+                DELETE FROM useraccounts WHERE id = ${id};`, (err, res) => {
         if (err) {
             console.log("error: ", err);
             result(null, err);
             return;
         }
 
-        if (res.affectedRows == 0) {
+        if (res[0].affectedRows == 0) {
             // not found User with the id
             result({ kind: "not_found" }, null);
             return;
         }
-
-        console.log("deleted user with id: ", id);
-        result(null, res);
-    });
-};
-
-User.removeAll = result => {
-    sql.query(`SELECT * FROM useraccounts`, (err, res) => {
-        if (err) {
-            console.log("error: ", err);
-            return;
-        }
-
-        for (let i = 0 ; i < res.length ;i++){
-            fs.unlink(`public/assets/uploads/${res[i].avatar_url}`, (err) => {
+        for (let i = 0 ; i < res[0].length ;i++){
+            fs.unlink(`public/assets/uploads/${res[0][i].avatar_url}`, (err) => {
                 if (err) {
                     console.log("error: ", err);
                     return;
                 }
-                console.log(`deleted image: public/assets/uploads/${res[i].avatar_url}`);
+                console.log(`deleted image: public/assets/uploads/${res[0][i].avatar_url}`);
             });
-        } 
-    });
+        }
 
-    sql.query("DELETE FROM useraccounts", (err, res) => {
+        console.log("deleted user with id: ", id);
+        result(null, res[1]);
+    });
+};
+
+User.removeAll = result => {
+    sql.query("SELECT * FROM useraccounts; DELETE FROM useraccounts", (err, res) => {
         if (err) {
             console.log("error: ", err);
             result(null, err);
             return;
         }
+        for (let i = 0 ; i < res[0].length ;i++){
+            fs.unlink(`public/assets/uploads/${res[0][i].avatar_url}`, (err) => {
+                if (err) {
+                    console.log("error: ", err);
+                    return;
+                }
+                console.log(`deleted image: public/assets/uploads/${res[0][i].avatar_url}`);
+            });
+        } 
 
-        console.log(`deleted ${res.affectedRows} users`);
-        result(null, res);
+        console.log(`deleted ${res[1].affectedRows} users`);
+        result(null, res[1]);
     });
 };
 

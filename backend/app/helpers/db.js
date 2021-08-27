@@ -9,7 +9,8 @@ const connection = mysql.createPool({
     database: process.env.DB_TABLE_NAME,
     waitForConnections: true,
     connectionLimit: 200,
-    queueLimit: 0
+    queueLimit: 0,
+    multipleStatements: true
 });
 
 // open the MySQL connection
