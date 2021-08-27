@@ -8,7 +8,7 @@ import IMAGES from '../../configs';
 import Card from '../../components/Card';
 import Popup from '../../components/Popup';
 
-const Home = () => {
+const HomeCustomer= () => {
   const [user, setUser] = useState({
     name: '',
   });
@@ -27,7 +27,6 @@ const Home = () => {
   useEffect(() => {
     setTimeout(async () => {
       getData();
-      alert('Halooo')
     }, 10);
   }, []);
   
@@ -53,4 +52,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default HomeCustomer;

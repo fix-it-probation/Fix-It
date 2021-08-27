@@ -1,6 +1,6 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Home from "../screens/Home";
+import HomeCustomer from "../screens/HomeCustomer";
 import Favorites from '../screens/Favorites';
 import Profile from '../screens/Profile';
 import Feed from '../screens/Feed';
@@ -19,7 +19,7 @@ const TabCustomer = () => {
               height: 60
             }
           }}>
-            <Tabs.Screen name="Home" component={Home} options={{tabBarIcon : ({focused}) => (
+            <Tabs.Screen name="HomeCustomer" component={HomeCustomer} options={{tabBarIcon : ({focused}) => (
                 <View style={{flexDirection: 'column'}}>
                     <Image source={IMAGES.home} resizeMode="contain" style={{
                         width: 20, 

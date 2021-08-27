@@ -13,9 +13,9 @@ import VerificationCode from '../screens/VerificationCode';
 const AuthStack = createStackNavigator();
 
 const AuthStack3 = () => (
-  <AuthStack.Navigator initialRouteName="Home">
+  <AuthStack.Navigator initialRouteName="HomeCustomer">
     <AuthStack.Screen
-      name="Home"
+      name="HomeCustomer"
       component={TabCustomer}
       options={{headerShown: false}}
     />
