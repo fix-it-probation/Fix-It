@@ -63,38 +63,31 @@ Banner.updateById = (id, banner, result) => {
 };
                         
 Banner.remove = (id, result) => {
-    sql.query(`SELECT * FROM banners WHERE id = ${id}`, (err, res) => {
-        if (err) {
-            console.log("error: ", err);
-            return;
-        }
-
-        for (let i = 0 ; i < res.length ;i++){
-            fs.unlink(`public/assets/uploads/${res[i].image_url}`, (err) => {
-                if (err) {
-                    console.log("error: ", err);
-                    return;
-                }
-                console.log(`deleted image: public/assets/uploads/${res[i].image_url}`);
-            });
-        } 
-    });
-
-    sql.query("DELETE FROM banners WHERE id = ?", id, (err, res) => {
+    sql.query("SELECT * FROM banners WHERE id = ? ; DELETE FROM banners WHERE id = ?;", [id,id], (err, res) => {
         if (err) {
             console.log("error: ", err);
             result(null, err);
             return;
         }
 
-        if (res.affectedRows == 0) {
+        if (res[1].affectedRows == 0) {
             // not found Banner with the id
             result({ kind: "not_found" }, null);
             return;
         }
 
+        for (let i = 0 ; i < res[0].length ;i++){
+            fs.unlink(`public/assets/uploads/${res[0][i].image_url}`, (err) => {
+                if (err) {
+                    console.log("error: ", err);
+                    return;
+                }
+                console.log(`deleted image: public/assets/uploads/${res[0][i].image_url}`);
+            });
+        } 
+
         console.log("deleted banner with id: ", id);
-        result(null, res);
+        result(null, res[1]);
     });
 };
 

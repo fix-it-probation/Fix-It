@@ -1,5 +1,5 @@
 const sql = require("../helpers/db.js");
-const {today} = require("../helpers/time");
+const {today, tomorrow} = require("../helpers/time");
 const fs = require("fs");
 
 // constructor
@@ -12,7 +12,7 @@ const Feed = function(feed) {
     this.isVerified = false;
     this.image_url = feed.image_url;
     this.user_id = feed.user_id;
-    this.timestamp = today();
+    this.timestamp = tomorrow();
 };
 
 Feed.create = (newFeed, result) => {
@@ -84,82 +84,69 @@ Feed.updateById = (id, feed, result) => {
 };
 
 Feed.remove = (id, result) => {
-    sql.query(`SELECT * FROM feeds`, (err, res) => {
-        if (err) {
-            console.log("error: ", err);
-            return;
-        }
-
-        for (let i = 0 ; i < res.length ;i++){
-            fs.unlink(`public/assets/uploads/${res[i].image_url}`, (err) => {
-                if (err) {
-                    console.log("error: ", err);
-                    return;
-                }
-                console.log(`deleted image: public/assets/uploads/${res[i].image_url}`);
-            });
-            fs.unlink(`public/assets/uploads/${res[i].receipt_url}`, (err) => {
-                if (err) {
-                    console.log("error: ", err);
-                    return;
-                }
-                console.log(`deleted image: public/assets/uploads/${res[i].receipt_url}`);
-            });
-        } 
-    });
-
-    sql.query("DELETE FROM feeds WHERE id = ?", id, (err, res) => {
+    sql.query(` SELECT * FROM feeds;
+                DELETE FROM feeds WHERE id = ?`, id, (err, res) => {
         if (err) {
             console.log("error: ", err);
             result(null, err);
             return;
         }
 
-        if (res.affectedRows == 0) {
+        if (res[1].affectedRows == 0) {
             // not found Feed with the id
             result({ kind: "not_found" }, null);
             return;
         }
 
+        for (let i = 0 ; i < res[0].length ;i++){
+            fs.unlink(`public/assets/uploads/${res[0][i].image_url}`, (err) => {
+                if (err) {
+                    console.log("error: ", err);
+                    return;
+                }
+                console.log(`deleted image: public/assets/uploads/${res[0][i].image_url}`);
+            });
+            fs.unlink(`public/assets/uploads/${res[0][i].receipt_url}`, (err) => {
+                if (err) {
+                    console.log("error: ", err);
+                    return;
+                }
+                console.log(`deleted image: public/assets/uploads/${res[0][i].receipt_url}`);
+            });
+        } 
+
         console.log("deleted feed with id: ", id);
-        result(null, res);
+        result(null, res[1]);
     });
 };
 
 Feed.removeAll = result => {
-    sql.query(`SELECT * FROM feeds`, (err, res) => {
-        if (err) {
-            console.log("error: ", err);
-            return;
-        }
-
-        for (let i = 0 ; i < res.length ;i++){
-            fs.unlink(`public/assets/uploads/${res[i].image_url}`, (err) => {
-                if (err) {
-                    console.log("error: ", err);
-                    return;
-                }
-                console.log(`deleted image: public/assets/uploads/${res[i].image_url}`);
-            });
-            fs.unlink(`public/assets/uploads/${res[i].receipt_url}`, (err) => {
-                if (err) {
-                    console.log("error: ", err);
-                    return;
-                }
-                console.log(`deleted image: public/assets/uploads/${res[i].receipt_url}`);
-            });
-        } 
-    });
-
-    sql.query("DELETE FROM feeds", (err, res) => {
+    sql.query(` SELECT * FROM feeds;
+                DELETE FROM feeds`, (err, res) => {
         if (err) {
             console.log("error: ", err);
             result(null, err);
         return;
         }
+        for (let i = 0 ; i < res[0].length ;i++){
+            fs.unlink(`public/assets/uploads/${res[0][i].image_url}`, (err) => {
+                if (err) {
+                    console.log("error: ", err);
+                    return;
+                }
+                console.log(`deleted image: public/assets/uploads/${res[0][i].image_url}`);
+            });
+            fs.unlink(`public/assets/uploads/${res[0][i].receipt_url}`, (err) => {
+                if (err) {
+                    console.log("error: ", err);
+                    return;
+                }
+                console.log(`deleted image: public/assets/uploads/${res[0][i].receipt_url}`);
+            });
+        }
 
-        console.log(`deleted ${res.affectedRows} feeds`);
-        result(null, res);
+        console.log(`deleted ${res[1].affectedRows} feeds`);
+        result(null, res[1]);
     });
 };
 
@@ -213,36 +200,30 @@ Feed.getTotalPending = result => {
     });
 };
 
-Feed.uploadReceiptById =  (id,receipt_url, result)  => {
-    sql.query(`SELECT * FROM feeds where id = ${id}`, (err, res) => {
-        if (err) {
-            console.log("error: ", err);
-            return;
-        }
-
-        for (let i = 0 ; i < res.length ;i++){
-            fs.unlink(`public/assets/uploads/${res[i].receipt_url}`, (err) => {
-                if (err) {
-                    console.log("error: ", err);
-                    return;
-                }
-                console.log(`deleted image: public/assets/uploads/${res[i].receipt_url}`);
-            });
-        } 
-    });
-    
-    sql.query(`UPDATE feeds set receipt_url = "${receipt_url}" WHERE id = ${id}`, (err, res) => {
+Feed.uploadReceiptById =  (id,receipt_url, result)  => {    
+    sql.query(` SELECT * FROM feeds where id = ${id};
+                UPDATE feeds set receipt_url = "${receipt_url}" WHERE id = ${id}`, (err, res) => {
         if (err) {
             console.log("error: ", err);
             result(null, err);
             return;
         }
 
-        if (res.affectedRows == 0) {
+        if (res[1].affectedRows == 0) {
             // not found Feed with the id
             result({ kind: "not_found" }, null);
             return;
         }
+
+        for (let i = 0 ; i < res[0].length ;i++){
+            fs.unlink(`public/assets/uploads/${res[0][i].receipt_url}`, (err) => {
+                if (err) {
+                    console.log("error: ", err);
+                    return;
+                }
+                console.log(`deleted image: public/assets/uploads/${res[0][i].receipt_url}`);
+            });
+        } 
 
         console.log("updated feed: ", { id: id, receipt: receipt_url });
         result(null, { id: id, receipt: receipt_url  });

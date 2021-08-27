@@ -92,123 +92,111 @@ Service.updateById = (id, service, result) => {
 };
 
 Service.remove = (id, result) => {
-    sql.query(`SELECT * FROM services WHERE id = ${id}`, (err, res) => {
-        if (err) {
-            console.log("error: ", err);
-            return;
-        }
-
-        for (let i = 0 ; i < res.length ;i++){
-            fs.unlink(`public/assets/uploads/${res[i].image_url}`, (err) => {
-                if (err) {
-                    console.log("error: ", err);
-                    return;
-                }
-                console.log(`deleted image: public/assets/uploads/${res[i].image_url}`);
-            });
-            fs.unlink(`public/assets/uploads/${res[i].image_url1}`, (err) => {
-                if (err) {
-                    console.log("error: ", err);
-                    return;
-                }
-                console.log(`deleted image: public/assets/uploads/${res[i].image_url1}`);
-            });
-            fs.unlink(`public/assets/uploads/${res[i].image_url2}`, (err) => {
-                if (err) {
-                    console.log("error: ", err);
-                    return;
-                }
-                console.log(`deleted image: public/assets/uploads/${res[i].image_url2}`);
-            });
-            fs.unlink(`public/assets/uploads/${res[i].image_url3}`, (err) => {
-                if (err) {
-                    console.log("error: ", err);
-                    return;
-                }
-                console.log(`deleted image: public/assets/uploads/${res[i].image_url3}`);
-            });
-            fs.unlink(`public/assets/uploads/${res[i].receipt_url}`, (err) => {
-                if (err) {
-                    console.log("error: ", err);
-                    return;
-                }
-                console.log(`deleted image: public/assets/uploads/${res[i].receipt_url}`);
-            });
-        } 
-    });
-    
-    sql.query("DELETE FROM services WHERE id = ?", id, (err, res) => {
+    sql.query(` SELECT * FROM services WHERE id = ${id};
+                DELETE FROM services WHERE id = ?`, id, (err, res) => {
         if (err) {
             console.log("error: ", err);
             result(null, err);
             return;
         }
 
-        if (res.affectedRows == 0) {
+        if (res[1].affectedRows == 0) {
             // not found Service with the id
             result({ kind: "not_found" }, null);
             return;
         }
+
+
+        for (let i = 0 ; i < res[0].length ;i++){
+            fs.unlink(`public/assets/uploads/${res[0][i].image_url}`, (err) => {
+                if (err) {
+                    console.log("error: ", err);
+                    return;
+                }
+                console.log(`deleted image: public/assets/uploads/${res[0][i].image_url}`);
+            });
+            fs.unlink(`public/assets/uploads/${res[0][i].image_url1}`, (err) => {
+                if (err) {
+                    console.log("error: ", err);
+                    return;
+                }
+                console.log(`deleted image: public/assets/uploads/${res[0][i].image_url1}`);
+            });
+            fs.unlink(`public/assets/uploads/${res[0][i].image_url2}`, (err) => {
+                if (err) {
+                    console.log("error: ", err);
+                    return;
+                }
+                console.log(`deleted image: public/assets/uploads/${res[0][i].image_url2}`);
+            });
+            fs.unlink(`public/assets/uploads/${res[0][i].image_url3}`, (err) => {
+                if (err) {
+                    console.log("error: ", err);
+                    return;
+                }
+                console.log(`deleted image: public/assets/uploads/${res[0][i].image_url3}`);
+            });
+            fs.unlink(`public/assets/uploads/${res[0][i].receipt_url}`, (err) => {
+                if (err) {
+                    console.log("error: ", err);
+                    return;
+                }
+                console.log(`deleted image: public/assets/uploads/${res[0][i].receipt_url}`);
+            });
+        } 
 
         console.log("deleted service with id: ", id);
         result(null, res);
     });
 };
 
-Service.removeAll = result => {
-    sql.query(`SELECT * FROM services`, (err, res) => {
-        if (err) {
-            console.log("error: ", err);
-            return;
-        }
-
-        for (let i = 0 ; i < res.length ;i++){
-            fs.unlink(`public/assets/uploads/${res[i].image_url}`, (err) => {
-                if (err) {
-                    console.log("error: ", err);
-                    return;
-                }
-                console.log(`deleted image: public/assets/uploads/${res[i].image_url}`);
-            });
-            fs.unlink(`public/assets/uploads/${res[i].image_url1}`, (err) => {
-                if (err) {
-                    console.log("error: ", err);
-                    return;
-                }
-                console.log(`deleted image: public/assets/uploads/${res[i].image_url1}`);
-            });
-            fs.unlink(`public/assets/uploads/${res[i].image_url2}`, (err) => {
-                if (err) {
-                    console.log("error: ", err);
-                    return;
-                }
-                console.log(`deleted image: public/assets/uploads/${res[i].image_url2}`);
-            });
-            fs.unlink(`public/assets/uploads/${res[i].image_url3}`, (err) => {
-                if (err) {
-                    console.log("error: ", err);
-                    return;
-                }
-                console.log(`deleted image: public/assets/uploads/${res[i].image_url3}`);
-            });
-            fs.unlink(`public/assets/uploads/${res[i].receipt_url}`, (err) => {
-                if (err) {
-                    console.log("error: ", err);
-                    return;
-                }
-                console.log(`deleted image: public/assets/uploads/${res[i].receipt_url}`);
-            });
-        } 
-    });
-    
-    sql.query("DELETE FROM services", (err, res) => {
+Service.removeAll = result => {    
+    sql.query(` SELECT * FROM services;
+                DELETE FROM services;`, (err, res) => {
         if (err) {
             console.log("error: ", err);
             result(null, err);
         return;
         }
 
-        console.log(`deleted ${res.affectedRows} services`);
+        for (let i = 0 ; i < res[0].length ;i++){
+            fs.unlink(`public/assets/uploads/${res[0][i].image_url}`, (err) => {
+                if (err) {
+                    console.log("error: ", err);
+                    return;
+                }
+                console.log(`deleted image: public/assets/uploads/${res[0][i].image_url}`);
+            });
+            fs.unlink(`public/assets/uploads/${res[0][i].image_url1}`, (err) => {
+                if (err) {
+                    console.log("error: ", err);
+                    return;
+                }
+                console.log(`deleted image: public/assets/uploads/${res[0][i].image_url1}`);
+            });
+            fs.unlink(`public/assets/uploads/${res[0][i].image_url2}`, (err) => {
+                if (err) {
+                    console.log("error: ", err);
+                    return;
+                }
+                console.log(`deleted image: public/assets/uploads/${res[0][i].image_url2}`);
+            });
+            fs.unlink(`public/assets/uploads/${res[0][i].image_url3}`, (err) => {
+                if (err) {
+                    console.log("error: ", err);
+                    return;
+                }
+                console.log(`deleted image: public/assets/uploads/${res[0][i].image_url3}`);
+            });
+            fs.unlink(`public/assets/uploads/${res[0][i].receipt_url}`, (err) => {
+                if (err) {
+                    console.log("error: ", err);
+                    return;
+                }
+                console.log(`deleted image: public/assets/uploads/${res[0][i].receipt_url}`);
+            });
+        }
+        console.log(`deleted ${res[1].affectedRows} services`);
         result(null, res);
     });
 };
@@ -300,39 +288,31 @@ Service.getTotalPending = result => {
 };
 
 Service.uploadReceiptById =  (id,receipt_url, result)  => {
-    sql.query(`SELECT * FROM services WHERE id = ${id}`, (err, res) => {
+    sql.query(` SELECT * FROM services WHERE id = ${id};
+                UPDATE services set receipt_url = "${receipt_url}" WHERE id = ${id}`, (err, res) => {
         if (err) {
             console.log("error: ", err);
             return;
         }
 
-        for (let i = 0 ; i < res.length ;i++){
-            fs.unlink(`public/assets/uploads/${res[i].receipt_url}`, (err) => {
+        for (let i = 0 ; i < res[0].length ;i++){
+            fs.unlink(`public/assets/uploads/${res[0][i].receipt_url}`, (err) => {
                 if (err) {
                     console.log("error: ", err);
                     return;
                 }
-                console.log(`deleted image: public/assets/uploads/${res[i].receipt_url}`);
+                console.log(`deleted image: public/assets/uploads/${res[0][i].receipt_url}`);
             });
         } 
-    });
-    
-    sql.query(`UPDATE services set receipt_url = "${receipt_url}" WHERE id = ${id}`, (err, res) => {
-        if (err) {
-            console.log("error: ", err);
-            result(null, err);
-            return;
-        }
-
-        if (res.affectedRows == 0) {
+        if (res.affectedRows[1] == 0) {
             // not found Feed with the id
             result({ kind: "not_found" }, null);
             return;
         }
-
+    
         console.log("updated service: ", { id: id, receipt: receipt_url });
         result(null, { id: id, receipt: receipt_url  });
-      }
-)}; 
+    });
+}; 
 
 module.exports = Service;
