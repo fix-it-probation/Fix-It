@@ -9,6 +9,7 @@ import BassicTitlePass from '../../components/BassicTitlePass';
 
 const AccountSecurity = ({navigation}) => {
 
+  
   return (
     <View style={{backgroundColor: COLOR_WHITE, flex: 1}}>
       <ScrollView showsVerticalScrollIndicator={false}>

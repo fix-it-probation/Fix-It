@@ -15,7 +15,7 @@ import PaymentConfirmationProcessFeed from '../screens/PaymentConfirmationProces
 
 const AuthStack = createStackNavigator();
 
-const AuthStackScreen2 = () => (
+const AuthStack2 = () => (
   <AuthStack.Navigator initialRouteName="HomeMitra">
     <AuthStack.Screen
       name="HomeMitra"
@@ -76,4 +76,4 @@ const AuthStackScreen2 = () => (
   </AuthStack.Navigator>
 );
 
-export default AuthStackScreen2;
+export default AuthStack2;
