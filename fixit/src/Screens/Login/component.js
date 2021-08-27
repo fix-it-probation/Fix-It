@@ -25,10 +25,10 @@ const Login = ({navigation}) => {
         password: password,
       });
       console.log(res);
+      const role_id = res.data['role_id']
       CookieManager.get(base + '/user/login').then(cookies => {
-        console.log('CookieManager.get =>', cookies);
         const accessToken = cookies['access-token'].value
-        _Login(accessToken);
+        _Login(role_id, accessToken);
       });
     } catch (error) {
       alert(error.message);
