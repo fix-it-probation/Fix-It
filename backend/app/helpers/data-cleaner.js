@@ -82,8 +82,6 @@ const job = schedule.scheduleJob(rule, () => {
         console.log(`deleted ${res[3].affectedRows} feeds`);
         console.log(`deleted ${res[4].affectedRows} services`);
         console.log(`deleted ${res[5].affectedRows} banners`);
-
-        console.log(res)
         // result(null, res);
     });
     console.log(today().toISOString().slice(0, 19))
