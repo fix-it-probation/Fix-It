@@ -46,10 +46,10 @@ exports.sendMail = (email, subject, html) => {
 };
 
 exports.randString = () => {
-    const len = 6
+    const len = 4
     let randStr = ""
     for (let i=0; i<len; i++) {
-        const ch = Math.floor((Math.random() * 10) + 1)
+        const ch = Math.floor((Math.random() * 10))
         randStr += ch
     }
     return randStr

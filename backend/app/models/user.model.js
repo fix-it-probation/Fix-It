@@ -12,6 +12,7 @@ const User = function(user) {
     this.province = user.province;
     this.city = user.city;
     this.avatar_url = user.avatar_url;
+    this.uniqueString = user.uniqueString;
 };
 
 User.create = (newUser, result) => {

@@ -13,7 +13,7 @@ const createRegistrationToken = (user) => {
     const accessToken = sign(
         {id: user.id, name: user.name, telephone: user.telephone,
         email: user.email, password: user.password,address : user.address ,province : user.province, city : user.city, role_id: user.role_id,
-        uniqueString: user.uniqueString},
+        avatar_url: user.avatar_url, uniqueString: user.uniqueString},
         process.env.SECRET_KEY
     );
     return accessToken;
