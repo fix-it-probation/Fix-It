@@ -2,11 +2,12 @@ import React, {Component} from 'react';
 import {Image, TouchableOpacity, View, Text} from 'react-native';
 import PropTypes from 'prop-types';
 import styles from './styles';
+import { noop } from '../../utils';
 
-const CardStatus = ({images, customContainer, customCard, status, date, label, person}) => {
+const CardStatus = ({images, customContainer, customCard, status, date, label, person, onPress}) => {
   return (
     <View style={[styles.card, customCard]}>
-      <TouchableOpacity style={styles.container, customContainer}>
+      <TouchableOpacity onPress={onPress} style={styles.container, customContainer}>
       <View style={{flexDirection: 'row'}}>
         <View style={styles.indicator} />
         <Text style={styles.textStatus}>{status}</Text>
@@ -30,6 +31,7 @@ Component.propTypes = {
   date: PropTypes.string,
   label: PropTypes.string,
   person: PropTypes.string,
+  onPress: PropTypes.func,
 };
 
 Component.defaultProps = {
@@ -40,6 +42,7 @@ Component.defaultProps = {
   date: 'Text date',
   label: 'Text label',
   person: 'Text person',
+  onPress: noop,
 };
 
 export default CardStatus;

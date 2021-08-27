@@ -1,6 +1,6 @@
 const image = {
     add: require('../../assets/image/add.png'),
-    avatar: require('../../assets/image/avatar.jpg'),
+    avatar: require('../../assets/image/avatar.png'),
     addImgService: require('../../assets/image/addImgService.png'),
     addImgAdvert: require('../../assets/image/addImgAdvert.png'),
     backButton: require('../../assets/image/back.png'),

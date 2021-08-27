@@ -1,7 +1,6 @@
-import {StyleSheet, Platform, Dimensions} from 'react-native';
-import { COLOR_BASE_PRIMARY_MAIN, COLOR_BLACK, COLOR_FIELD, COLOR_WHITE, FONT_CUSTOM_BODY, FONT_CUSTOM_BOLD, FONT_PRIMARY_BODY, FONT_PRIMARY_COLOR, FONT_PRIMARY_HEADER, FONT_PRIMARY_HEADLINE, FONT_PRIMARY_ICON } from '../../styles';
-const ios = Platform.OS === 'ios';
-const {width, height} = Dimensions.get('window');
+import {StyleSheet} from 'react-native';
+import { COLOR_BASE_PRIMARY_MAIN, COLOR_BLACK, COLOR_SILVER, COLOR_WHITE, FONT_CUSTOM_BODY, 
+          FONT_PRIMARY_BODY, FONT_PRIMARY_COLOR, FONT_PRIMARY_HEADER} from '../../styles';
 
 const styles = StyleSheet.create({
   avatar: {
@@ -23,16 +22,20 @@ const styles = StyleSheet.create({
     width: 100,
   },
   card2: {
-    backgroundColor: COLOR_BASE_PRIMARY_MAIN,
+    backgroundColor: COLOR_WHITE,
     borderRadius: 20,
+    borderWidth: 1,
+    borderColor: COLOR_SILVER,
     marginLeft: 10,
     height: 28,
     width: 108,
   },
   card3: {
-    backgroundColor: COLOR_BASE_PRIMARY_MAIN,
+    backgroundColor: COLOR_WHITE,
     borderRadius: 20,
     marginLeft: 10,
+    borderWidth: 1,
+    borderColor: COLOR_SILVER,
     height: 28,
     width: 88,
   },
@@ -54,6 +57,12 @@ const styles = StyleSheet.create({
   textStatus: {
     ...FONT_PRIMARY_BODY,
     color: COLOR_WHITE,
+    textAlign: 'center',
+    marginVertical: 4,
+  },
+  textStatus2: {
+    ...FONT_PRIMARY_BODY,
+    color: FONT_PRIMARY_COLOR,
     textAlign: 'center',
     marginVertical: 4,
   },

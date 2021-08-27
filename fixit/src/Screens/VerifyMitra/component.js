@@ -7,7 +7,7 @@ import styles from './styles';
 import Search from '../../components/SearchBar';
 import CardStatus from '../../components/CardStatus';
 
-const VerifyMitra = ({ labelMitra, labelFeed, status, date, labelStatus, person }) => {
+const VerifyMitra = ({ labelMitra, labelFeed, status, date, labelStatus, person, navigation }) => {
   labelMitra = "10"
   labelFeed = "4"
   status = "Perlu Verifikasi"
@@ -18,7 +18,7 @@ const VerifyMitra = ({ labelMitra, labelFeed, status, date, labelStatus, person 
     <View style={{backgroundColor: COLOR_WHITE, flex: 1}}>
       <View style={{ flexDirection: 'row' }}>
         <Back onPress={() => navigation.goBack()} custom={styles.backButton} />
-        <Text style={styles.textHeader}>Verifikasi Feed</Text>
+        <Text style={styles.textHeader}>Verifikasi Mitra</Text>
       </View>
       <Search label="Cari mitra" customContainer={styles.searchBar} />
       <View style={{marginTop: 28, flexDirection: 'row', alignSelf: 'center'}}>
@@ -26,13 +26,14 @@ const VerifyMitra = ({ labelMitra, labelFeed, status, date, labelStatus, person 
         <Text style={styles.textStatus}>Perlu Verifikasi</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.card2}>
-        <Text style={styles.textStatus}>Verifikasi Selesai</Text>
+        <Text style={styles.textStatus2}>Verifikasi Selesai</Text>
       </TouchableOpacity >
       <TouchableOpacity style={styles.card3}>
-        <Text style={styles.textStatus}>Dibatalkan</Text>
-      </TouchableOpacity >
+        <Text style={styles.textStatus2}>Dibatalkan</Text>
+      </TouchableOpacity>
       </View>
-      <CardStatus images={IMAGES.logo} status={status} date={date} label={labelStatus} person={person} customCard={styles.cardStatus} />
+      <CardStatus onPress={() => navigation.navigate('DetailMitraAdmin')} 
+      images={IMAGES.logo} status={status} date={date} label={labelStatus} person={person} customCard={styles.cardStatus} />
     </View>
   )
 }

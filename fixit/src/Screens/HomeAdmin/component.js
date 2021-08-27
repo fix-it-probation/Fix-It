@@ -5,7 +5,7 @@ import IMAGES from '../../configs';
 import { COLOR_WHITE } from '../../styles';
 import styles from './styles';
 
-const HomeAdmin = ({ labelMitra, labelFeed }) => {
+const HomeAdmin = ({ labelMitra, labelFeed, navigation }) => {
   labelMitra = "10"
   labelFeed = "4"
   return (
@@ -17,8 +17,10 @@ const HomeAdmin = ({ labelMitra, labelFeed }) => {
       <Text style={styles.textHeader}>Penting hari ini</Text>
       <Text style={styles.textBody}>Aktivitas yang perlu kamu pantau untuk jaga kepuasan user</Text>
       <View style={{flexDirection: 'row'}}>
-        <CardAdmin images={IMAGES.verifyMitra} title="Verifikasi Mitra" label={labelMitra} customContainer={styles.cardMitra} />
-        <CardAdmin images={IMAGES.verifyFeed} title="Verifikasi Feed" label={labelFeed} customContainer={styles.cardFeed} />
+        <CardAdmin onPress={() => navigation.navigate('VerifyMitra')}
+        images={IMAGES.verifyMitra} title="Verifikasi Mitra" label={labelMitra} customContainer={styles.cardMitra} />
+        <CardAdmin onPress={() => navigation.navigate('VerifyFeed')}
+        images={IMAGES.verifyFeed} title="Verifikasi Feed" label={labelFeed} customContainer={styles.cardFeed} />
       </View>
     </View>
   )

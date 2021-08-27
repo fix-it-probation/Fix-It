@@ -29,8 +29,8 @@ const VerificationCode= ({navigation, email}) => {
       </View>
       <Button
         customContainer={styles.button}
-        title="Lanjut"
-        onPress={() => navigation.navigate('CreatePassCustomer', user)}
+        title="Verifikasi"
+        onPress={() => navigation.navigate()}
       />
     </View>
   );

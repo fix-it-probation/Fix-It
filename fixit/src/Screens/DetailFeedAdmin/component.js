@@ -8,7 +8,7 @@ import CardDetailAdmin from '../../components/CardDetailAdmin/component';
 import CardResult from '../../components/CardResult';
 import Button from '../../components/Button';
 
-const DetailFeedAdmin= ({ status, date, person }) => {
+const DetailFeedAdmin= ({ status, date, person, navigation }) => {
   status = "Perlu Verifikasi"
   date = "05 Ags 2021, 16:42 WIB"
   person = "Bapak Sepak pojok"

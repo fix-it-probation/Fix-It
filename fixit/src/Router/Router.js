@@ -117,7 +117,7 @@ const Router = () => {
         {loginState.accessToken !== null ? (
           decideRole()
         ) : (
-          <AuthStack.Navigator initialRouteName="OnBoarding">
+          <AuthStack.Navigator initialRouteName="SplashScreen">
             <AuthStack.Screen
               name="SplashScreen"
               component={SplashScreen}
