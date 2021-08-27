@@ -1,12 +1,15 @@
 import {StyleSheet} from 'react-native';
-import { COLOR_BASE_PRIMARY_MAIN, FONT_PRIMARY_HEADER } from '../../styles';
 
 const styles = StyleSheet.create({
-  textHeader: {
-    ...FONT_PRIMARY_HEADER,
-    color: COLOR_BASE_PRIMARY_MAIN,
-    paddingVertical: 280,
-    textAlign: 'center',
+  card: {
+    alignSelf: 'center',
+    marginTop: 20,
+    marginBottom: 20,
+  },
+  searchBar: {
+    alignSelf: 'center',
+    marginTop: 24,
+    marginBottom: 20,
   },
 });
 
