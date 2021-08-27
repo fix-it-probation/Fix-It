@@ -1,7 +1,10 @@
 const User = require("../models/user.model.js");
 const bcrypt = require('bcrypt');
-const { createToken, createRegistrationToken, createResetPasswordToken } = require("../middleware/JWT");
+const { createToken, createRegistrationToken, createResetPasswordToken, requestOtp, createOtpToken } = require("../middleware/JWT");
+const{ verify } = require('jsonwebtoken');
 const mail = require("../helpers/send-email.js");
+const { request } = require("express");
+require("dotenv").config()
 
 // Create and Save a new User
 exports.register = (req, res) => {
@@ -16,7 +19,7 @@ exports.register = (req, res) => {
         });
     } else {
         bcrypt.hash(req.body.password,10).then((hash) => {
-            let defaultAvatar = "defaultAvatar.png"
+            let defaultAvatar = "defaultAvatar.png";
 
             // Create a User
             const user = new User({
@@ -29,15 +32,23 @@ exports.register = (req, res) => {
                 province :req.body.province,
                 city : req.body.city,
                 avatar_url : defaultAvatar,
-                uniqueString : mail.randString(),
+                uniqueString : mail.randString()
             });
 
             const accessToken = createRegistrationToken(user);
             res.cookie("valid-email-access-token",accessToken, {
-                maxAge: 5*60*1000,
+                maxAge: 60*60*1000*24,
                 httpOnly: true                
             });
+
+            const accessToken_ = createRegistrationToken(user);
+            res.cookie("valid-otp-access-token", accessToken_, {
+                maxAge: 5*60*1000,
+                httpOnly: true
+            });
             
+            // console.log(accessToken_)
+
             if (accessToken) {
                 const html = `<div style="font-family: Helvetica,Arial,sans-serif;min-width:1000px;overflow:auto;line-height:2">
                 <div style="margin:50px auto;width:70%;padding:20px 0">
@@ -58,7 +69,7 @@ exports.register = (req, res) => {
                 </div>`
                 mail.sendMail(user.email, "Email Verification", html)
             } else {
-                res.json({ message: "OTP is Empty." })
+                res.json({ message: "Token is Empty." })
             }
             res.json({ message: "Success." })
         });
@@ -331,7 +342,7 @@ exports.deleteAll = (req,res) => {
         if (err)
             res.status(500).send({
                 message:
-                    err.message || "Some error occurred while removing all users."
+                err.message || "Some error occurred while removing all users."
             });
         else res.send({ message: `All Users were deleted successfully!` });
     });
@@ -355,7 +366,6 @@ exports.verifyEmail = (req, res) => {
         role_id : req.user.role_id,
         avatar_url : req.user.avatar_url,
     });
-
     if (req.user.uniqueString == req.body.uniqueStringConfirm) {
         User.create(user, (err, data) => {
             if (err)
@@ -365,13 +375,14 @@ exports.verifyEmail = (req, res) => {
                 });
             else {
                 res.clearCookie("valid-email-access-token")
+                res.clearCookie("valid-otp-access-token")
                 res.json({ message: "Email is Verified." });
                 }
             });
     } else {
         res.status(401).send({
-            message: `Incorrect OTP.`,
-        }); 
+        message: `Incorrect OTP.`,
+    }); 
     }
 };
 
@@ -476,3 +487,46 @@ exports.verifyResetPassword = async (req, res) => {
         });
     }
 };
+
+exports.requestOtp = (req, res) => {
+    // Create a User
+    const user = new User({
+        name : req.user.name,
+        telephone : req.user.telephone,
+        email : req.user.email,
+        password : req.user.password,
+        role_id : req.user.role_id,
+        address : req.user.address,
+        province :req.user.province,
+        city : req.user.city,
+        avatar_url : req.user.avatar_url,
+        uniqueString : mail.randString()
+    });
+
+    const accessToken = createRegistrationToken(user);
+        res.cookie("valid-otp-access-token", accessToken, {
+            maxAge: 5*60*1000,
+            httpOnly: true
+        });
+
+    const html = `<div style="font-family: Helvetica,Arial,sans-serif;min-width:1000px;overflow:auto;line-height:2">
+                <div style="margin:50px auto;width:70%;padding:20px 0">
+                    <div style="border-bottom:1px solid #eee">
+                    <a href="" style="font-size:1.4em;color: #00466a;text-decoration:none;font-weight:600">FIX-IT</a>
+                    </div>
+                    <p style="font-size:1.1em">Hi,</p>
+                    <p>Thank you for choosing FIX-IT. Use the following OTP to complete your Sign Up procedures. OTP is valid for 5 minutes</p>
+                    <h2 style="background: #0063FF;margin: 0 auto;width: max-content;padding: 0 10px;color: #fff;border-radius: 4px;">${user.uniqueString}</h2>
+                    <p style="font-size:0.9em;">Regards,<br />FIX-IT</p>
+                    <hr style="border:none;border-top:1px solid #eee" />
+                    <div style="float:right;padding:8px 0;color:#aaa;font-size:0.8em;line-height:1;font-weight:300">
+                    <p>FIX-IT</p>
+                    <p>Bandung</p>
+                    <p>Indonesia</p>
+                    </div>
+                </div>
+                </div>`
+
+    mail.sendMail(user.email, "Email Verification", html)
+    res.json({message: "Message Sent."})
+}

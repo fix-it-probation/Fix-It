@@ -1,4 +1,4 @@
-const { validateToken, validateAccountPasswordToken, validateEmailToken, requestResetPassword} = require("../middleware/JWT.js");
+const { validateToken, validateAccountPasswordToken, validateEmailToken, requestResetPassword, requestOtp} = require("../middleware/JWT.js");
 const { authorize } = require("../middleware/authorize.js")
 const imageUploader = require('../helpers/image-uploader');
 
@@ -9,7 +9,10 @@ module.exports = app => {
     app.post("/users/register", imageUploader.upload.single("image"), users.register);
     
     // Verify User Email
-    app.post("/users/register/verify/", validateEmailToken, users.verifyEmail)
+    app.post("/users/register/verify/", requestOtp, users.verifyEmail);
+    
+    // Request new OTP 
+    app.get("/users/register/requestToken", validateEmailToken, users.requestOtp);
 
     // Login a User
     app.post("/users/login", users.login);

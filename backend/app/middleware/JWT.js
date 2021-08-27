@@ -27,6 +27,14 @@ const createResetPasswordToken = (user) => {
     return accessToken;
 };
 
+const createOtpToken = (user) => {
+    const accessToken = sign(
+         {id: user.id, uniqueString: user.uniqueString},
+        process.env.SECRET_KEY
+    );
+    return accessToken;
+};
+
 const validateToken = (req, res, next) => {
     const accessToken = req.cookies["access-token"]
     if (!accessToken) return res.status(400).json({ error: "User not Authenticated!" });
@@ -91,4 +99,20 @@ const requestResetPassword = (req, res, next) => {
     } 
 };
 
-module.exports = {createToken, createRegistrationToken, createResetPasswordToken, validateToken, validateAccountPasswordToken, validateEmailToken, requestResetPassword}
+const requestOtp = (req, res, next) => {
+    const accessToken = req.cookies["valid-otp-access-token"]
+    if (!accessToken) return res.status(400).json({ error: "cookies expired!" });
+    try {
+        const validToken = verify(accessToken, process.env.SECRET_KEY)
+        if (validToken) {
+            req.user = validToken
+            req.authenticated = true
+            return next()
+        }
+        
+    } catch(err)  {
+        return res.status(400).json({ error: err });
+    } 
+};
+
+module.exports = {createToken, createRegistrationToken, createResetPasswordToken, requestOtp, validateToken, validateAccountPasswordToken, validateEmailToken, requestResetPassword, createOtpToken}
