@@ -1,7 +1,8 @@
 const sql = require("../helpers/db.js");
 const schedule = require('node-schedule');
 const { today }= require ("./time");
-const fs = require("fs")
+const fs = require("fs");
+// const { sql } = require('googleapis/build/src/apis/sql');
 
 const rule = new schedule.RecurrenceRule();
 rule.second = 1;
