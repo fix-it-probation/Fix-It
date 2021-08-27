@@ -50,6 +50,11 @@ export const FONT_CUSTOM_INPUT = {
     fontSize : FONT_SIZE_INPUT,
 }
 
+export const FONT_PRIMARY_INPUT = {
+    fontFamily : FONT_PRIMARY_MEDIUM,
+    fontSize : FONT_SIZE_INPUT,
+}
+
 export const FONT_PRIMARY_BUTTON = {
     fontFamily : FONT_PRIMARY_BOLD,
     fontSize : FONT_SIZE_HEADLINE,

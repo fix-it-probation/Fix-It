@@ -6,11 +6,12 @@ import TabCustomer from './tabCustomer';
 import SearchCustomer from '../screens/SearchCustomer';
 import DetailCustomer from '../screens/DetailMitra';
 import EditProfile from '../screens/EditProfile';
+import PlacingAd from '../screens/PlacingAd';
 
 const AuthStack = createStackNavigator();
 
 const AuthStackScreen3 = () => (
-  <AuthStack.Navigator initialRouteName="Home">
+  <AuthStack.Navigator initialRouteName="PlacingAd">
     <AuthStack.Screen
       name="Home"
       component={TabCustomer}
@@ -29,6 +30,11 @@ const AuthStackScreen3 = () => (
     <AuthStack.Screen
       name="EditProfile"
       component={EditProfile}
+      options={{headerShown: false}}
+    />
+    <AuthStack.Screen
+      name="PlacingAd"
+      component={PlacingAd}
       options={{headerShown: false}}
     />
   </AuthStack.Navigator>

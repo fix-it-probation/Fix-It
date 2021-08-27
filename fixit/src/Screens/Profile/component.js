@@ -62,7 +62,8 @@ const Profile = ({ name, number, email, navigation }) => {
           <Image source={IMAGES.star} style={styles.Icon} />
           <Text style={styles.textEdit}>Ulas Aplikasi ini</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={{flexDirection: 'row', marginTop: 16}}>
+        <TouchableOpacity  onPress={() => navigation.push('AccountSecurity')} 
+        style={{flexDirection: 'row', marginTop: 16}}>
           <Image source={IMAGES.safety} style={styles.Icon} />
           <Text style={styles.textEdit}>Pasang Iklan</Text>
         </TouchableOpacity>

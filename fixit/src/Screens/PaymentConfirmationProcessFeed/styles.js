@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import { COLOR_BLACK, FONT_CUSTOM_FIELD, FONT_PRIMARY_HEADER, FONT_PRIMARY_COLOR, FONT_CUSTOM_BODY, COLOR_FIELD, FONT_PRIMARY_BODY, FONT_CUSTOM_INPUT, FONT_PRIMARY_HEADLINE } from '../../styles';
+import { FONT_PRIMARY_COLOR,  FONT_PRIMARY_BODY, FONT_CUSTOM_INPUT, FONT_PRIMARY_HEADLINE } from '../../styles';
 
 const styles = StyleSheet.create({
   button: {

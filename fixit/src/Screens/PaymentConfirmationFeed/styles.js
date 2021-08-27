@@ -6,7 +6,6 @@ import {
   FONT_PRIMARY_COLOR,
   FONT_CUSTOM_BODY,
   COLOR_FIELD,
-  FONT_PRIMARY_BODY,
   FONT_CUSTOM_INPUT,
 } from '../../styles';
 
@@ -52,7 +51,7 @@ const styles = StyleSheet.create({
     ...FONT_PRIMARY_HEADER,
     color: COLOR_BLACK,
     marginBottom: 24,
-    marginLeft: 40,
+    marginLeft: 20,
     marginTop: 30,
   },
   textWarning: {

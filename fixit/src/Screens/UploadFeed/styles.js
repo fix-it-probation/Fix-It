@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     ...FONT_PRIMARY_HEADER,
     color: COLOR_BLACK,
     marginBottom: 24,
-    marginLeft: 40,
+    marginLeft: 20,
     marginTop: 30,
   },
   textWarning: {
